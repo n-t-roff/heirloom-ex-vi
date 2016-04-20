@@ -7,7 +7,7 @@ OBJ = onefile.o regfree.o regerror.o
 
 libuxre.a: $(OBJ)
 	$(AR) -rv $@ $(OBJ)
-	$(RANLIB) $@
+	#$(RANLIB) $@
 
 onefile.o: onefile.c
 	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c onefile.c
@@ -48,7 +48,7 @@ stubs.o: stubs.c
 install:
 
 clean:
-	rm -f $(OBJ) core log *~
+	rm -f libuxre.a $(OBJ) core log *~
 
 _collelem.o: colldata.h re.h regex.h wcharm.h
 _collmult.o: colldata.h re.h regex.h wcharm.h
