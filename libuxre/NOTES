@@ -1,0 +1,14 @@
+Notes for the modified 'UNIX(R) Regular Expression Library'
+============================================================
+
+The code this is based on was released by Caldera as 'osutils-0.1a'
+and is available at <http://unixtools.sourceforge.net/>. Notable
+changes include:
+
+- Support for multibyte characters was enabled again.
+- Support for traditional extended regular expression syntax was added.
+- Fix: With REG_ICASE, [B-z] matches 'A', 'a', and '[' according to
+  POSIX.2.
+- Some speed improvements.
+
+	Gunnar Ritter						9/22/03
