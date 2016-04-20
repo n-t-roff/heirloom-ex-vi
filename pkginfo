@@ -1,0 +1,11 @@
+# Sccsid @(#)pkginfo	1.1 (gritter) 2/25/07
+PKG=ex
+NAME=The ex/vi editor
+DESC=The ex/vi editor.
+VENDOR=Gunnar Ritter
+HOTLINE=http://ex-vi.sourceforge.net
+EMAIL=gunnarr@acm.org
+VERSION=070225
+ARCH=IA32,i386
+CATEGORY=utilities
+BASEDIR=/

@@ -1,0 +1,145 @@
+Welcome to the ex/vi port!
+==========================
+
+This implementation is derived from ex/vi 3.7 of 6/7/85 and the BSD
+termcap library, originally from the 2.11BSD distribution. All of them
+were changed to compile and run on newer POSIX compatible Unix systems.
+Support for international character sets was added, including support
+for multibyte locales (based on UTF-8 or East Asian encodings), and some
+changes were made to get closer to the POSIX.2 guidelines for ex and
+vi. Some issues that were clearly bugs and not features have also been
+resolved; see the Changes file for details.
+
+New releases are announced on Freshmeat. If you want to get
+notified by email on each release, use their subscription service at
+<http://freshmeat.net/projects/vi/>.
+
+The project homepage is currently at <http://ex-vi.sourceforge.net>.
+
+
+How to build
+============
+
+First look at the Makefile and change the settings there to match your
+build environment. Explanations are provided directly in this file.
+
+You can tune the sizes of some internal buffers by editing config.h.
+
+Then type 'make' and 'make install'.
+
+It is possible to build a RPM file directly from the source distribution
+by executing
+
+        rpmbuild -tb ex-<version>.tar.bz2
+
+Note that the RPM spec installs the binary in /usr/5bin by default to
+avoid conflicts with vendor files in /usr/bin. The default locations
+match those of the Heirloom Toolchest <http://heirloom.sourceforge.net>.
+
+The following systems have been reported to compile this code:
+
+Linux               Kernel 2.0 and above; libc4, libc5, glibc 2.2 and above,
+                    diet libc, uClibc
+Sun Solaris         2.5.1 and above
+Caldera Open UNIX   8.0.0
+SCO UnixWare        7.1.1, 7.0.1, 2.1.2
+HP HP-UX            B.11.23, B.11.11, B.11.00, B.10.20
+HP Tru64 UNIX       4.0G, 5.1B
+IBM AIX             5.1, 4.3
+NEC SUPER-UX        10.2
+NEC UX/4800         Release11.5 Rev.A
+Control Data EP/IX  2.2.1AA
+FreeBSD             3.1, 4.5, 5.x, 6.1
+NetBSD              1.6, 2.0
+DragonFlyBSD        1.3.7-DEVELOPMENT
+Mac OS X            10.4.3
+
+Reports about other Unix systems are welcome, whether successful or not
+(in the latter case add a detailed description). This port of vi is only
+aimed at Unix, though, so I am not interested about results from running
+this software on Windows etc.
+
+Prerequisites for ports to other systems are:
+
+- The system must provide an ANSI C-89 compiler and POSIX.1-1990 functions.
+
+- The system must provide an sbrk() call to increase the memory heap size.
+  If only a fake sbrk() call is provided that works by pre-allocating
+  several MB, vi will probably work too.
+
+- The system library must allow replacement of malloc() and printf() by the
+  versions provided by vi. For malloc(), it also must make its own internal
+  memory requests using the vi malloc(). Otherwise, vi will likely die with
+  a segmentation fault because the storage allocated by sbrk() interferes
+  with usual Unix library implementations of malloc().
+
+The last two requirements could probably be eliminated with some effort, but
+it would not result in any real improvements for usual the Unix platforms vi
+is targeted at, so it has not be done yet.
+
+
+Terminal capabilities
+=====================
+
+vi normally uses the termcap library to gather information about the
+capabilities of the terminal it is using. A BSD-derived termcap library
+is included with the vi distribution, and is usually the preferred choice.
+On some platforms, though, either no /etc/termcap file exists, or the file
+lacks up-to-date entries. In these cases, two workarounds are possible.
+First, vi can be linked against libcurses, libncurses, or libtermcap, if
+these provide access to a proper terminal information database. Second, it
+is possible to use the included termcap library with a TERMCAP environment
+variable that contains a complete termcap entry. Most terminals in current
+use provide a superset of DEC VT102 capabilities, so the following will
+normally work:
+
+TERMCAP="vt102|$TERM|dec vt102:"'\
+	:do=^J:co#80:li#24:cl=50\E[;H\E[2J:\
+	:le=^H:bs:cm=5\E[%i%d;%dH:nd=2\E[C:up=2\E[A:\
+	:ce=3\E[K:cd=50\E[J:so=2\E[7m:se=2\E[m:us=2\E[4m:ue=2\E[m:\
+	:md=2\E[1m:mr=2\E[7m:mb=2\E[5m:me=2\E[m:is=\E[1;24r\E[24;1H:\
+	:rs=\E>\E[?3l\E[?4l\E[?5l\E[?7h\E[?8h:ks=\E[?1h\E=:ke=\E[?1l\E>:\
+	:ku=\EOA:kd=\EOB:kr=\EOC:kl=\EOD:kb=^H:\
+	:ho=\E[H:k1=\EOP:k2=\EOQ:k3=\EOR:k4=\EOS:pt:sr=5\EM:vt#3:\
+	:sc=\E7:rc=\E8:cs=\E[%i%d;%dr:vs=\E[?7l:ve=\E[?7h:\
+	:mi:al=\E[L:dc=\E[P:dl=\E[M:ei=\E[4l:im=\E[4h:'
+export TERMCAP
+
+
+Multibyte locale support
+========================
+
+Support for multibyte locales has been added to vi. It requires a number of
+functions that, while specified in XPG6, are not present on all systems that
+provide basic multibyte support. In particular, vi needs wcwidth() to
+determine the visual width of a character, and mbrtowc() to detect when a
+byte sequence that is entered at the terminal has been completed.
+
+The multibyte code is known to work on the following systems:
+
+Linux           glibc 2.2.2 and later
+Sun Solaris     9 and later
+HP HP-UX        B.11.11 and later
+FreeBSD         5.3
+NetBSD          2.0
+
+It has been tested on xterm patch #192, rxvt-unicode 4.2, mlterm 2.9.1,
+xiterm 0.5, and gnome-terminal 2.10.0.
+
+Successful operation is known for the following encodings: UTF-8, EUC-JP,
+EUC-KR, Big5, Big5-HKSCS, GB 2312, GBK. vi does not support locking-shift
+encodings like those that use ISO 2022 escape sequences. It also requires
+that the first byte of any multibyte character has the highest bit set.
+This excludes 7-bit encodings like UTF-7, and encodings whose sequences
+start with ASCII characters like TCVN 5712.
+
+To use UTF-8 locales in ex mode, the terminal should be put in 'stty iutf8'
+mode on Linux if it does not perform this automatically. Otherwise, typing
+the erase key once after entering a multibyte character will result in an
+incomplete byte sequence.
+
+
+Gunnar Ritter                                           01/12/07
+Freiburg i. Br.
+Germany
+<gunnarr@acm.org>

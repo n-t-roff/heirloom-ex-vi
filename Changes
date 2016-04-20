@@ -1,0 +1,252 @@
+Release ...
+* The screen buffers for visual mode are now dynamically allocated, so
+  vi usually does not return to ex mode with "screen too large" when the
+  terminal is resized on a large monitor anymore.
+* ex can now edit files with lines of arbitrary length. vi currently only
+  shows the beginning of a line that does not fit onto the screen in its
+  entirety.
+* Viewing executables and compressed files is no longer inhibited.
+* A bug in the supplied realloc() replacement could result in heap
+  corruption. (No resulting failures have been observed with ex so far.)
+
+Release 3/25/05
+* vi no longer dies with a segmentation fault if a line does not fit on the
+  screen after an insertion.
+* The 'p' command now works correctly if the buffer contains a partial line
+  with multibyte characters.
+* Traditional regular expressions sometimes failed to operate correctly
+  since the last release.
+
+Release 2/25/05
+* Traditional regular expressions can now be used with multibyte characters.
+* When the 'ignorecase' option is toggled, saved regular expressions are now
+  updated accordingly. (P)
+* If a line began with a tabulator and another tabulator was inserted with
+  the cursor located on the first tabulator, the display was not updated
+  appropriately since the last release (Bugreport by Matthew Fischer). (P)
+* Fixed a segmentation fault that occured in multibyte locales when operation
+  was continued after vi had been stopped by ^Z, with the cursor positioned
+  in a line longer than the terminal width as the last line of the current
+  screen.
+* Made multicolumn characters work in lines longer than the screen width in
+  visual mode (Bugreport by Matthew Fischer).
+* Made it work for Big5 locales (Patches by Matthew Fischer).
+* Fixed a problem with the 'r' command in EUC-JP and Big5 locales (Bugreport
+  by Matthew Fischer).
+* The insertion of multicolumn characters and tab characters in multibyte
+  locales now works with terminals that have the 'ic' but no 'im' termcap
+  capability (Bugreport by Matthew Fischer).
+* The argument to the -w option is correctly recognized now.
+* If the SHELL environment variable is set to the empty string, it is now
+  ignored.
+* A non-null exit status is now returned if a file could not be opened, if
+  an invalid address is given for a command, or if a tag is not found.
+* If the match for a substitution is of length zero, a line overflow is
+  now avoided when compiled with the 'UNIX(R) Regular Expression Library'.
+* When moving left while the cursor is positioned over a multicolumn
+  character at the end of the line, the bell is rung now (Bugreport by
+  Matthew Fischer).
+* When moving up or down to a row with different column arrangement while
+  the cursor is positioned over a multicolumn character, the leftmost
+  character above the original position is chosen in the new row.
+* If both the -t and the -c option are given, the -t option is now
+  processed first, i.e. the command is executed at the position where
+  the tag was found.
+* The -w option now also sets the scroll size for the 'z' command.
+* When the name of a nonexisting file is given with the 'edit' ex command,
+  the command now succeeds and prints a "[New file]" message.
+* If standard output is not a terminal, no '\r' is written at the end of
+  printed lines anymore.
+* The 'source' ex command now works if command input comes from a pipe or
+  regular file.
+* Ex does not exit on errors immediately anymore if standard input is not
+  a terminal but a pipe or regular file.
+* The 'substitute' ex command can now be abbreviated as 'sub', 'subst' etc.
+* A new version of mapmalloc.c that is derived from Unix 7th Edition code
+  has been introduced.
+* If the 'next!' ex command is given and the autowrite option is set, the
+  current file is not written anymore.
+
+Release 1/19/05
+* The last release erroneously made 'X' work like 'x' in visual mode. It now
+  deletes the character before the cursor again as documented (Bugreport by
+  Matthew Fischer). (P)
+* When a multicolumn character was replaced by another multicolumn character
+  in insert mode, the display was not updated appropriately with terminals
+  other than xterm.
+* Various rendering errors happened with multicolumn characters if they
+  started at an even column (counting from 1 upwards).
+* When a multicolumn character was inserted and then replaced, the visual
+  screen representation was sometimes not updated accordingly.
+* Undoing the replacement of a multicolumn character by a singlecolumn
+  character twice made the singlecolumn character invisible.
+* The 'cw' visual command with a multibyte character as last character of
+  the affected word located at the end of the line left garbage bytes past
+  the end of the new text.
+* Visual 'U' followed by 'u' lead to garbage on the screen when multibyte
+  characters were present on the changed line.
+* The position of '$' when changing text was fixed for cases where the first
+  changed character had multiple columns but the last one had not.
+* The handling of multicolumn characters was fixed for terminals without the
+  IM (insert mode) capability. It is unlikely that such terminals actually
+  exist, but vi will use the corresponding code for open mode if a termcap
+  entry is not available.
+* When an illegal multibyte sequence is entered in vi insert mode, no garbage
+  bytes are generated anymore when the insert mode is left.
+* The '\u', '\l', '\U', and '\L' substitution sequences work with multibyte
+  characters now.
+* Handle character case conversions with the '~' vi command correctly if the
+  length of the converted multibyte sequence is smaller than the original one.
+* Multibyte sequences that correspond to an unprintable character are now
+  printed as multiple octal escape sequences.
+* Pressing the ^U (kill) character in insert mode with a multibyte character
+  at the beginning of an insertion at the start of a line sometimes positioned
+  the cursor at weird locations since the last revision.
+* Fixed an old vi bug: If a vi command that yanked or deleted part of a line
+  was followed by an ex command that also yanked or deleted some text, a
+  following 'p' vi command pasted the text affected by the former vi command.
+  It now pastes the text of the last yank or delete even if that was an ex
+  command.
+* Some build fixes for diet libc have been made.
+
+Release 12/2/04
+* Support for multibyte character locales was added.
+* The code has been converted to ANSI C, and support for pre-POSIX systems has
+  been dropped.
+* When the end of the current line consists of blank characters and the 'w'
+  visual command is given at this point, vi now advances to the start of the
+  next line instead of ringing the bell. This is compatible with SVR4 vi and
+  seems to be what POSIX specifies.
+* If the replacement part of a substitute command consists of a single '%',
+  as in ':s/foo/%/', the replacement part of the previous substitution is
+  used. This is compatible with SVR4 vi and is specified by POSIX.
+* Fixed a number of possible heap overflows, e.g. because of too long tag
+  strings.
+
+Release 6/5/04
+* Some changes were made to the Makefile to support RPM builds. In particular,
+  the meaning of the DESTDIR and PREFIX variables was changed.
+* An insufficient size of a variable caused the window size set to 8 on
+  FreeBSD if the terminal baud rate was 38400.
+
+Release 1/3/04
+* Changes to the included libterm only: Made multiple tc= capabilities in
+  a termcap entry work; recognize tc= also if it is not the last capability
+  in an entry (Bugreport by Andrew Minter).
+
+Release 9/3/03
+* The code did not check st_blksize from stat(2) at other points besides
+  the one fixed in the last release.
+* The keyboard input character with code 255 ("y in ISO-8859-1) was
+  misinterpreted as end-of-file indicator.
+
+Release 8/27/03
+* Compile fixes for AIX and HP-UX (Mike Jetzer).
+* Delete temporary file when preserving was successful after receiving
+  SIGHUP or SIGTERM (Fix taken from 4.3BSD Reno).
+* Set MAILRC to /dev/null in expreserve to avoid reading the user's
+  mail initialization file.
+* Optionally use Caldera's 'UNIX(R) Regular Expression Library' to
+  get POSIX.2 compatible REs.
+* Don't refuse to quit with 'No write since last change' if a line of a
+  newly read input file is too long but no changes were made by the user.
+* The POSIX_2 preprocessor define has been removed. The behavior previously
+  enabled by this variable is now the default (except as noted below).
+* Backslash inside RE bracket expresssions (as in [\]]) is now recognized
+  as an escape character by default. This is not POSIX.2 compliant, but is
+  compatible with historic vi behavior, is demanded by the some traditional
+  standards such as the System V Interface definition, and is compatible
+  with vim. To get POSIX.2 compliant behavior here, define NO_BE_BACKSLASH.
+* The input buffer did overflow with large values of st_blksize from stat(2).
+
+Release 4/3/02
+* Option "showmode" has no effect on hardcopy or glass terminals (P).
+* Fixed undo for :r! command.
+* Interrupt character is not misinterpreted as DEL on insertion (P).
+* Fixed interaction of <count>~ vi command with abbreviations and macros (P).
+* Avoid horizontal scrolling of showmode string on wraparound to last line (P).
+* No showmode string is printed when executing a macro.
+* Recovery listing fixed not to mix characters from long filenames in
+  /var/preserve with /var/tmp listing (P).
+* Catch SIGXFSZ (file size limit exceeded).
+
+Release 3/3/02
+* Separated terse/noterse messages for RE errors (P).
+* The expreserve and exrecover commands work again (P).
+* Passing beyond EOL in <count>~ vi command is not an error (P).
+* Fixed segmentation violation on mdjc'd and related bugs (Sven Mascheck).
+* Marks remain on lines changed in an undo operation.
+* Close mapmalloc file descriptor for /dev/zero on exec() (P).
+* Added -L and -V command line options as in SVr4 ex.
+* POSIX.2: Processing EXINIT does not depend on stdin being a terminal.
+* POSIX.2: No newline is appended to an empty file in visual mode.
+* Fixed segmentation violation on :f^V^M^M and similar commands.
+* Mapmalloc extended to allocate and release multiple memory pools.
+* Exrecover lists /var/tmp in addition to /var/preserve.
+* Have multiple attempts to create named buffer temporary file.
+* Size limit for temporary file names removed.
+
+Release 2/17/02
+* POSIX.2: Backslash has no special meaning inside RE bracket expressions.
+* RE cleanup; make it compile without POSIX_2 defined (P).
+* Fixed $(CC) to "$(CC)" for libterm compilation (Felix von Leitner) (P).
+* Support for LC_MESSAGES using catgets() added.
+* Renamed POSIX define to POSIX_1.
+* Renamed UNIX98 define to POSIX_2.
+* POSIX.2: Fixed a conflict between -t tag and wrapscan option.
+* POSIX.2: Take the initial value for the vi scroll command from scroll var.
+* <count>~ vi command fixed to work with repeat and control chars in text (P).
+* Fixed recursion on :ab abbreviations (Bugreport by Matthias Kopfermann).
+* Fixed undo for :<addr>r command in visual mode.
+* Made modelines compatible to SVr4 ex: The option name is "modelines" or
+  "ml" now; a space or tab preceeding "ex:" or "vi:" is not required.
+* Use O_EXCL and O_NOFOLLOW when creating temporary files, if possible.
+
+Release 1/26/02
+* Use mmap() for memory allocation if possible.
+* POSIX.2: Added RE interval expressions \{m,n\} (taken from V7 expr).
+* POSIX.2: Added backreferences \1 ... \9.
+* Print one-character mode strings if both "showmode" and "terse" are set.
+* Added the "flash" variable.
+* POSIX.2: "~" visual command accepts a count.
+* License notices added.
+
+Release 5/21/01
+* If compiled using BIT8, all characters except ASCII NUL can now be handled.
+* Support larger files if LARGEF is defined.
+
+Release 09/23/00
+* POSIX locale support for 8bit character sets is enabled by -DBIT8.
+* Regex code is 8bit clean.
+* Smaller fixes for SVR4 systems.
+* POSIX termios support including job control.
+* POSIX sigaction support.
+* Check for ELF executables and compressed files.
+* Extended the pattern for temporary files from 5 to 10 digits.
+* ANSI C stdarg function calling added, Linux/ia64 needs them.
+* Reintegrated the UCVISUAL routines from 4.4BSD ex.
+* Only use the "ic" termcap sequence if "im" is empty.
+* POSIX.2: Command line options added and revised.
+* POSIX.2: Added a "showmode" option for novices.
+* POSIX.2: Ex respects the environment variables COLUMNS and LINES.
+* POSIX.2: Added an "exrc" option like on POSIX.2 ex; arbitrary .exrc
+  files are ignored unless it is set in EXINIT or ~/.exrc.
+* POSIX.2: If .exrc files are world or group writeable, they are ignored
+  unless "sourceany" is set.
+* Ex now provides malloc routines. They are necessary since C library
+  calls like setlocale could otherwise break the sbrk calls in ex. As
+  an additional benefit, linking against ncurses is now possible.
+
+Release 31/05/00
+* String extraction using mkstr and xstr is not longer be done.
+* An ANSI C preprocessor may be used.
+* Changes of symbol names due to collisions on newer systems.
+* Fixed a null pointer reference in ex_tty.c.
+* Included the 2.11BSD termcap in a subdirectory. Ex could use any
+  termcap library, however, that does not use malloc().
+* Support of eight bit characters excluding the range 0200 to 0237 is
+  enabled with -DISO8859_1. It does not include the regular expression code,
+  but otherwise works well in practice with the ISO-8859-1 character set.
+
+Fixes for problems that were introduced in this port are marked (P), unless
+they only affect newly introduced parts (such as multibyte support).

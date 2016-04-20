@@ -1,0 +1,2045 @@
+.\"
+.\" This code contains changes by
+.\"      Gunnar Ritter, Freiburg i. Br., Germany, 2002. All rights reserved.
+.\"
+.\" Conditions 1, 2, and 4 and the no-warranty notice below apply
+.\" to these changes.
+.\"
+.\"
+.\" Copyright (c) 1980, 1993
+.\" 	The Regents of the University of California.  All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. All advertising materials mentioning features or use of this software
+.\"    must display the following acknowledgement:
+.\" 	This product includes software developed by the University of
+.\" 	California, Berkeley and its contributors.
+.\" 4. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.\"
+.\" Copyright(C) Caldera International Inc. 2001-2002. All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\"   Redistributions of source code and documentation must retain the
+.\"    above copyright notice, this list of conditions and the following
+.\"    disclaimer.
+.\"   Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"   All advertising materials mentioning features or use of this software
+.\"    must display the following acknowledgement:
+.\"      This product includes software developed or owned by Caldera
+.\"      International, Inc.
+.\"   Neither the name of Caldera International, Inc. nor the names of
+.\"    other contributors may be used to endorse or promote products
+.\"    derived from this software without specific prior written permission.
+.\"
+.\" USE OF THE SOFTWARE PROVIDED FOR UNDER THIS LICENSE BY CALDERA
+.\" INTERNATIONAL, INC. AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR
+.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+.\" WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED. IN NO EVENT SHALL CALDERA INTERNATIONAL, INC. BE
+.\" LIABLE FOR ANY DIRECT, INDIRECT INCIDENTAL, SPECIAL, EXEMPLARY, OR
+.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+.\" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+.\" BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+.\" WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+.\" OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+.\" EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.\"	from ex.1	6.4.1 (2.11BSD) 1996/10/21
+.\"
+.\"	Sccsid @(#)ex.1	1.44 (gritter) 12/1/04
+.\"
+.ie \n(.g==1 \{\
+.ds lq \(lq
+.ds rq \(rq
+.\}
+.el \{\
+.ds lq ``
+.ds rq ''
+.\}
+.TH EX 1 "12/1/04" "Ancient Unix Ports" "User Commands"
+.SH NAME
+ex, edit \- text editor
+.SH SYNOPSIS
+.HP
+.ad l
+\fBex\fR [\fB\-c\fI\ command\fR|\fB+\fIcommand\fR]
+[\fB\-r\fR\ [\fIfilename\fR]] [\fB\-s\fR|\fB\-\fR]
+[\fB\-t\fI\ tagstring\fR] [\fB\-w\fI\ size\fR]
+[\fB\-lLRvV\fR] [\fIfile\fR ...]
+.HP
+.ad l
+\fBedit\fR [\fB\-c\fI\ command\fR|\fB+\fIcommand\fR]
+[\fB\-r\fR\ [\fIfilename\fR]] [\fB\-s\fR|\fB\-\fR]
+[\fB\-t\fI\ tagstring\fR] [\fB\-w\fI\ size\fR]
+[\fB\-lLRvV\fR] [\fIfile\fR ...]
+.br
+.ad b
+.SH DESCRIPTION
+.I Ex
+is the root of a family of editors:
+.I edit,
+.I ex
+and
+.I vi.
+.I Ex
+is a superset of
+.I ed,
+with the most notable extension being a display editing facility.
+Display based editing on
+.SM CRT
+terminals is the focus of
+.IR vi .
+.PP
+For those who have not used
+.I ed,
+or for casual users, the editor
+.I edit
+may be convenient.
+It avoids some of the complexities of
+.I ex
+used mostly by systems programmers and persons very familiar with
+.I ed.
+.PP
+The following options are accepted:
+.TP
+\fB\-c\fP\fI\ command\fP or \fB+\fP\fIcommand\fP
+Execute
+.I command
+when editing begins.
+.TP
+.B \-l
+Start in a special mode useful for the
+.I Lisp
+programming language.
+.TP
+\fB\-r\fI\ [filename]\fR or \fB\-L\fR
+When no argument is supplied with this option,
+all files to be recovered are listed
+and the editor exits immediately.
+If a
+.I filename
+is specified,
+the corresponding temporary file is opened in recovery mode.
+.TP
+.B \-R
+Files are opened read-only when this option is given.
+.TP
+.BR \-s \ or\  \-
+Script mode;
+all feedback for interactive editing is disabled.
+.SM EXINIT
+and
+.I .exrc
+files are not processed.
+.TP
+.BI \-t \ tagstring
+Read the
+.I tags
+file,
+then choose the file and position specified by
+.I tagstring
+for editing.
+.TP
+.B \-v
+Start in visual mode even if called as
+.IR ex .
+.TP
+.B \-V
+Echo command input to standard error,
+unless it originates from a terminal.
+.TP
+.BI \-w \ size
+Specify the size of the editing window for visual mode.
+.\"	from ex.rm       8.1 (Berkeley) 6/8/93
+.SS "File manipulation"
+.I Ex
+is normally editing the contents of a single file,
+whose name is recorded in the
+.I current
+file name.
+.I Ex
+performs all editing actions in a buffer
+(actually a temporary file)
+into which the text of the file is initially read.
+Changes made to the buffer have no effect on the file being
+edited unless and until the buffer contents are written out to the
+file with a
+.I write
+command.
+After the buffer contents are written,
+the previous contents of the written file are no longer accessible.
+When a file is edited,
+its name becomes the current file name,
+and its contents are read into the buffer.
+.PP
+The current file is almost always considered to be
+.I edited.
+This means that the contents of the buffer are logically
+connected with the current file name,
+so that writing the current buffer contents onto that file,
+even if it exists,
+is a reasonable action.
+If the current file is not 
+.I edited
+then
+.I ex
+will not normally write on it if it already exists.
+.PP
+For saving blocks of text while editing, and especially when editing
+more than one file,
+.I ex
+has a group of named buffers.
+These are similar to the normal buffer, except that only a limited number
+of operations are available on them.
+The buffers have names
+.I a
+through
+.I z.
+.SS "Exceptional Conditions"
+.PP
+When errors occur
+.I ex
+(optionally) rings the terminal bell and, in any case, prints an error
+diagnostic.  If the primary input is from a file, editor processing
+will terminate.  If an interrupt signal is received,
+.I ex
+prints \*(lqInterrupt\*(rq and returns to its command level.  If the primary
+input is a file, then
+.I ex
+will exit when this occurs.
+.PP
+If a hangup signal is received and the buffer has been modified since
+it was last written out, or if the system crashes, either the editor
+(in the first case) or the system (after it reboots in the second) will
+attempt to preserve the buffer.  The next time the user logs in he should be
+able to recover the work he was doing, losing at most a few lines of
+changes from the last point before the hangup or editor crash.  To
+recover a file one can use the
+.B \-r
+option.  If one was editing the file
+.I resume,
+then he should change
+to the directory where he were when the crash occurred, giving the command
+.RS
+.sp
+\fBex \-r\fP\fI resume\fP
+.sp
+.RE
+After checking that the retrieved file is indeed ok, he can
+.I write
+it over the previous contents of that file.
+.PP
+The user will normally get mail from the system telling him when a file has
+been saved after a crash.  The command
+.RS
+.sp
+\fBex\fP \-\fBr\fP
+.sp
+.RE 
+will print a list of the files which have been saved for the user. 
+.\"(In the case of a hangup,
+.\"the file will not appear in the list,
+.\"although it can be recovered.)
+.SS "Editing modes"
+.PP
+.I Ex
+has five distinct modes.  The primary mode is
+.I command
+mode.  Commands are entered in command mode when a `:' prompt is
+present, and are executed each time a complete line is sent.  In
+.I "text input"
+mode
+.I ex
+gathers input lines and places them in the file.  The
+.I append,
+.I insert,
+and
+.I change
+commands use text input mode.
+No prompt is printed when in text input mode.
+This mode is left by typing a `.' alone at the beginning of a line, and
+.I command
+mode resumes.
+.PP
+The last three modes are
+.I open
+and
+.I visual
+modes, entered by the commands of the same name, and, within open and
+visual modes
+.I "text insertion"
+mode.
+.I Open
+and
+.I visual
+modes allow local editing operations to be performed on the text in the
+file.  The
+.I open
+command displays one line at a time on any terminal while
+.I visual
+works on 
+.SM CRT
+terminals with random positioning cursors, using the
+screen as a (single) window for file editing changes.
+These modes are described (only) in
+.I "An Introduction to Display Editing with Vi."
+.SS "Command structure"
+.PP
+Most command names are English words,
+and initial prefixes of the words are acceptable abbreviations.
+The ambiguity of abbreviations is resolved in favor of the more commonly
+used commands.
+.PP
+Most commands accept prefix addresses specifying the lines in the file
+upon which they are to have effect.
+The forms of these addresses will be discussed below.
+A number of commands also may take a trailing
+.I count
+specifying the number of lines to be involved in the command.
+Thus the command \*(lq10p\*(rq will print the tenth line in the buffer while
+\*(lqdelete 5\*(rq will delete five lines from the buffer,
+starting with the current line.
+.PP
+Some commands take other information or parameters,
+this information always being given after the command name.
+.PP
+A number of commands have two distinct variants.
+The variant form of the command is invoked by placing an
+`!' immediately after the command name. 
+Some of the default variants may be controlled by options;
+in this case, the `!' serves to toggle the default.
+.PP
+The characters `#', `p' and `l' may be placed after many commands
+(A `p' or `l' must be preceded by a blank or tab
+except in the single special case `dp').
+In this case, the command abbreviated by these characters
+is executed after the command completes.
+Since
+.I ex
+normally prints the new current line after each change, `p' is rarely necessary.
+Any number of `+' or `\-' characters may also be given with these flags.
+If they appear, the specified offset is applied to the current line
+value before the printing command is executed.
+.PP
+It is possible to give editor commands which are ignored.
+This is useful when making complex editor scripts
+for which comments are desired.
+The comment character is the double quote: ".
+Any command line beginning with " is ignored.
+Comments beginning with " may also be placed at the ends
+of commands, except in cases where they could be confused as part
+of text (shell escapes and the substitute and map commands).
+.PP
+More than one command may be placed on a line by separating each pair
+of commands by a `|' character.
+However the
+.I global
+commands,
+comments,
+and the shell escape `!'
+must be the last command on a line, as they are not terminated by a `|'.
+.SS "Command addressing"
+.IP \fB.\fR 20
+The current line.
+Most commands leave the current line as the last line which they affect.
+The default address for most commands is the current line,
+thus `\fB.\fR' is rarely used alone as an address.
+.IP \fIn\fR 20
+The \fIn\fRth line in the editor's buffer, lines being numbered
+sequentially from 1.
+.IP \fB$\fR 20
+The last line in the buffer.
+.IP \fB%\fR 20
+An abbreviation for \*(lq1,$\*(rq, the entire buffer.
+.IP \fI+n\fR\ \fI\-n\fR 20
+An offset relative to the current buffer line.
+The forms `.+3' `+3' and `+++' are all equivalent;
+if the current line is line 100 they all address line 103.
+.IP \fB/\fIpat\fR\fB/\fR\ \fB?\fIpat\fR\fB?\fR 20
+Scan forward and backward respectively for a line containing \fIpat\fR, a
+regular expression (as defined below).  The scans normally wrap around the end
+of the buffer.
+If all that is desired is to print the next line containing \fIpat\fR, then
+the trailing \fB/\fR or \fB?\fR may be omitted.
+If \fIpat\fP is omitted or explicitly empty, then the last
+regular expression specified is located.
+The forms \fB\e/\fP and \fB\e?\fP scan
+using the last regular expression used in a scan; after a substitute
+\fB//\fP and \fB??\fP would scan using the substitute's regular expression.
+.IP \fB\(aa\(aa\fP\ \fB\(aa\fP\fIx\fP 20
+Before each non-relative motion of the current line `\fB.\fP',
+the previous current line is marked with a tag, subsequently referred to as
+`\(aa\(aa'.
+This makes it easy to refer or return to this previous context.
+Marks may also be established by the
+.I mark
+command, using single lower case letters
+.I x
+and the marked lines referred to as
+`\(aa\fIx\fR'.
+.PP
+Addresses to commands consist of a series of addressing primitives,
+separated by `,' or `;'.
+Such address lists are evaluated left-to-right.
+When addresses are separated by `;' the current line `\fB.\fR'
+is set to the value of the previous addressing expression
+before the next address is interpreted.
+If more addresses are given than the command requires,
+then all but the last one or two are ignored.
+If the command takes two addresses, the first addressed line must
+precede the second in the buffer.
+.PP
+Null address specifications are permitted in a list of addresses,
+the default in this case is the current line `.';
+thus `,100' is equivalent to `\fB.\fR,100'.
+It is an error to give a prefix address to a command which expects none.
+.SS "Command descriptions"
+.PP
+The following form is a prototype for all
+.I ex
+commands:
+.RS
+.sp
+\fIaddress\fR \fBcommand\fR \fI! parameters count flags\fR
+.sp
+.RE
+All parts are optional; the degenerate case is the empty command which prints
+the next line in the file.  For sanity with use from within
+.I visual
+mode,
+.I ex
+ignores a \*(lq:\*(rq preceding any command.
+.PP
+In the following command descriptions, the
+default addresses are shown in parentheses,
+which are
+.I not,
+however,
+part of the command.
+.TP
+\fBabbreviate\fR \fIword rhs\fP	abbr: \fBab\fP
+Add the named abbreviation to the current list.
+When in input mode in visual, if
+.I word
+is typed as a complete word, it will be changed to
+.I rhs .
+.LP
+( \fB.\fR ) \fBappend\fR	abbr: \fBa\fR
+.br
+\fItext\fR
+.br
+\&\fB.\fR
+.RS
+Reads the input text and places it after the specified line.
+After the command, `\fB.\fR'
+addresses the last line input or the
+specified line if no lines were input.
+If address `0' is given,
+text is placed at the beginning of the buffer.
+.RE
+.LP
+\fBa!\fR
+.br
+\fItext\fR
+.br
+\&\fB.\fR
+.RS
+The variant flag to
+.I append
+toggles the setting for the
+.I autoindent
+option during the input of
+.I text.
+.RE
+.TP
+\fBargs\fR
+The members of the argument list are printed, with the current argument
+delimited by `[' and `]'.
+.TP
+\fBcd\fR \fIdirectory\fR
+The
+.I cd
+command is a synonym for
+.I chdir.
+.LP
+( \fB.\fP , \fB.\fP ) \fBchange\fP \fIcount\fP	abbr: \fBc\fP
+.br
+\fItext\fP
+.br
+\&\fB.\fP
+.RS
+Replaces the specified lines with the input \fItext\fP.
+The current line becomes the last line input;
+if no lines were input it is left as for a
+\fIdelete\fP.
+.RE
+.LP
+\fBc!\fP
+.br
+\fItext\fP
+.br
+\&\fB.\fP
+.RS
+The variant toggles
+.I autoindent
+during the
+.I change.
+.RE
+.TP
+\fBchdir\fR \fIdirectory\fR
+The specified \fIdirectory\fR becomes the current directory.
+If no directory is specified, the current value of the
+.I home
+option is used as the target directory.
+After a
+.I chdir
+the current file is not considered to have been
+edited so that write restrictions on pre-existing files apply.
+.TP
+( \fB.\fP , \fB.\fP )\|\fBcopy\fP \fIaddr\fP \fIflags\fP	abbr: \fBco\fP
+A \fIcopy\fP
+of the specified lines is placed after
+.I addr,
+which may be `0'.
+The current line
+`\fB.\fR'
+addresses the last line of the copy.
+The command
+.I t
+is a synonym for
+.I copy.
+.TP
+( \fB.\fR , \fB.\fR )\|\fBdelete\fR \fIbuffer\fR \fIcount\fR \fIflags\fR	abbr: \fBd\fR
+Removes the specified lines from the buffer.
+The line after the last line deleted becomes the current line;
+if the lines deleted were originally at the end,
+the new last line becomes the current line.
+If a named
+.I buffer
+is specified by giving a letter,
+then the specified lines are saved in that buffer,
+or appended to it if an upper case letter is used.
+.LP
+\fBedit\fR \fIfile\fR	abbr: \fBe\fR
+.br
+\fBex\fR \fIfile\fR
+.RS
+Used to begin an editing session on a new file.
+The editor
+first checks to see if the buffer has been modified since the last
+.I write
+command was issued.
+If it has been,
+a warning is issued and the
+command is aborted.
+The
+command otherwise deletes the entire contents of the editor buffer,
+makes the named file the current file and prints the new filename.
+After insuring that this file is sensible
+(i.e., that it is not a binary file such as a directory,
+a block or character special file other than
+.I /dev/tty,
+a terminal,
+or a binary or executable file),
+the editor reads the file into its buffer.
+.PP
+If the read of the file completes without error,
+the number of lines and characters read is typed.
+Any null characters in the file are discarded.
+If none of these errors occurred, the file is considered
+.I edited.
+If the last line of the input file is missing the trailing
+newline character, it will be supplied and a complaint will be issued.
+This command leaves the current line `\fB.\fR' at the last line read.
+If executed from within
+.I open
+or
+.I visual,
+the current line is initially the first line of the file.
+.RE
+.TP
+\fBe!\fR \fIfile\fR
+The variant form suppresses the complaint about modifications having
+been made and not written from the editor buffer, thus
+discarding all changes which have been made before editing the new file.
+.TP
+\fBe\fR \fB+\fIn\fR \fIfile\fR
+Causes the editor to begin at line
+.I n
+rather than at the last line;
+\fIn\fR may also be an editor command containing no spaces,
+e.g.: \*(lq+/pat\*(rq.
+.TP
+\fBfile\fR	abbr: \fBf\fR
+Prints the current file name,
+whether it has been `[Modified]' since the last
+.I write 
+command,
+whether it is
+.I "read only" ,
+the current line,
+the number of lines in the buffer,
+and the percentage of the way through the buffer of the current line.
+In the rare case that the current file is `[Not edited]' this is
+noted also; in this case one has to use the form \fBw!\fR to write to
+the file, since the editor is not sure that a \fBwrite\fR will not
+destroy a file unrelated to the current contents of the buffer.
+.TP
+\fBfile\fR \fIfile\fR
+The current file name is changed to
+.I file
+which is considered 
+`[Not edited]'.
+.TP
+( 1 , $ ) \fBglobal\fR /\fIpat\|\fR/ \fIcmds\fR	abbr: \fBg\fR
+First marks each line among those specified which matches
+the given regular expression.
+Then the given command list is executed with `\fB.\fR' initially
+set to each marked line.
+.IP
+The command list consists of the remaining commands on the current
+input line and may continue to multiple lines by ending all but the
+last such line with a `\e'.
+If
+.I cmds
+(and possibly the trailing \fB/\fR delimiter) is omitted, each line matching
+.I pat
+is printed.
+.I Append,
+.I insert,
+and
+.I change
+commands and associated input are permitted;
+the `\fB.\fR' terminating input may be omitted if it would be on the
+last line of the command list.
+.I Open
+and
+.I visual
+commands are permitted in the command list and take input from the terminal.
+.IP
+The
+.I global
+command itself may not appear in
+.I cmds.
+The
+.I undo
+command is also not permitted there,
+as
+.I undo
+instead can be used to reverse the entire
+.I global
+command.
+The options
+.I autoprint
+and
+.I autoindent
+are inhibited during a
+.I global,
+(and possibly the trailing \fB/\fR delimiter) and the value of the
+.I report
+option is temporarily infinite,
+in deference to a \fIreport\fR for the entire global.
+Finally, the context mark `\'\'' is set to the value of
+`.' before the global command begins and is not changed during a global
+command,
+except perhaps by an
+.I open
+or
+.I visual
+within the
+.I global.
+.TP
+\fBg!\fR \fB/\fIpat\fB/\fR \fIcmds\fR	abbr: \fBv\fR
+The variant form of \fIglobal\fR runs \fIcmds\fR at each line not matching
+\fIpat\fR.
+.LP
+( \fB.\fR )\|\fBinsert\fR	abbr: \fBi\fR
+.br
+\fItext\fR
+.br
+\&\fB.\fR
+.RS
+Places the given text before the specified line.
+The current line is left at the last line input;
+if there were none input it is left at the line before the addressed line.
+This command differs from
+.I append
+only in the placement of text.
+.RE
+.LP
+\fBi!\fR
+.br
+\fItext\fR
+.br
+\&\fB.\fR
+.RS
+The variant toggles
+.I autoindent
+during the
+.I insert.
+.RE
+.TP
+( \fB.\fR , \fB.\fR+1 ) \fBjoin\fR \fIcount\fR \fIflags\fR	abbr: \fBj\fR
+Places the text from a specified range of lines
+together on one line.
+White space is adjusted at each junction to provide at least
+one blank character, two if there was a `\fB.\fR' at the end of the line,
+or none if the first following character is a `)'.
+If there is already white space at the end of the line,
+then the white space at the start of the next line will be discarded.
+.TP
+\fBj!\fR
+The variant causes a simpler
+.I join
+with no white space processing; the characters in the lines are simply
+concatenated.
+.TP
+( \fB.\fR ) \fBk\fR \fIx\fR
+The
+.I k
+command is a synonym for
+.I mark.
+It does not require a blank or tab before the following letter.
+.TP
+( \fB.\fR , \fB.\fR ) \fBlist\fR \fIcount\fR \fIflags\fR
+Prints the specified lines in a more unambiguous way:
+tabs are printed as `^I'
+and the end of each line is marked with a trailing `$'.
+The current line is left at the last line printed.
+.TP
+\fBmap\fR[\fB!\fR] \fIlhs\fR \fIrhs\fR
+The
+.I map
+command is used to define macros for use in
+.I visual
+command mode.
+.I Lhs
+should be a single character, or the sequence \*(lq#n\*(rq, for n a digit,
+referring to function key \fIn\fR.  When this character or function key
+is typed in
+.I visual
+mode, it will be as though the corresponding \fIrhs\fR had been typed.
+On terminals without function keys, the user can type \*(lq#n\*(rq.
+If the `\fB!\fP' character follows the command name,
+the mapping is interpreted in input mode.
+See section 6.9 of the \*(lqIntroduction to Display Editing with Vi\*(rq
+for more details.
+.TP
+( \fB.\fR ) \fBmark\fR \fIx\fR
+Gives the specified line mark
+.I x,
+a single lower case letter.
+The
+.I x
+must be preceded by a blank or a tab.
+The addressing form `\'x' then addresses this line.
+The current line is not affected by this command.
+.TP
+( \fB.\fR , \fB.\fR ) \fBmove\fR \fIaddr\fR	abbr: \fBm\fR
+The
+.I move
+command repositions the specified lines to be after
+.I addr .
+The first of the moved lines becomes the current line.
+.TP
+\fBnext\fR	abbr: \fBn\fR
+The next file from the command line argument list is edited.
+.TP
+\fBn!\fR
+The variant suppresses warnings about the modifications to the buffer not
+having been written out, discarding (irretrievably) any changes which may
+have been made.
+.LP
+\fBn\fR \fIfilelist\fR
+.br
+\fBn\fR \fB+\fIcommand\fR \fIfilelist\fR
+.RS
+The specified
+.I filelist
+is expanded and the resulting list replaces the
+current argument list;
+the first file in the new list is then edited.
+If
+.I command
+is given (it must contain no spaces), then it is executed after editing the first such file.
+.RE
+.TP
+( \fB.\fR , \fB.\fR ) \fBnumber\fR \fIcount\fR \fIflags\fR	abbr: \fB#\fR or \fBnu\fR
+Prints each specified line preceded by its buffer line
+number.
+The current line is left at the last line printed.
+.LP
+( \fB.\fR ) \fBopen\fR \fIflags\fR	abbr: \fBo\fR
+.br
+( \fB.\fR ) \fBopen\fR /\fIpat\|\fR/ \fIflags\fR
+.RS
+Enters intraline editing \fIopen\fR mode at each addressed line.
+If
+.I pat
+is given,
+then the cursor will be placed initially at the beginning of the
+string matched by the pattern.
+To exit this mode use Q.
+See
+.I "An Introduction to Display Editing with Vi"
+for more details.
+.RE
+.TP
+\fBpreserve\fR
+The current editor buffer is saved as though the system had just crashed.
+This command is for use only in emergencies when a
+.I write
+command has resulted in an error.
+.TP
+( \fB.\fR , \fB.\fR )\|\fBprint\fR \fIcount\fR	abbr: \fBp\fR or \fBP\fR
+Prints the specified lines
+with non-printing characters printed as control characters `^\fIx\fR\|';
+delete (octal 177) is represented as `^?'.
+The current line is left at the last line printed.
+.TP
+( \fB.\fR )\|\fBput\fR \fIbuffer\fR	abbr: \fBpu\fR
+Puts back
+previously
+.I deleted
+or
+.I yanked
+lines.
+Normally used with
+.I delete
+to effect movement of lines,
+or with
+.I yank
+to effect duplication of lines.
+If no
+.I buffer
+is specified, then the last
+.I deleted
+or
+.I yanked
+text is restored.
+But no modifying commands may intervene between the
+.I delete
+or
+.I yank
+and the
+.I put,
+nor may lines be moved between files without using a named buffer.
+By using a named buffer, text may be restored that was saved there at any
+previous time.
+.TP
+\fBquit\fR	abbr: \fBq\fR
+Causes 
+.I ex
+to terminate.
+No automatic write of the editor buffer to a file is performed.
+However,
+.I ex
+issues a warning message if the file has changed
+since the last
+.I write
+command was issued, and does not
+.I quit.
+\fIEx\fR
+will also issue a diagnostic if there are more files in the argument
+list.
+.FE
+Normally, the user will wish to save his changes, and he
+should give a \fIwrite\fR command;
+if he wishes to discard them, he should the \fBq!\fR command variant.
+.TP
+\fBq!\fR
+Quits from the editor, discarding changes to the buffer without complaint.
+.TP
+( \fB.\fR ) \fBread\fR \fIfile\fR	abbr: \fBr\fR
+Places a copy of the text of the given file in the
+editing buffer after the specified line.
+If no 
+.I file
+is given the current file name is used.
+The current file name is not changed unless there is none in which
+case
+.I file
+becomes the current name.
+The sensibility restrictions for the 
+.I edit
+command apply here also.
+If the file buffer is empty and there is no current name then
+.I ex
+treats this as an
+.I edit
+command.
+.IP
+Address `0' is legal for this command and causes the file to be read at
+the beginning of the buffer.
+Statistics are given as for the 
+.I edit
+command when the 
+.I read
+successfully terminates.
+After a
+.I read
+the current line is the last line read.
+Within
+.I open
+and
+.I visual
+the current line is set to the first line read rather than the last.
+.TP
+( \fB.\fR ) \fBread\fR  \fB!\fR\fIcommand\fR
+Reads the output of the command
+.I command
+into the buffer after the specified line.
+This is not a variant form of the command, rather a read
+specifying a
+.I command
+rather than a 
+.I filename;
+a blank or tab before the \fB!\fR is mandatory.
+.TP
+\fBrecover \fIfile\fR
+Recovers
+.I file
+from the system save area.
+Used after a accidental hangup of the phone
+or a system crash or
+.I preserve
+command.
+Except when
+.I preserve
+is used, the user will be notified by mail when a file is saved.
+.TP
+\fBrewind\fR	abbr: \fBrew\fR
+The argument list is rewound, and the first file in the list is edited.
+.TP
+\fBrew!\fR
+Rewinds the argument list discarding any changes made to the current buffer.
+.TP
+\fBset\fR \fIparameter\fR
+With no arguments, prints those options whose values have been
+changed from their defaults;
+with parameter
+.I all
+it prints all of the option values.
+.IP
+Giving an option name followed by a `?'
+causes the current value of that option to be printed.
+The `?' is unnecessary unless the option is Boolean valued.
+Boolean options are given values either by the form
+`set \fIoption\fR' to turn them on or
+`set no\fIoption\fR' to turn them off;
+string and numeric options are assigned via the form
+`set \fIoption\fR=value'.
+.IP
+More than one parameter may be given to 
+.I set \|;
+they are interpreted left-to-right.
+.IP
+A list of options can be found below.
+.TP
+\fBshell\fR	abbr: \fBsh\fR
+A new shell is created.
+When it terminates, editing resumes.
+.TP
+\fBsource\fR \fIfile\fR	abbr: \fBso\fR
+Reads and executes commands from the specified file.
+.I Source
+commands may be nested.
+.LP
+.ad l
+(\ \fB.\fR\ ,\ \fB.\fR\ )\ \fBsubstitute\fR\ /\fIpat\fR\|/\fIrepl\fR\|/\ \fIoptions\fR\ \fIcount\fR\ \fIflags\fR
+.RS
+abbr: \fBs\fR
+.br
+.ad b
+On each specified line, the first instance of pattern
+.I pat
+is replaced by replacement pattern
+.I repl.
+If the
+.I global
+indicator option character `g'
+appears, then all instances are substituted;
+if the
+.I confirm
+indication character `c' appears,
+then before each substitution the line to be substituted
+is typed with the string to be substituted marked
+with `^' characters.
+By typing an `y' one can cause the substitution to be performed,
+any other input causes no change to take place.
+After a
+.I substitute
+the current line is the last line substituted.
+.PP
+Lines may be split by substituting
+new-line characters into them.
+The newline in
+.I repl
+must be escaped by preceding it with a `\e'.
+Other metacharacters available in
+.I pat
+and
+.I repl
+are described below.
+.RE
+.TP
+.B stop
+Suspends the editor, returning control to the top level shell.
+If
+.I autowrite
+is set and there are unsaved changes,
+a write is done first unless the form
+.B stop !
+is used.
+This commands is only available where supported by the teletype driver,
+shell and operating system.
+.TP
+( \fB.\fR , \fB.\fR ) \fBsubstitute\fR \fIoptions\fR \fIcount\fR \fIflags\fR	abbr: \fBs\fR
+If
+.I pat
+and
+.I repl
+are omitted, then the last substitution is repeated.
+This is a synonym for the
+.B &
+command.
+.TP
+( \fB.\fR , \fB.\fR ) \fBt\fR \fIaddr\fR \fIflags\fR
+The
+.I t
+command is a synonym for 
+.I copy .
+.TP
+\fBta\fR \fItag\fR
+The focus of editing switches to the location of
+.I tag,
+switching to a different line in the current file where it is defined,
+or if necessary to another file.
+.IP
+The tags file is normally created by a program such as
+.I ctags,
+and consists of a number of lines with three fields separated by blanks
+or tabs.  The first field gives the name of the tag,
+the second the name of the file where the tag resides, and the third
+gives an addressing form which can be used by the editor to find the tag;
+this field is usually a contextual scan using `/\fIpat\fR/' to be immune
+to minor changes in the file.  Such scans are always performed as if
+.I nomagic
+was set.
+.IP
+The tag names in the tags file must be sorted alphabetically.
+.TP
+\fBunabbreviate\fR \fIword\fP	abbr: \fBuna\fP
+Delete
+.I word
+from the list of abbreviations.
+.TP
+\fBundo\fR	abbr: \fBu\fR
+Reverses the changes made in the buffer by the last
+buffer editing command.
+Note that
+.I global
+commands are considered a single command for the purpose of 
+.I undo
+(as are
+.I open
+and
+.I visual.)
+Also, the commands
+.I write
+and
+.I edit
+which interact with the
+file system cannot be undone.
+.I Undo
+is its own inverse.
+.IP
+.I Undo
+always marks the previous value of the current line `\fB.\fR'
+as `\'\''.
+After an
+.I undo
+the current line is the first line restored
+or the line before the first line deleted if no lines were restored.
+For commands with more global effect
+such as
+.I global
+and
+.I visual
+the current line regains it's pre-command value after an
+.I undo.
+.TP
+\fBunmap\fR[\fB!\fR] \fIlhs\fR
+The macro expansion associated by
+.I map
+for
+.I lhs
+is removed.
+.TP
+( 1 , $ ) \fBv\fR /\fIpat\fR\|/ \fIcmds\fR
+A synonym for the
+.I global
+command variant \fBg!\fR, running the specified \fIcmds\fR on each
+line which does not match \fIpat\fR.
+.TP
+\fBversion\fR	abbr: \fBve\fR
+Prints the current version number of the editor
+as well as the date the editor was last changed.
+.TP
+( \fB.\fR ) \fBvisual\fR \fItype\fR \fIcount\fR \fIflags\fR	abbr: \fBvi\fR
+Enters visual mode at the specified line.
+.I Type
+is optional and may be `\-' , `^' or `\fB.\fR'
+as in the
+.I z
+command to specify the placement of the specified line on the screen.
+By default, if
+.I type
+is omitted, the specified line is placed as the first on the screen.
+A
+.I count
+specifies an initial window size; the default is the value of the option
+.I window.
+See the document
+.I "An Introduction to Display Editing with Vi"
+for more details.
+To exit this mode, type Q.
+.LP
+\fBvisual\fP file
+.br
+\fBvisual\fP +\fIn\fP file
+.RS
+From visual mode,
+this command is the same as edit.
+.RE
+.TP
+( 1 , $ ) \fBwrite\fR \fIfile\fR	abbr: \fBw\fR
+Writes changes made back to \fIfile\fR, printing the number of lines and
+characters written.
+Normally \fIfile\fR is omitted and the text goes back where it came from.
+If a \fIfile\fR is specified, then text will be written to that file.
+If the file does not exist it is created.
+The current file name is changed only if there is no current file
+name; the current line is never changed.
+.IP
+If an error occurs while writing the current and
+.I edited
+file, the editor
+considers that there has been \*(lqNo write since last change\*(rq
+even if the buffer had not previously been modified.
+.TP
+( 1 , $ ) \fBwrite>>\fR \fIfile\fR	abbr: \fBw>>\fR
+Writes the buffer contents at the end of
+an existing file.
+.IP
+.TP
+\fBw!\fR \fIname\fR
+Overrides the checking of the normal \fIwrite\fR command,
+and will write to any file which the system permits.
+.TP
+( 1 , $ ) \fBw\fR  \fB!\fR\fIcommand\fR
+Writes the specified lines into 
+.I command.
+Note the difference between \fBw!\fR which overrides checks and
+\fBw\ \ !\fR which writes to a command.
+.TP
+\fBwq\fR \fIname\fR
+Like a \fIwrite\fR and then a \fIquit\fR command.
+.TP
+\fBwq!\fR \fIname\fR
+The variant overrides checking on the sensibility of the
+.I write
+command, as \fBw!\fR does.
+.TP
+\fBxit\fP \fIname\fR
+If any changes have been made
+and not written to any file,
+writes the buffer out.
+Then, in any case, quits.
+.TP
+( \fB.\fR , \fB.\fR )\|\fByank\fR \fIbuffer\fR \fIcount\fR	abbr: \fBya\fR
+Places the specified lines in the named
+.I buffer,
+for later retrieval via
+.I put.
+If no buffer name is specified, the lines go to a more volatile place;
+see the \fIput\fR command description.
+.TP
+( \fB.+1\fR ) \fBz\fR \fIcount\fR
+Print the next \fIcount\fR lines, default \fIwindow\fR.
+.TP
+( \fB.\fR ) \fBz\fR \fItype\fR \fIcount\fR
+Prints a window of text with the specified line at the top.
+If \fItype\fR is `\-' the line is placed at the bottom; a `\fB.\fR' causes
+the line to be placed in the center.
+A count gives the number of lines to be displayed rather than
+double the number specified by the \fIscroll\fR option.
+On a \s-1CRT\s0 the screen is cleared before display begins unless a
+count which is less than the screen size is given.
+The current line is left at the last line printed.
+Forms `z=' and `z^' also exist; `z=' places the current line in the
+center, surrounds it with lines of `\-' characters and leaves the current
+line at this line.  The form `z^' prints the window before `z\-'
+would.  The characters `+', `^' and `\-' may be repeated for cumulative
+effect.
+.TP
+\fB!\fR \fIcommand\fR\fR
+The remainder of the line after the `!' character is sent to a shell
+to be executed.
+Within the text of
+.I command
+the characters 
+`%' and `#' are expanded as in filenames and the character
+`!' is replaced with the text of the previous command.
+Thus, in particular,
+`!!' repeats the last such shell escape.
+If any such expansion is performed, the expanded line will be echoed.
+The current line is unchanged by this command.
+.IP
+If there has been \*(lq[No\ write]\*(rq of the buffer contents since the last
+change to the editing buffer, then a diagnostic will be printed
+before the command is executed as a warning.
+A single `!' is printed when the command completes.
+.TP
+( \fIaddr\fR , \fIaddr\fR ) \fB!\fR \fIcommand\fR\fR
+Takes the specified address range and supplies it as
+standard input to
+.I command;
+the resulting output then replaces the input lines.
+.TP
+( $ ) \fB=\fR
+Prints the line number of the
+addressed line.
+The current line is unchanged.
+.LP
+( \fB.\fR , \fB.\fR ) \fB>\fR \fIcount\fR \fIflags\fR
+.br
+( \fB.\fR , \fB.\fR ) \fB<\fR \fIcount\fR \fIflags\fR
+.RS
+Perform intelligent shifting on the specified lines;
+\fB<\fR shifts left and \fB>\fR shift right.
+The quantity of shift is determined by the
+.I shiftwidth
+option and the repetition of the specification character.
+Only white space (blanks and tabs) is shifted;
+no non-white characters are discarded in a left-shift.
+The current line becomes the last line which changed due to the
+shifting.
+.RE
+.TP
+\fB^D\fR
+An end-of-file from a terminal input scrolls through the file.
+The
+.I scroll
+option specifies the size of the scroll, normally a half screen of text.
+.LP
+( \fB.\fR+1 , \fB.\fR+1 )
+.br
+( \fB.\fR+1 , \fB.\fR+1 ) |
+.RS
+An address alone causes the addressed lines to be printed.
+A blank line prints the next line in the file.
+.RE
+.TP
+( \fB.\fR , \fB.\fR ) \fB&\fR \fIoptions\fR \fIcount\fR \fIflags\fR
+Repeats the previous
+.I substitute
+command.
+.TP
+( \fB.\fR , \fB.\fR ) \fB\s+2~\s0\fR \fIoptions\fR \fIcount\fR \fIflags\fR
+Replaces the previous regular expression with the previous
+replacement pattern from a substitution.
+.SS "Regular expressions"
+.PP
+A regular expression specifies a set of strings of characters.
+A member of this set of strings is said to be
+.I matched
+by the regular expression.
+.I Ex
+remembers two previous regular expressions:
+the previous regular expression used in a
+.I substitute
+command
+and the previous regular expression used elsewhere
+(referred to as the previous \fIscanning\fR regular expression.)
+The previous regular expression
+can always be referred to by a null \fIre\fR, e.g. `//' or `??'.
+.PP
+The following basic constructs are used to construct
+.I magic
+mode regular expressions.
+.IP \fIchar\fR 15
+An ordinary character matches itself.
+The characters `\fB^\fR' at the beginning of a line,
+`\fB$\fR' at the end of line, 
+`\fB*\fR' as any character other than the first,
+`\fB.\fR', `\fB\e\fR', `\fB[\fR',
+and `\s+2\fB~\fR\s0' are not ordinary characters and
+must be escaped (preceded) by `\fB\e\fR' to be treated as such.
+.IP \fB^\fR
+At the beginning of a pattern
+forces the match to succeed only at the beginning of a line.
+.IP \fB$\fR
+At the end of a regular expression forces the match to
+succeed only at the end of the line.
+.IP \&\fB.\fR
+Matches any single character except
+the new-line character.
+.IP \fB\e<\fR 
+Forces the match
+to occur only at the beginning of a \*(lqvariable\*(rq or \*(lqword\*(rq;
+that is, either at the beginning of a line, or just before
+a letter, digit, or underline and after a character not one of
+these.
+.IP \fB\e>\fR
+Similar to `\e<', but matching the end of a \*(lqvariable\*(rq
+or \*(lqword\*(rq, i.e. either the end of the line or before character
+which is neither a letter, nor a digit, nor the underline character.
+.IP \fB[\fIstring\fR\fB]\fR
+Matches any (single) character in the class defined by
+.I string.
+Most characters in
+.I string
+define themselves.
+.br
+\ \ A pair of characters separated by `\fB\-\fR' in
+.I string
+defines the set of characters collating between the specified lower and upper
+bounds, thus `[a\-z]' as a regular expression matches
+any (single)
+.SM ASCII
+lower-case letter.
+.br
+\ \ If the sequence `\fB[:\fIclass\fB:]\fR' appears in
+.IR string ,
+where class is one of
+.RB ` alnum ',
+.RB ` alpha ',
+.RB ` blank ',
+.RB ` cntrl ',
+.RB ` digit ',
+.RB ` graph ',
+.RB ` lower ',
+.RB ` print ',
+.RB ` punct ',
+.RB ` space ',
+.RB ` upper ',
+.RB ` xdigit ',
+or a locale-specific character class,
+all characters that belong to the given class are matched.
+Thus `[[:lower:]]' matches any lower-case letter,
+possibly including characters beyond the scope of
+.SM ASCII.
+.br
+\ \ If the first character of
+.I string
+is an `\fB^\fR' then the construct
+matches those characters which it otherwise would not;
+thus `[^a\-z]' matches anything but an
+.SM ASCII
+lower-case letter
+(and of course a newline).
+.br
+\ \ Backslash `\e' is interpreted as an escape character.
+To place a `\e' character in
+.IR string ,
+write it twice: `\e\e';
+to place any of the characters
+`^', `[', or `\-' in
+.IR string ,
+you escape them with a preceding `\e'.
+.br
+\ \ Characters also lose their special meaning by position:
+`^' is an ordinary character unless immediately
+following the initial `[',
+`]' is an ordinary character if immediately
+following the initial `[' (or `^', if present),
+and `\-' is an ordinary character if placed immediately
+behind `[' or `^', or before ']'.
+.PP
+The concatenation of two regular expressions matches the leftmost and
+then longest string
+which can be divided with the first piece matching the first regular
+expression and the second piece matching the second.
+.PP
+A regular expression may be enclosed between the sequences
+`\fB\e(\fR' and `\fB\e)\fR',
+which matches whatever the enclosed expression matches.
+.PP
+Any of the (single character matching) regular expressions mentioned above
+or a regular expression surrounded by `\e(' and '\e)'
+may be followed by the character `\fB*\fR' to form a regular expression 
+which matches any number of adjacent occurrences (including 0) of characters
+matched by the regular expression it follows.
+.PP
+A single character regular expression
+or a regular expression surrounded by `\e(' and '\e)'
+followed by `\fB\e{\fIm\fB,\fIn\fB\e}\fR'
+matches a sequence of \fIm\fP through \fIn\fP occurences, inclusive,
+of the single character expression.
+The values of \fIm\fP and \fIn\fP
+must be non-negative and smaller than 255.
+The form `\fB\e{\fIm\fB\e}\fR' matches exactly \fIm\fP occurences,
+`\fB\e{\fIm\fB,\e}\fR' matches at least \fIm\fP occurences.
+.PP
+The character `\s+2\fB~\fR\s0' may be used in a regular expression,
+and matches the text which defined the replacement part
+of the last
+.I substitute
+command.
+.PP
+The sequence `\fB\e\fIn\fR' matches the text that was matched by the
+\fIn\fR-th regular subexpression enclosed between `\e(' and `\e)'
+earlier in the expression.
+.SS "Substitute replacement patterns"
+.PP
+The basic metacharacters for the replacement pattern are
+`\fB&\fR', `\fB~\fR', and `\fB#\fR'; the first two of them are
+given as `\fB\e&\fR' and `\fB\e~\fR' when
+.I nomagic
+is set.
+Each instance of `\fB&\fR' is replaced by the characters
+which the regular expression matched.
+The metacharacter `\fB~\fR' stands, in the replacement pattern,
+for the defining text of the previous replacement pattern.
+If the entire replacement pattern is `\fB#\fR',
+the defining text of the previous replacement pattern is used.
+.PP
+Other metasequences possible in the replacement pattern
+are always introduced by the escaping character `\fB\e\fR'.
+The sequence `\fB\e\fIn\fR' is replaced by the text matched
+by the \fIn\fR-th regular subexpression enclosed between
+`\e(' and `\e)'.
+When nested, parenthesized subexpressions are present,
+\fIn\fR is determined by counting occurrences of `\e(' starting from the left.
+The sequences `\fB\eu\fR' and `\fB\el\fR'
+cause the immediately following character in
+the replacement to be converted to upper- or lower-case respectively
+if this character is a letter.
+The sequences `\fB\eU\fR' and `\fB\eL\fR'
+turn such conversion on,
+either until `\fB\eE\fR' or `\fB\ee\fR' is encountered,
+or until the end of the replacement pattern.
+.SS "Option descriptions"
+.PP
+.TP
+\fBautoindent\fR, \fBai\fR	default: noai
+Can be used to ease the preparation of structured program text.
+At the beginning of each
+.I append ,
+.I change
+or
+.I insert
+command
+or when a new line is
+.I opened
+or created by an
+.I append ,
+.I change ,
+.I insert ,
+or
+.I substitute
+operation within
+.I open
+or
+.I visual
+mode,
+.I ex
+looks at the line being appended after,
+the first line changed
+or the line inserted before and calculates the amount of white space
+at the start of the line.
+It then aligns the cursor at the level of indentation so determined.
+.IP
+If the user then types lines of text in,
+they will continue to be justified at the displayed indenting level.
+If more white space is typed at the beginning of a line,
+the following line will start aligned with the first non-white character
+of the previous line.
+To back the cursor up to the preceding tab stop one can hit
+\fB^D\fR.
+The tab stops going backwards are defined at multiples of the
+.I shiftwidth
+option.
+The user
+.I cannot
+backspace over the indent,
+except by sending an end-of-file with a \fB^D\fR.
+.IP
+Specially processed in this mode is a line with no characters added
+to it, which turns into a completely blank line (the white
+space provided for the
+.I autoindent
+is discarded.)
+Also specially processed in this mode are lines beginning with
+an `^' and immediately followed by a \fB^D\fR.
+This causes the input to be repositioned at the beginning of the line,
+but retaining the previous indent for the next line.
+Similarly, a `0' followed by a \fB^D\fR
+repositions at the beginning but without
+retaining the previous indent.
+.IP
+.I Autoindent
+doesn't happen in
+.I global
+commands or when the input is not a terminal.
+.TP
+\fBautoprint\fR, \fBap\fR	default: ap
+Causes the current line to be printed after each
+.I delete ,
+.I copy ,
+.I join ,
+.I move ,
+.I substitute ,
+.I t ,
+.I undo
+or
+shift command.
+This has the same effect as supplying a trailing `p'
+to each such command.
+.I Autoprint
+is suppressed in globals,
+and only applies to the last of many commands on a line.
+.TP
+\fBautowrite\fR, \fBaw\fR	default: noaw
+Causes the contents of the buffer to be written to the current file
+if the user has modified it and gives a
+.I next,
+.I rewind,
+.I stop,
+.I tag,
+or
+.I !
+command, or a \fB^^\fR (switch files) or \fB^]\fR (tag goto) command
+in
+.I visual.
+Note, that the
+.I edit
+and
+.I ex
+commands do
+.B not
+autowrite.
+In each case, there is an equivalent way of switching when autowrite
+is set to avoid the
+.I autowrite
+(\fIedit\fR
+for
+.I next ,
+.I rewind!
+for .I rewind ,
+.I stop!
+for
+.I stop ,
+.I tag!
+for
+.I tag ,
+.I shell
+for
+.I ! ,
+and
+\fB:e\ #\fR and a \fB:ta!\fR command from within
+.I visual).
+.TP
+\fBbeautify\fR, \fBbf\fR	default: nobeautify
+Causes all control characters except tab, newline and form-feed
+to be discarded from the input.
+A complaint is registered the first time a
+backspace character is discarded.
+.I Beautify
+does not apply to command input.
+.TP
+\fBdirectory\fR, \fBdir\fR	default: dir=/tmp
+Specifies the directory in which
+.I ex
+places its buffer file.
+If this directory in not
+writable, then the editor will exit abruptly when it fails to be
+able to create its buffer there.
+.TP
+\fBedcompatible\fR	default: noedcompatible
+Causes the presence of absence of
+.B g
+and
+.B c
+suffixes on substitute commands to be remembered, and to be toggled
+by repeating the suffices.  The suffix
+.B r
+makes the substitution be as in the
+.I ~
+command, instead of like
+.I &.
+.TP
+\fBerrorbells\fR, \fBeb\fR	default: noeb
+Error messages are preceded by a bell.
+Bell ringing in
+.I open
+and
+.I visual
+on errors is not suppressed by setting
+.I noeb.
+If possible the editor always places the error message in a standout mode of the
+terminal (such as inverse video) instead of ringing the bell.
+.TP
+\fBexrc\fR			default: noexrc
+If set, the current directory is searched for a
+.I .exrc
+file on startup.
+If this file is found,
+its content is treated as
+.I ex
+commands and executed immediately after the contents of
+.I $HOME/.exrc
+on startup.
+.TP
+\fBflash\fR, \fBfl\fR	default: flash
+If the terminal provides the \*(lqvisual bell\*(rq capability,
+ex will use it instead of the audible bell if
+.I flash
+is set.
+.TP
+\fBhardtabs\fR, \fBht\fR	default: ht=8
+Gives the boundaries on which terminal hardware tabs are set (or
+on which the system expands tabs).
+.TP
+\fBignorecase\fR, \fBic\fR	default: noic
+All upper case characters in the text are mapped to lower case in regular
+expression matching.
+In addition, all upper case characters in regular expressions are mapped
+to lower case except in character class specifications.
+.TP
+\fBlisp\fR	default: nolisp
+\fIAutoindent\fR indents appropriately for
+.I lisp
+code, and the \fB( ) { } [[\fR and \fB]]\fR commands in
+.I open
+and
+.I visual
+are modified to have meaning for \fIlisp\fR.
+.TP
+\fBlist\fR	default: nolist
+All printed lines will be displayed (more) unambiguously,
+showing tabs and end-of-lines as in the
+.I list
+command.
+.TP
+\fBmagic\fR	default: magic for \fIex\fR and \fIvi\fR, \fINomagic\fR for \fIedit\fR.
+If
+.I nomagic
+is set, the number of regular expression metacharacters is greatly reduced,
+with only `^' and `$' having special effects.
+In addition the metacharacters
+`~'
+and
+`&'
+of the replacement pattern are treated as normal characters.
+All the normal metacharacters may be made
+.I magic
+when
+.I nomagic
+is set by preceding them with a `\e'.
+.TP
+\fBmesg\fR	default: mesg
+Causes write permission to be turned off to the terminal
+while the user is in visual mode, if
+.I nomesg
+is set.
+.TP
+\fBmodelines, ml\fR	default: nomodelines
+If
+.I modelines
+is set, then the first 5 lines and the last five lines of the file
+will be checked for ex command lines and the comands issued.
+To be recognized as a command line, the line must have the string
+.B ex:
+or
+.B vi:
+in it.
+.\" preceeded by a tab or a space.
+This string may be anywhere in the line and anything after the 
+.I :
+is interpeted as editor commands.  This option defaults to off because
+of unexpected behavior when editting files such as
+.I /etc/passwd.
+.TP
+\fBnumber, nu\fR	default: nonumber
+Causes all output lines to be printed with their
+line numbers.
+In addition each input line will be prompted for by supplying the line number
+it will have.
+.TP
+\fBopen\fR	default: open
+If \fInoopen\fR, the commands
+.I open
+and
+.I visual
+are not permitted.
+.\"This is set for
+.\".I edit
+.\"to prevent confusion resulting from accidental entry to 
+.\"open or visual mode.
+.TP
+\fBoptimize, opt\fR	default: optimize
+Throughput of text is expedited by setting the terminal
+to not do automatic carriage returns
+when printing more than one (logical) line of output,
+greatly speeding output on terminals without addressable
+cursors when text with leading white space is printed.
+.TP
+\fBparagraphs,\ para\fR	default: para=IPLPPPQPP\0LIbp
+Specifies the paragraphs for the \fB{\fR and \fB}\fR operations in
+.I open
+and 
+.I visual.
+The pairs of characters in the option's value are the names
+of the macros which start paragraphs.
+.TP
+\fBprompt\fR	default: prompt
+Command mode input is prompted for with a `:'.
+.TP
+\fBredraw\fR	default: noredraw
+The editor simulates (using great amounts of output), an intelligent
+terminal on a dumb terminal (e.g. during insertions in
+.I visual
+the characters to the right of the cursor position are refreshed
+as each input character is typed.)
+Useful only at very high speed.
+.TP
+\fBremap\fP	default: remap
+If on, macros are repeatedly tried until they are unchanged.
+For example, if
+.B o
+is mapped to
+.B O ,
+and
+.B O
+is mapped to
+.B I ,
+then if
+.I remap
+is set,
+.B o
+will map to
+.B I ,
+but if
+.I noremap
+is set, it will map to
+.B O .
+.TP
+\fBreport\fR	default: report=5, 2 for \fIedit\fR.
+Specifies a threshold for feedback from commands.
+Any command which modifies more than the specified number of lines
+will provide feedback as to the scope of its changes.
+For commands such as
+.I global ,
+.I open ,
+.I undo ,
+and
+.I visual
+which have potentially more far reaching scope,
+the net change in the number of lines in the buffer is
+presented at the end of the command, subject to this same threshold.
+Thus notification is suppressed during a
+.I global
+command on the individual commands performed.
+.TP
+\fBscroll\fR	default: scroll=\(12 window
+Determines the number of logical lines scrolled when an end-of-file
+is received from a terminal input in command mode,
+and the number of lines printed by a command mode
+.I z
+command (double the value of
+.I scroll ).
+.TP
+\fBsections\fR	default: sections=SHNHH\0HU
+Specifies the section macros for the \fB[[\fR and \fB]]\fR operations
+in
+.I open
+and
+.I visual.
+The pairs of characters in the options's value are the names
+of the macros which start paragraphs.
+.TP
+\fBshell\fR, \fBsh\fR	default: sh=/bin/sh
+Gives the path name of the shell forked for 
+the shell escape command `!', and by the
+.I shell
+command.
+The default is taken from SHELL in the environment, if present.
+.TP
+\fBshiftwidth\fR, \fBsw\fR	default: sw=8
+Gives the width a software tab stop,
+used in reverse tabbing with \fB^D\fR when using
+.I autoindent
+to append text,
+and by the shift commands.
+.TP
+\fBshowmatch, sm\fR	default: nosm
+In
+.I open
+and
+.I visual
+mode, when a \fB)\fR or \fB}\fR is typed, move the cursor to the matching
+\fB(\fR or \fB{\fR for one second if this matching character is on the
+screen.  Extremely useful with
+.I lisp.
+.TP
+\fBshowmode, smd\fR	default: nosmd
+In
+.I visual
+mode, show a description of the current editing mode
+in the window's lower right corner.
+.TP
+\fBslowopen, slow\fR	terminal dependent
+Affects the display algorithm used in
+.I visual
+mode, holding off display updating during input of new text to improve
+throughput when the terminal in use is both slow and unintelligent.
+See
+.I "An Introduction to Display Editing with Vi"
+for more details.
+.TP
+\fBtabstop,\ ts\fR	default: ts=8
+The editor expands tabs in the input file to be on
+.I tabstop
+boundaries for the purposes of display.
+.TP
+\fBtaglength,\ tl\fR	default: tl=0
+Tags are not significant beyond this many characters.
+A value of zero (the default) means that all characters are significant.
+.TP
+\fBtags\fR	default: tags=tags /usr/lib/tags
+A path of files to be used as tag files for the
+.I tag
+command.
+A requested tag is searched for in the specified files, sequentially.
+By default, files called
+.B tags
+are searched for in the current directory and in /usr/lib
+(a master file for the entire system).
+.TP
+\fBterm\fR	from environment TERM
+The terminal type of the output device.
+.TP
+\fBterse\fR	default: noterse
+Shorter error diagnostics are produced for the experienced user.
+.TP
+\fBwarn\fR	default: warn
+Warn if there has been `[No write since last change]' before a `!'
+command escape.
+.TP
+\fBwindow\fR	default: window=speed dependent
+The number of lines in a text window in the
+.I visual
+command.
+The default is 8 at slow speeds (600 baud or less),
+16 at medium speed (1200 baud),
+and the full screen (minus one line) at higher speeds.
+.TP
+\fBw300,\ w1200,\ w9600\fR
+These are not true options but set
+.B window
+only if the speed is slow (300), medium (1200), or high (9600),
+respectively.
+They are suitable for an EXINIT
+and make it easy to change the 8/16/full screen rule.
+.TP
+\fBwrapscan\fR, \fBws\fR	default: ws
+Searches using the regular expressions in addressing
+will wrap around past the end of the file.
+.TP
+\fBwrapmargin\fR, \fBwm\fR	default: wm=0
+Defines a margin for automatic wrapover of text during input in
+.I open
+and
+.I visual
+modes.  See
+.I "An Introduction to Text Editing with Vi"
+for details.
+.TP
+\fBwriteany\fR, \fBwa\fR	default: nowa
+.IP
+Inhibit the checks normally made before
+.I write
+commands, allowing a write to any file which the system protection
+mechanism will allow.
+.SH "ENVIRONMENT VARIABLES"
+.PP
+The following environment variables affect the behaviour of ex:
+.TP
+.B COLUMNS
+Overrides the system-supplied number of terminal columns.
+.TP
+.B EXINIT
+Contains commands to execute at editor startup.
+If this variable is present, the
+.I .exrc
+file in the user's home directory is ignored.
+.TP
+.B HOME
+Used to locate the editor startup file.
+.TP
+.BR LANG ", " LC_ALL
+See
+.IR locale (7).
+.TP
+.B LC_CTYPE
+Determines the mapping of bytes to characters,
+types of characters,
+case conversion
+and composition of character classes in regular expressions.
+.TP
+.B LC_MESSAGES
+Sets the language used for diagnostic and informal messages.
+.TP
+.B LINES
+Overrides the system-supplied number of terminal lines.
+.TP
+.B NLSPATH
+See
+.IR catopen (3).
+.TP
+.B SHELL
+The program file used to execute external commands.
+.TP
+.B TERM
+Determines the terminal type.
+.SH FILES
+.TP
+.B /usr/libexec/expreserve
+preserve command
+.TP
+.B /usr/libexec/exrecover
+recover command
+.TP
+.B /etc/termcap
+describes capabilities of terminals
+.TP
+.B $HOME/.exrc
+editor startup file
+.TP
+.B /var/tmp/Ex\fInnnnnnnnnn\fP
+editor temporary
+.TP
+.B /var/tmp/Rx\fInnnnnnnnnn\fP
+named buffer temporary
+.TP
+.B /var/preserve
+preservation directory
+.SH DOCUMENTATION
+The document
+.I "Edit: A tutorial"
+(USD:14) provides a comprehensive introduction to
+.I edit
+assuming no previous knowledge of computers or the 
+.SM UNIX
+system.
+.PP
+The
+.I "Ex Reference Manual \(en Version 3.7"
+(USD:16)
+is a comprehensive and complete manual for the command mode features
+of
+.I ex.
+.\"but one cannot learn to use the editor by reading it.
+The
+.SM \fIUSAGE\fP
+section of this page is taken from the manual.
+For an introduction to
+more advanced forms of editing using the command mode of
+.I ex
+see the editing documents written by Brian Kernighan for the editor
+.I ed;
+the material in the introductory and advanced documents works also with
+.I ex.
+.PP
+.I "An Introduction to Display Editing with Vi"
+(USD:15)
+introduces the display editor
+.I vi
+and provides reference material on
+.I vi.
+(This reference now forms the
+.IR vi (1)
+manual page).
+In addition, the
+.I "Vi Quick Reference"
+card summarizes the commands
+of
+.I vi
+in a useful, functional way, and is useful with the
+.I Introduction.
+.SH SEE ALSO
+awk(1),
+ed(1),
+grep(1),
+sed(1),
+grep(1),
+vi(1),
+catopen(3),
+termcap(5),
+environ(7),
+locale(7),
+regex(7)
+.SH AUTHOR
+Originally written by William Joy.
+.PP
+Mark Horton has maintained the editor since version 2.7, adding macros,
+support for many unusual terminals,
+and other features such as word abbreviation mode.
+.PP
+This version incorporates changes by Gunnar Ritter.
+.SH NOTES
+.I Undo
+never clears the buffer modified condition.
+.PP
+The
+.I z
+command prints a number of logical rather than physical lines.
+More than a screen full of output may result if long lines are present.
+.PP
+File input/output errors don't print a name if the command line \fB`\-'\fR
+option is used.
+.\".PP
+.\"There is no easy way to do a single scan ignoring case.
+.PP
+The editor does not warn if text is placed in named buffers and not used
+before exiting the editor.
+.PP
+Null (00) characters are converted to 0200 characters
+when reading input files,
+and cannot appear in resultant files.
+.PP
+LC_COLLATE locales are ignored;
+collating symbols `[.c.]'
+and equivalence classes `[=c=]'
+in bracket expressions are recognized but useless
+since `c' is restricted to a single character
+and is the only character matched;
+range expressions `[a\-m]' are always evaluated in byte order.

@@ -1,0 +1,12 @@
+TODO list for ex
+
+- Some support for UTF-8 combining characters should probably be added.
+
+- Since the POSIX standard developers did not include a method to
+    determine whether something is a valid collation symbol or an
+    equivalence class, and since there is no access to the basic
+    collation sequence, LC_COLLATE locales are completely ignored.
+
+- SVr4 ex probably has some silent features that this one should have too.
+
+Gunnar Ritter						2/19/05
