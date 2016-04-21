@@ -427,7 +427,7 @@ LIBUXRE_STATIC int
 libuxre_bktmbcomp(Bracket *bp, const unsigned char *pat0,
 		int flags, int mb_cur_max)
 {
-	static const Bracket zero = {0};
+	static const Bracket zero;
 	const unsigned char *pat = pat0;
 	struct lc_collate *savecol;
 	w_type n, wc, prev = 0;

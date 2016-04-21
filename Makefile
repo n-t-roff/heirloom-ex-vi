@@ -233,9 +233,12 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-WARN	= -Wall -Wextra
-
+WARN	= -Wall -Wextra \
+	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
+	-fsanitize=undefined
+#	-fsanitize=integer -fsanitize=address
 STRIP = -s
+
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
 			-DEXPRESERVE=\"$(LIBEXECDIR)/expreserve\"
 CCFLAGS	= $(CFLAGS) $(WARN) $(CPPFLAGS) $(FEATURES) $(CHARSET) $(OSTYPE) \
@@ -264,7 +267,7 @@ SRC7	= mapmalloc.c malloc.c
 all: $(RETGT) exrecover expreserve ex
 
 ex: $(TLIB) $(OBJS)
-	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) -Llibterm -l$(TERMLIB) $(RELIB)
+	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) $(WARN) -Llibterm -l$(TERMLIB) $(RELIB)
 	size ex
 
 $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h
@@ -272,10 +275,10 @@ $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h
 		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
 
 exrecover: exrecover.o $(MALLOC)
-	$(CC) -o exrecover $(LDFLAGS) exrecover.o $(MALLOC) $(LDADD)
+	$(CC) -o exrecover $(LDFLAGS) $(WARN) exrecover.o $(MALLOC) $(LDADD)
 
 expreserve: expreserve.o
-	$(CC) -o expreserve $(LDFLAGS) expreserve.o $(LDADD)
+	$(CC) -o expreserve $(LDFLAGS) $(WARN) expreserve.o $(LDADD)
 
 ex_vars.h: ex_data.c
 	sh makeoptions $(CCFLAGS)
