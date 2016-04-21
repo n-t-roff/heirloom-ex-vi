@@ -141,7 +141,7 @@ dontset:
 			cp = "window";
 		}
 		for (op = options; op < &options[NOPTS]; op++)
-			if (eq(op->oname, cp) || op->oabbrev && eq(op->oabbrev, cp))
+			if (eq(op->oname, cp) || (op->oabbrev && eq(op->oabbrev, cp)))
 				break;
 		if (op->oname == 0)
 			serror(catgets(catd, 1, 159,

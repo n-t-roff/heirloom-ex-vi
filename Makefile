@@ -233,7 +233,7 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-#WARN	= -Wall -Wno-parentheses -Werror
+WARN	= -Wall
 
 STRIP = -s
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
@@ -268,7 +268,7 @@ ex: $(TLIB) $(OBJS)
 	size ex
 
 $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h
-	@cd libterm && $(MAKE) CC="$(CC)" \
+	cd libterm && $(MAKE) CC="$(CC)" \
 		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
 
 exrecover: exrecover.o $(MALLOC)
@@ -281,12 +281,12 @@ ex_vars.h: ex_data.c
 	sh makeoptions $(CCFLAGS)
 
 uxre:
-	@cd libuxre && $(MAKE) CC="$(CC)" \
+	cd libuxre && $(MAKE) CC="$(CC)" \
 		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
 
 clean:
-	@cd libterm && $(MAKE) clean
-	@test ! -d libuxre || (cd libuxre && $(MAKE) clean)
+	cd libterm && $(MAKE) clean
+	test ! -d libuxre || (cd libuxre && $(MAKE) clean)
 #	If we dont have ex we cant make it so don't rm ex_vars.h
 	-rm -f ex exrecover expreserve *.o x*.[cs] core errs trace
 

@@ -195,7 +195,7 @@ begin:
 			while (!endsent(pastatom))
 				if (!lnext())
 					goto ret;
-			if (!pastatom || wcursor == linebuf && endPS())
+			if (!pastatom || (wcursor == linebuf && endPS()))
 				if (--cnt <= 0)
 					break;
 			if (linebuf[0] == 0) {
@@ -231,7 +231,7 @@ begin:
 		 * If we are not at a section/paragraph division,
 		 * advance to next.
 		 */
-		if (wcursor == icurs && wdot == idot || wcursor != linebuf || !endPS())
+		if ((wcursor == icurs && wdot == idot) || wcursor != linebuf || !endPS())
 			ignore(lskipa1(""));
 	}
 #ifdef LISPCODE
@@ -241,7 +241,7 @@ begin:
 		 * Startup by skipping if at a ( going left or a ) going
 		 * right to keep from getting stuck immediately.
 		 */
-		if (dir < 0 && c == '(' || dir > 0 && c == ')') {
+		if ((dir < 0 && c == '(') || (dir > 0 && c == ')')) {
 			if (!lnext()) {
 				rc = -1;
 				goto ret;
@@ -257,7 +257,7 @@ begin:
 		 */
 		while (cnt > 0) {
 			c = *wcursor;
-			if (dir < 0 && c == ')' || dir > 0 && c == '(') {
+			if ((dir < 0 && c == ')') || (dir > 0 && c == '(')) {
 				if (!lskipbal("()"))
 					goto ret;
 				/*
@@ -270,7 +270,7 @@ begin:
 				if (!lnext() || !ltosolid())
 					goto ret;
 				--cnt;
-			} else if (dir < 0 && c == '(' || dir > 0 && c == ')')
+			} else if ((dir < 0 && c == '(') || (dir > 0 && c == ')'))
 				/* Found a higher level paren */
 				goto ret;
 			else {
@@ -316,7 +316,7 @@ endsent(bool pastatom)
 		if ((d = *++cp) == 0)
 			return (1);
 	while (any(d, ")]'"));
-	if (*cp == 0 || *cp++ == ' ' && *cp == ' ')
+	if (*cp == 0 || (*cp++ == ' ' && *cp == ' '))
 		return (1);
 tryps:
 	if (cp[1] == 0)
@@ -588,7 +588,7 @@ lbrack(register int c, void (*f)(int))
 		getline(*addr);
 		if (linebuf[0] == '{' ||
 #ifdef LISPCODE
-		    value(LISP) && linebuf[0] == '(' ||
+		    (value(LISP) && linebuf[0] == '(') ||
 #endif
 		    isa(svalue(SECTIONS))) {
 			if (c == ']' && f != vmove) {

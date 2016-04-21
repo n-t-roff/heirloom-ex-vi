@@ -158,7 +158,7 @@ listchar(int c)
 		if (c < ' ' && c != '\n')
 			outchar('^'), c = ctlof(c);
 #else	/* !BIT8 */
-		if (!printable(c) && c != '\n' || c == DELETE)
+		if ((!printable(c) && c != '\n') || c == DELETE)
 			c = printof(c);
 #endif
 		break;
@@ -213,7 +213,7 @@ normchar(register int c)
 		putchar('^'), c = ctlof(c);
 #endif	/* !BIT8 */
 #ifdef	UCVISUAL
-	else if (UPPERCASE)
+	else if (UPPERCASE) {
 		if (xisupper(c)) {
 			outchar('\\');
 			c = tolower(c);
@@ -226,6 +226,7 @@ normchar(register int c)
 					break;
 				}
 		}
+	}
 #endif	/* UCVISUAL */
 #ifdef	BIT8
 		}
@@ -626,7 +627,7 @@ plod(int cnt)
 	 * If it will be cheaper, or if we can't back up, then send
 	 * a return preliminarily.
 	 */
-	if (j > i + 1 || outcol > destcol && !BS && !BC) {
+	if (j > i + 1 || (outcol > destcol && !BS && !BC)) {
 		/*
 		 * BUG: this doesn't take the (possibly long) length
 		 * of xCR into account.
@@ -825,11 +826,12 @@ fgoto(void)
 		outcol %= TCOLUMNS;
 		if (AM == 0) {
 			while (l > 0) {
-				if (pfast && ospeed != B0)
+				if (pfast && ospeed != B0) {
 					if (xCR)
 						tputs(xCR, 0, putch);
 					else
 						putch('\r');
+				}
 				if (xNL)
 					tputs(xNL, 0, putch);
 				else
@@ -881,7 +883,7 @@ fgoto(void)
 				outcol = 0;
 		}
 	}
-	if (destline < outline && !(CA && !holdcm || UP != NOSTR))
+	if (destline < outline && !((CA && !holdcm) || UP != NOSTR))
 		destline = outline;
 	if (CA && !holdcm)
 		if (plod(costCM) > 0)

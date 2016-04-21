@@ -778,7 +778,7 @@ ovflo:
 		loc2 += n;
 	}
 #endif	/* UXRE */
-	while (*sp++ = *lp++)
+	while ((*sp++ = *lp++))
 		if (sp >= &genbuf[LBSIZE])
 			goto ovflo;
 	strcLIN(genbuf);

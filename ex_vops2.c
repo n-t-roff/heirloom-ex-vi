@@ -806,7 +806,7 @@ vbackup:
 			}
 			if (value(WRAPMARGIN) &&
 				(outcol >= OCOLUMNS - value(WRAPMARGIN) ||
-				 backsl && outcol==0) &&
+				 (backsl && outcol == 0)) &&
 				commch != 'r') {
 				/*
 				 * At end of word and hit wrapmargin.
@@ -961,7 +961,7 @@ btrp:
 			 * generated autoindent.  We count the ^D for repeat
 			 * purposes.
 			 */
-			if (c == iwhite && c != 0)
+			if (c == iwhite && c != 0) {
 				if (cp == gcursor) {
 					iwhite = backtab(c);
 					CDCNT++;
@@ -985,6 +985,7 @@ btrp:
 					vputchar(' ');
 					goto vbackup;
 				}
+			}
 			if (vglobp && vglobp - iglobp >= 2 &&
 			    (vglobp[-2] == '^' || vglobp[-2] == '0')
 			    && gcursor == ogcursor + 1)

@@ -9,41 +9,8 @@ libuxre.a: $(OBJ)
 	$(AR) -rv $@ $(OBJ)
 	#$(RANLIB) $@
 
-onefile.o: onefile.c
-	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c onefile.c
-
-_collelem.o: _collelem.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c _collelem.c
-
-_collmult.o: _collmult.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c _collmult.c
-
-bracket.o: bracket.c
-	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c bracket.c
-
-regcomp.o: regcomp.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regcomp.c
-
-regdfa.o: regdfa.c
-	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regdfa.c
-
-regerror.o: regerror.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regerror.c
-
-regexec.o: regexec.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regexec.c
-
-regfree.o: regfree.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regfree.c
-
-regnfa.o: regnfa.c
-	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regnfa.c
-
-regparse.o: regparse.c
-	$(CC) $(CFLAGSS) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c regparse.c
-
-stubs.o: stubs.c
-	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) -I. -c stubs.c
+.c.o:
+	$(CC) $(CFLAGS2) $(CPPFLAGS) $(XO5FL) $(IWCHAR) $(COPT) -I. -c $<
 
 install:
 

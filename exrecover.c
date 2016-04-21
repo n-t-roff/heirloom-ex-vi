@@ -478,7 +478,7 @@ enter(struct svfile *fp, char *fname, int count)
 	fp->sf_time = H.Time;
 	fp->sf_lines = H.Flines;
 	cp2 = fp->sf_name, cp = savedfile;
-	while (*cp2++ = *cp++);
+	while ((*cp2++ = *cp++));
 	for (cp2 = fp->sf_entry, cp = fname; *cp && cp-fname < 14;)
 		*cp2++ = *cp++;
 	*cp2++ = 0;
@@ -493,7 +493,7 @@ qucmp(struct svfile *p1, struct svfile *p2)
 {
 	register int t;
 
-	if (t = strcmp(p1->sf_name, p2->sf_name))
+	if ((t = strcmp(p1->sf_name, p2->sf_name)))
 		return(t);
 	if (p1->sf_time > p2->sf_time)
 		return(-1);
@@ -816,7 +816,7 @@ getline(line tl)
 	bp = getblock(tl, READ);
 	nl = nleft;
 	tl &= ~OFFMSK;
-	while (*lp++ = *bp++)
+	while ((*lp++ = *bp++))
 		if (--nl == 0) {
 			bp = getblock(tl += INCRMT, READ);
 			nl = nleft;

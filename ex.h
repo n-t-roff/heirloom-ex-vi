@@ -553,7 +553,7 @@ var	int	mb_cur_max;
 		((c) = *(s) & 0377, (n) = 1))
 #define	colsc(c)	(mb_cur_max > 1 && ((c)&0177) != (c) ? wcwidth(c) : 1)
 #define	skipleft(l, p)	(mb_cur_max > 1 && ((p)[0]&0200 || \
-				(p)>(l) && (p)[-1]&0200) ? wskipleft(l, p) : -1)
+				((p)>(l) && (p)[-1]&0200)) ? wskipleft(l, p) : -1)
 #define	skipright(l, p)	(mb_cur_max > 1 && (p)>=(l) && (p)[0]&0200 ? \
 				wskipright(l, p) : 1)
 #define	samechar(cp, c)	(mb_cur_max > 1 && *(cp)&0200 ? wsamechar(cp, c) : \

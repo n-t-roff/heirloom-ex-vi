@@ -166,7 +166,7 @@ filename(int comm)
 			break;
 		}
 	}
-	if (hush && comm != 'f' || comm == 'E')
+	if ((hush && comm != 'f') || comm == 'E')
 		return;
 	if (file[0] != 0) {
 		lprintf("\"%s\"", file);
@@ -707,12 +707,13 @@ cre:
 		if (io < 0)
 			syserror();
 		writing = 1;
-		if (hush == 0)
+		if (hush == 0) {
 			if (nonexist)
 				printf(catgets(catd, 1, 115, " [New file]"));
 			else if (value(WRITEANY) && edfile() != EDF)
 				printf(catgets(catd, 1, 116,
 							" [Existing file]"));
+		}
 		break;
 
 	case 2:
@@ -992,7 +993,7 @@ mbtowi(int *cp, const char *s, size_t n)
 	if (i >= 0 && widthok(wc) && !(wc & 0x70000000))
 		*cp = wc;
 	else {
-		*cp = *s&0377 | INVBIT;
+		*cp = (*s & 0377) | INVBIT;
 		i = 1;
 	}
 	return i;

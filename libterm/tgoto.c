@@ -102,7 +102,7 @@ toohard:
 		return ("OOPS");
 	}
 	added[0] = 0;
-	while (c = *cp++) {
+	while ((c = *cp++)) {
 		if (c != '%') {
 			*dp++ = c;
 			continue;

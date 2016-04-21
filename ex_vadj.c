@@ -110,11 +110,12 @@ vopen(line *tp, int p)
 		tfixnl(), fprintf(trace, "vopen(%d, %d)\n", lineno(tp), p);
 #endif
 	if (state != VISUAL) {
-		if (vcnt)
+		if (vcnt) {
 			if (hold & HOLDROL)
 				vup1();
 			else
 				vclean();
+		}
 
 		/*
 		 * Forget all that we once knew.
@@ -602,15 +603,16 @@ vrepaint(char *curs)
 	/*
 	 * Deal with a totally useless display.
 	 */
-	if (vcnt == 0 || vcline < 0 || vcline > vcnt || holdupd && state != VISUAL) {
+	if (vcnt == 0 || vcline < 0 || vcline > vcnt || (holdupd && state != VISUAL)) {
 		register line *odol = dol;
 
 		vcnt = 0;
-		if (holdupd)
+		if (holdupd) {
 			if (state == VISUAL)
 				ignore(peekkey());
 			else
 				vup1();
+		}
 		holdupd = 0;
 		if (odol == zero)
 			fixzero();
@@ -935,7 +937,7 @@ vsync1(register int p)
 		 * the current line, or if this line is piled under the
 		 * next line (vreplace does this and we undo it).
 		 */
-		if (l == 0 && state != VISUAL ||
+		if ((l == 0 && state != VISUAL) ||
 		    (l < vcnt && (vp->vliny <= p || vp[0].vliny == vp[1].vliny))) {
 			if (l == 0 || vp->vliny < p || (vp->vflags & VDIRT)) {
 				if (l == vcline)
@@ -1056,7 +1058,7 @@ vreplace(int l, int cnt, int newcnt)
 	 * over them, since otherwise we will push them
 	 * slowly off the screen, a clear lose.
 	 */
-	if (cnt == newcnt || vcnt - l == newcnt && AL && DL) {
+	if (cnt == newcnt || (vcnt - l == newcnt && AL && DL)) {
 		if (cnt > 1 && l + cnt > vcnt)
 			savenote++;
 		vdirty(l, newcnt);

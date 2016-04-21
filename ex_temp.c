@@ -203,7 +203,7 @@ getline(line tl)
 	bp = getblock(tl, READ);
 	nl = nleft;
 	tl &= ~OFFMSK;
-	while (*lp++ = *bp++)
+	while ((*lp++ = *bp++))
 		if (--nl == 0) {
 			bp = getblock(tl += INCRMT, READ);
 			nl = nleft;
@@ -224,7 +224,7 @@ putline(void)
 	bp = getblock(tl, WRITE);
 	nl = nleft;
 	tl &= ~OFFMSK;
-	while (*bp = *lp++) {
+	while ((*bp = *lp++)) {
 		if (*bp++ == '\n') {
 			*--bp = 0;
 			linebp = lp;

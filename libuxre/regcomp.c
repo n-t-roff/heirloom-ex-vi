@@ -52,7 +52,7 @@ regcomp(regex_t *ep, const char *pat, int flags)
 	* doesn't, libuxre_regnfacomp() must be called first, if both are to
 	* be called.
 	*/
-	if (ep->re_nsub != 0 && (flags & (REG_NOSUB | REG_ONESUB)) == 0
+	if ((ep->re_nsub != 0 && (flags & (REG_NOSUB | REG_ONESUB)) == 0)
 		|| lex.flags & REG_NFA)
 	{
 		ep->re_flags |= REG_NFA;

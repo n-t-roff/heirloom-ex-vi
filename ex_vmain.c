@@ -159,7 +159,7 @@ vmain(void)
 		Xhadcnt = hadcnt = 0;
 		Xcnt = cnt = 1;
 		splitw = 0;
-		if (i = holdupd) {
+		if ((i = holdupd)) {
 			if (state == VISUAL)
 				ignore(peekkey());
 			holdupd = 0;
@@ -204,7 +204,7 @@ looptop:
 			 * an 'empty' named buffer spec in the routine
 			 * kshift (see ex_temp.c).
 			 */
-			forbid (c == '0' || !xisalpha(c) && !xisdigit(c));
+			forbid (c == '0' || (!xisalpha(c) && !xisdigit(c)));
 			vreg = c;
 		}
 reread:
@@ -836,7 +836,7 @@ case_ATTN:
 			vmacchng(1);
 			setLAST();
 			i = 0;
-			if (vreg && partreg(vreg) || !vreg && pkill[0]) {
+			if ((vreg && partreg(vreg)) || (!vreg && pkill[0])) {
 				/*
 				 * Restoring multiple lines which were partial
 				 * lines; will leave cursor in middle
@@ -1123,7 +1123,7 @@ fixup:
 			 * in open mode and . moved, then redraw.
 			 */
 			i = vcline + (dot - addr);
-			if (i < 0 || i >= vcnt && i >= -vcnt || state != VISUAL && dot != addr) {
+			if (i < 0 || (i >= vcnt && i >= -vcnt) || (state != VISUAL && dot != addr)) {
 				if (state == CRTOPEN)
 					vup1();
 				if (vcnt > 0)
@@ -1416,7 +1416,7 @@ str2cell(cell *dst, register char *src)
 		} while (src[-n]);
 	} else
 #endif	/* MB */
-		while (*cp++ = *src++ & 0377);
+		while ((*cp++ = *src++ & 0377));
 	return dst;
 }
 
@@ -1425,7 +1425,7 @@ cell2str(char *dst, register cell *src)
 {
 	register char *cp = dst;
 
-	while (*cp++ = *src++);
+	while ((*cp++ = *src++));
 	return dst;
 }
 
@@ -1434,7 +1434,7 @@ cellcpy(cell *dst, register cell *src)
 {
 	register cell *cp = dst;
 
-	while (*cp++ = *src++);
+	while ((*cp++ = *src++));
 	return dst;
 }
 

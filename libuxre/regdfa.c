@@ -457,7 +457,7 @@ addstate(Dfa *dp) /* install state if unique; return its index */
 	fp = dp->sigfoll;
 	if ((n = dp->nset) > dp->avail)	/* grow strip */
 	{
-		i = dp->avail + n << 1;
+		i = (dp->avail + n) << 1;
 		if ((fp = realloc(fp, sizeof(size_t) * (i + dp->used))) == 0)
 			return 0;
 		dp->avail = i;

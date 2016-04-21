@@ -173,12 +173,13 @@ vundo (
 		 * with dol through unddol-1.  Hack screen image to
 		 * reflect this replacement.
 		 */
-		if (show)
+		if (show) {
 			if (undkind == UNDMOVE)
 				vdirty(0, TLINES);
 			else
 				vreplace(undap1 - addr, undap2 - undap1,
 				    undkind == UNDPUT ? 0 : unddol - dol);
+		}
 		savenote = notecnt;
 		undo(1);
 		if (show && (vundkind != VMCHNG || addr != dot))
@@ -730,7 +731,7 @@ voOpen (
 	sigset_t set, oset;
 #endif
 
-	if (value(SLOWOPEN) || value(REDRAW) && AL && DL)
+	if (value(SLOWOPEN) || (value(REDRAW) && AL && DL))
 		cnt = 1;
 #ifdef	SIGWINCH
 	sigemptyset(&set);

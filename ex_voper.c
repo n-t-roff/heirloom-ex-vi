@@ -159,7 +159,7 @@ operate(register int c, register int cnt)
 	 * c		Change operator.
 	 */
 	case 'c':
-		if (c == 'c' && workcmd[0] == 'C' || workcmd[0] == 'S')
+		if ((c == 'c' && workcmd[0] == 'C') || workcmd[0] == 'S')
 			subop++;
 		moveop = vchange;
 		deleteop = (void (*)(int))beep;
@@ -492,13 +492,13 @@ fixup:
 	 */
 	case 'l':
 	case ' ':
-		forbid (margin() || opf == vmove && edge());
+		forbid (margin() || (opf == vmove && edge()));
 		while (cnt > 0 && !margin()) {
 			wcursor += dir>0 ? skipright(linebuf, wcursor) :
 				skipleft(linebuf, wcursor);
 			cnt--;
 		}
-		if (margin() && opf == vmove || wcursor < linebuf)
+		if ((margin() && opf == vmove) || wcursor < linebuf)
 			wcursor -= dir;
 		vmoving = 0;
 		break;

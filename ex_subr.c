@@ -95,7 +95,7 @@ any(int c, register char *s)
 {
 	register int x;
 
-	while (x = *s++)
+	while ((x = *s++))
 		if (x == c)
 			return (1);
 	return (0);
@@ -1106,7 +1106,7 @@ movestr(char *s1, const char *s2)
 {
 	char	*cp = s1;
 
-	while (*s1++ = *s2++);
+	while ((*s1++ = *s2++));
 	return cp;
 }
 

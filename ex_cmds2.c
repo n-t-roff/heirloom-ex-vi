@@ -554,7 +554,7 @@ tailprim(register char *comm, int xi, bool notinvis)
 	c = peekchar();
 	if (notinvis || isalpha(c)
 #ifdef	BIT8
-			|| xi == 0 && (c&(0200|QUOTE)) == 0200
+			|| (xi == 0 && (c&(0200|QUOTE)) == 0200)
 #endif
 			) {
 		/*
@@ -568,7 +568,7 @@ tailprim(register char *comm, int xi, bool notinvis)
 		while (cp < &tcommand[19] && (c = peekchar(),
 				isalpha(c)
 #ifdef	BIT8
-				|| xi == 0 && (c&(0200|QUOTE)) == 0200
+				|| (xi == 0 && (c&(0200|QUOTE)) == 0200)
 #endif
 				))
 			*cp++ = getchar();

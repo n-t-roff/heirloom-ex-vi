@@ -252,7 +252,7 @@ vprintf(const char *fmt, va_list ap)
 					*--bptr = ((int) num & mask1) + 060;
 				    else
 					*--bptr = ((int) num & mask1) + 0127;
-				while (num = (num >> nbits) & mask2);
+				while ((num = (num >> nbits) & mask2));
 				
 				if (fcode=='o') {
 					if (n)
@@ -288,7 +288,7 @@ vprintf(const char *fmt, va_list ap)
 					else
 						num = (long) n;
 				}
-				if (n = (fcode != 'u' && num < 0))
+				if ((n = (fcode != 'u' && num < 0)))
 					num = -num;
 				/* now convert to digits */
 				bptr = p_dconv(num, buf);

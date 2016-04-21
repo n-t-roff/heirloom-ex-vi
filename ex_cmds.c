@@ -128,7 +128,7 @@ commands(int noprompt, int _exitoneof)
 		 * before the next command.
 		 */
 		if (pflag ||
-		    lchng != chng && value(AUTOPRINT) && !inglobal && !inopen && endline) {
+		    (lchng != chng && value(AUTOPRINT) && !inglobal && !inopen && endline)) {
 			pflag = 0;
 			nochng();
 			if (dol != zero) {
@@ -166,7 +166,7 @@ error(catgets(catd, 1, 17,
 			addr1 = addr2;
 			addr = address(0);
 			c = getcd();
-			if (addr == 0)
+			if (addr == 0) {
 				if (c == ',')
 					addr = dot;
 				else if (addr1 != 0) {
@@ -174,6 +174,7 @@ error(catgets(catd, 1, 17,
 					break;
 				} else
 					break;
+			}
 			addr2 = addr;
 			given++;
 			if (c == ';') {

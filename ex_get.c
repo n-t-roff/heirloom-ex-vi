@@ -116,7 +116,7 @@ getach(void)
 	}
 top:
 	if (input) {
-		if (c = *input++&0377) {
+		if ((c = *input++&0377)) {
 			if (verbose && !intty)
 				write(2, &input[-1], 1);
 			if (c &= TRIM)
@@ -184,13 +184,14 @@ again:
 	if (c == EOF)
 		return (c);
 	c &= TRIM;
-	if (!inopen)
+	if (!inopen) {
 		if (!globp && c == CTRL('d'))
 			setlastchar('\n');
 		else if (junk(c)) {
 			checkjunk(c);
 			goto again;
 		}
+	}
 	return (c);
 }
 

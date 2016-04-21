@@ -453,7 +453,7 @@ vrollR(register int cnt)
 /*
  * Go into cooked mode (allow interrupts) during
  * a scroll if we are at less than 1200 baud and not
- * a 'vi' command, of if we are in a 'vi' command and the
+ * a 'vi' command, or if we are in a 'vi' command and the
  * scroll is more than 2 full screens.
  *
  * BUG:		An interrupt during a scroll in this way
@@ -463,7 +463,7 @@ int
 vcookit(register int cnt)
 {
 
-	return (cnt > 1 && (ospeed < B1200 && !initev || cnt > TLINES * 2));
+	return (cnt > 1 && ((ospeed < B1200 && !initev) || cnt > TLINES * 2));
 }
 
 /*

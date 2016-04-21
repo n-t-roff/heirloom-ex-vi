@@ -69,19 +69,15 @@ regerror(int err, const regex_t *ep, char *str, size_t max)
 	};
 	const char *p;
 	size_t len;
-	int i;
 
 	if (err < REG_ENOSYS || REG_ILLSEQ < err)
 	{
-		i = unk.index;
 		p = unk.str;
 	}
 	else
 	{
-		i = msgs[err - REG_ENOSYS].index;
 		p = msgs[err - REG_ENOSYS].str;
 	}
-/*	p = __gtxt(_str_uxlibc, i, p);	*/
 	len = strlen(p) + 1;
 	if (max != 0)
 	{
