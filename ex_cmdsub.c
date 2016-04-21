@@ -435,6 +435,7 @@ put(int unused)
 {
 	register int cnt;
 
+	(void)unused;
 	if (!FIXUNDO)
 		error(catgets(catd, 1, 44, "Cannot put inside global/macro"));
 	cnt = unddol - dol;
@@ -804,7 +805,7 @@ badtags:
 void
 yank(int unused)
 {
-
+	(void)unused;
 	if (!FIXUNDO)
 		error(catgets(catd, 1, 52, "Can't yank inside global/macro"));
 	save12();

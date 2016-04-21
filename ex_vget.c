@@ -813,6 +813,7 @@ vgetcnt(void)
 
 void 
 trapalarm(int signum) {
+	(void)signum;
 	alarm(0);
 	if (vcatch)
 		LONGJMP(vreslab,1);

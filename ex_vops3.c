@@ -297,6 +297,7 @@ endsent(bool pastatom)
 	register char *cp = wcursor;
 	register int c, d;
 
+	(void)pastatom;
 	/*
 	 * If this is the beginning of a line, then
 	 * check for the end of a paragraph or section.
@@ -716,6 +717,7 @@ wskipright(char *line, char *pos)
 {
 	int	c, n;
 
+	(void)line;
 	nextc(c, pos, n);
 	return n;
 }

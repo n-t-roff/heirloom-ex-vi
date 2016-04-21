@@ -951,7 +951,7 @@ onemt(int signum)
 void
 onhup(int signum)
 {
-
+	(void)signum;
 	/*
 	 * USG tty driver can send multiple HUP's!!
 	 */
@@ -981,7 +981,7 @@ onhup(int signum)
 void
 onintr(int signum)
 {
-
+	(void)signum;
 	alarm(0);	/* in case we were called from map */
 	draino();
 	if (!inopen) {
@@ -1061,6 +1061,7 @@ onsusp(int signum)
 #endif
 	sigset_t set;
 
+	(void)signum;
 	f = setty(normf);
 	vnfl();
 	putpad(TE);

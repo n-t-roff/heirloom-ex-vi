@@ -564,8 +564,8 @@ var	int	mb_cur_max;
 #define	xisspace(c)	(mb_cur_max > 1 ? iswspace(c) : isspace(c))
 #define	xisupper(c)	(mb_cur_max > 1 ? iswupper(c) : isupper(c))
 #define	xislower(c)	(mb_cur_max > 1 ? iswlower(c) : islower(c))
-#define	xtolower(c)	(mb_cur_max > 1 ? towlower(c) : tolower(c))
-#define	xtoupper(c)	(mb_cur_max > 1 ? towupper(c) : toupper(c))
+#define	xtolower(c)	(mb_cur_max > 1 ? towlower(c) : (wint_t)tolower(c))
+#define	xtoupper(c)	(mb_cur_max > 1 ? towupper(c) : (wint_t)toupper(c))
 #else	/* !MB */
 #define	nextc(c, s, n)	((c) = *(s) & 0377, (n) = 1)
 #define	colsc(c)	(1)

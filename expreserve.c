@@ -217,6 +217,7 @@ main(int argc, char **argv)
 	struct dirent *dirent;
 	struct stat stbuf;
 
+	(void)argv;
 #ifdef	LANGMSG
 	setlocale(LC_MESSAGES, "");
 	catd = catopen(CATNAME, NL_CAT_LOCALE);

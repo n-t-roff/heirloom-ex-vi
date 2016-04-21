@@ -33,6 +33,7 @@ libuxre_lc_collate(struct lc_collate *cp)
 {
 	static struct lc_collate curinfo = {0}; /* means CHF_ENCODED */
 
+	(void)cp;
 	return &curinfo;
 }
 

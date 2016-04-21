@@ -70,6 +70,7 @@ regerror(int err, const regex_t *ep, char *str, size_t max)
 	const char *p;
 	size_t len;
 
+	(void)ep;
 	if (err < REG_ENOSYS || REG_ILLSEQ < err)
 	{
 		p = unk.str;

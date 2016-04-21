@@ -277,7 +277,7 @@ main(int argc, char *argv[])
 	while (H.Flines > 0) {
 		ignorl(lseek(tfile, (off_t) ((blocks[b] & BLKMSK) * BUFSIZ),
 					SEEK_SET));
-		i = H.Flines < BUFSIZ / sizeof (line) ?
+		i = H.Flines < (ssize_t)(BUFSIZ / sizeof (line)) ?
 			H.Flines * sizeof (line) : BUFSIZ;
 		if (read(tfile, (char *) dot, i) != i) {
 			perror(nb);
@@ -754,6 +754,7 @@ putfile(int unused)
 	register char *fp, *lp;
 	register int nib;
 
+	(void)unused;
 	a1 = addr1;
 	clrstats();
 	cntln = addr2 - a1 + 1;

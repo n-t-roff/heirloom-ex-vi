@@ -55,8 +55,8 @@ typedef	int w_type;
 
 #define	ISONEBYTE(ch)	(((ch) & 0200) == 0 || mb_cur_max == 1)
 
-#define	to_lower(ch)	(mb_cur_max > 1 ? towlower(ch) : tolower(ch))
-#define	to_upper(ch)	(mb_cur_max > 1 ? towupper(ch) : toupper(ch))
+#define	to_lower(ch)	(mb_cur_max > 1 ? towlower(ch) : (wint_t)tolower(ch))
+#define	to_upper(ch)	(mb_cur_max > 1 ? towupper(ch) : (wint_t)toupper(ch))
 
 LIBUXRE_STATIC int	libuxre_mb2wc(w_type *, const unsigned char *);
 

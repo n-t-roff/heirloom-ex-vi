@@ -130,6 +130,7 @@ place(Bracket *bp, wchar_t wc, w_type prev, int mb_cur_max)
 	CollElem spare;
 	int ret;
 
+	(void)mb_cur_max;
 	if ((cep = libuxre_collelem(bp->col, &spare, wc)) != ELEM_ENCODED)
 	{
 		if (cep == ELEM_BADCHAR)
@@ -338,7 +339,7 @@ eqcls(Bracket *bp, const unsigned char *s, int n, w_type prev, int mb_cur_max)
 				* Permit ranges up to the first and
 				* after the last.
 				*/
-				if (prev > 0 && prev != cep->weight[0]
+				if (prev > 0 && (unsigned)prev != cep->weight[0]
 					&& (prev = addrange(bp,
 						cep->weight[0], prev)) != 0)
 				{
@@ -709,11 +710,12 @@ libuxre_bktmbexec(Bracket *bp, wchar_t wc,
 		}
 		for (;;)
 		{
-			if (iswctype(mb_cur_max==1?btowc(wc):wc, *wctp))
+			if (iswctype(mb_cur_max == 1 ? btowc(wc)
+			    : (wint_t)wc, *wctp))
 				goto match;
 			if (wc != mcbuf.ch &&
-			    iswctype(mb_cur_max==1?btowc(mcbuf.ch):mcbuf.ch,
-				    *wctp))
+			    iswctype(mb_cur_max == 1 ? btowc(mcbuf.ch)
+			    : (wint_t)mcbuf.ch, *wctp))
 				goto match;
 			if (--i == 0)
 				break;
@@ -801,7 +803,7 @@ libuxre_bktmbexec(Bracket *bp, wchar_t wc,
 		mcbuf.wc = mcbuf.cep->weight[1];
 		for (;;)
 		{
-			if (mcbuf.wc == *wucp)
+			if ((wuchar_type)mcbuf.wc == *wucp)
 				goto match;
 			if (--i == 0)
 				break;

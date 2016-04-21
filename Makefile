@@ -233,7 +233,7 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-WARN	= -Wall
+WARN	= -Wall -Wextra
 
 STRIP = -s
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \

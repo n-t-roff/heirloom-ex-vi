@@ -371,6 +371,7 @@ vmove(int unused)
 {
 	register int cnt;
 
+	(void)unused;
 	if (wdot) {
 		if (wdot < one || wdot > dol) {
 			beep();
@@ -531,7 +532,7 @@ vchange(int c)
 			*cursor = 0;
 			strcpy(genbuf, linebuf);
 			getline(*wdot);
-			if (strlen(genbuf) + strlen(wcursor) > LBSIZE - 2) {
+			if ((ssize_t)(strlen(genbuf) + strlen(wcursor)) > LBSIZE - 2) {
 				getDOT();
 				beep();
 				return;
@@ -805,6 +806,7 @@ vshftop(int unused)
 	register line *addr;
 	register int cnt;
 
+	(void)unused;
 	if ((cnt = xdw()) < 0)
 		return;
 	addr = dot;
@@ -835,6 +837,7 @@ vfilter(int unused)
 	cell cuxb[UXBSIZE + 2];
 #endif
 
+	(void)unused;
 	if ((cnt = xdw()) < 0)
 		return;
 	if (vglobp)
@@ -969,7 +972,7 @@ xdw(void)
 void 
 vshift(int unused)
 {
-
+	(void)unused;
 	shift(op, 1);
 }
 
@@ -982,7 +985,7 @@ vrep(register int cnt)
 {
 	register int i, c;
 
-	if (cnt > strlen(cursor)) {
+	if (cnt > (ssize_t)strlen(cursor)) {
 		beep();
 		return;
 	}
@@ -1025,6 +1028,7 @@ vyankit(int unused)
 {
 	register int cnt;
 
+	(void)unused;
 	if (wdot) {
 		if ((cnt = xdw()) < 0)
 			return;

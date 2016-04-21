@@ -450,6 +450,10 @@ mallopt(void)
 }
 #endif	/* notdef */
 
-char *poolsbrk(intptr_t val) { return NULL; }
+char *
+poolsbrk(intptr_t val) {
+	(void)val;
+	return NULL;
+}
 
 #endif	/* VMUNIX */

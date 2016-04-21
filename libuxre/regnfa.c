@@ -808,7 +808,7 @@ libuxre_regnfaexec(Nfa *np, Exec *xp)
 			if (gp->op != wc)
 			{
 				if ((xp->flags & REG_ICASE) == 0
-					|| gp->op != to_lower(wc))
+					|| (wint_t)gp->op != to_lower(wc))
 				{
 					goto failed;
 				}
@@ -850,18 +850,18 @@ libuxre_regnfaexec(Nfa *np, Exec *xp)
 				w_type pwc;
 
 				if (wc != '_' &&
-				    !iswalnum(mb_cur_max == 1 ? btowc(wc) : wc))
+				    !iswalnum(mb_cur_max == 1 ? btowc(wc) : (wint_t)wc))
 					goto failed;
 				if (!ISONEBYTE(pwc = *s2))
 					libuxre_mb2wc(&pwc, &s2[1]);
 				if (pwc == '_' ||
-				    iswalnum(mb_cur_max== 1 ? btowc(pwc) : pwc))
+				    iswalnum(mb_cur_max== 1 ? btowc(pwc) : (wint_t)pwc))
 					goto failed;
 			}
 			goto tonext;
 		case ROP_GT:
 			if (wc == '_' ||
-			    iswalnum(mb_cur_max == 1 ? btowc(wc) : wc))
+			    iswalnum(mb_cur_max == 1 ? btowc(wc) : (wint_t)wc))
 				goto failed;
 			goto tonext;
 		case ROP_BKT:
@@ -895,7 +895,7 @@ libuxre_regnfaexec(Nfa *np, Exec *xp)
 				goto tonext;
 			if (casecmp(s1, xp, n, len, mb_cur_max) == 0)
 				goto failed;
-			if ((n = s - s1) >= len)
+			if ((ssize_t)(n = s - s1) >= len)
 				goto nextwc;
 			n = len - n;
 			goto spin;
@@ -922,7 +922,7 @@ libuxre_regnfaexec(Nfa *np, Exec *xp)
 			* Note the left-most match that's longest.
 			*/
 			n = cp->rm[0].rm_so;
-			if (rmso < 0 || n < rmso)
+			if (rmso < 0 || (ssize_t)n < rmso)
 			{
 				rmso = n;
 			record:;
@@ -930,7 +930,7 @@ libuxre_regnfaexec(Nfa *np, Exec *xp)
 					xp->nmatch * sizeof(regmatch_t));
 				goto failed;
 			}
-			if (rmso < n || xp->match[0].rm_eo > cp->rm[0].rm_eo)
+			if (rmso < (ssize_t)n || xp->match[0].rm_eo > cp->rm[0].rm_eo)
 				goto failed;
 			if (xp->match[0].rm_eo < cp->rm[0].rm_eo)
 				goto record;

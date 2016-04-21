@@ -806,6 +806,7 @@ putfile(int isfilter)
 	register int nib;
 	struct stat statb;
 
+	(void)isfilter;
 	a1 = addr1;
 	clrstats();
 	cntln = fixedzero ? 0 : addr2 - a1 + 1;

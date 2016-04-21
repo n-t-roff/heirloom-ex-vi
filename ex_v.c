@@ -505,6 +505,7 @@ vintr(int signum)
 	extern JMP_BUF readbuf;
 	extern int doingread;
 
+	(void)signum;
 	signal(SIGINT, vintr);
 	if (vcatch)
 		onintr(SIGINT);
@@ -540,6 +541,7 @@ vsetsiz(int size)
 void 
 onwinch(int signum)
 {
+	(void)signum;
 	vsave();
 	setty(normf);
 	LONGJMP(venv, 1);

@@ -509,7 +509,7 @@ oops:
 int
 REGblk(void)
 {
-	register int i, j, m;
+	unsigned int i, j, m;
 
 	for (i = 0; i < sizeof rused / sizeof rused[0]; i++) {
 		m = (rused[i] ^ 0177777) & 0177777;

@@ -296,6 +296,7 @@ normline(int unused, int max)
 	int	c, n;
 	int	ret = 0;
 
+	(void)unused;
 	if (max > 0)
 		vcntcol = 0;
 	if (shudclob)
