@@ -297,7 +297,7 @@ notify(uid_t uid, char *fname, int flag, time_t time)
 	timestamp = ctime(&time);
 	timestamp[16] = 0;	/* blast from seconds on */
 	putenv("MAILRC=/dev/null");
-	sprintf(cmd, "/bin/mail %s", pp->pw_name);
+	snprintf(cmd, sizeof cmd, "/bin/mail %s", pp->pw_name);
 	setuid(getuid());
 	mf = popen(cmd, "w");
 	if (mf == NULL)
@@ -309,7 +309,7 @@ notify(uid_t uid, char *fname, int flag, time_t time)
 	 * error message.  Usually, either it was forcably terminated
 	 * or the phone was hung up, but we don't know which.
 	 */
-	sprintf(croak, flag
+	snprintf(croak, sizeof croak, flag
 		? catgets(catd, 3, 2, "the system went down")
 		: catgets(catd, 3, 3, "the editor was killed"));
 	if (fname[0] == 0) {

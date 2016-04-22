@@ -98,7 +98,8 @@ static char sccsid[] UNUSED = "@(#)exrecover.c	1.23 (gritter) 12/25/06";
 #define	xstderr	(int*)0
 typedef	int	xFILE;
 extern void	perror(const char *);
-extern int	vsprintf(char *, const char *, va_list);
+#include <sys/types.h>
+extern int	vsnprintf(char *, size_t, const char *, va_list);
 #endif
 
 #define	var
@@ -889,7 +890,7 @@ xvfprintf(xFILE *fp, char *fmt, va_list ap)
 
 	if (fp != xstderr)
 		return;
-	vsprintf(buf, fmt, ap);
+	vsnprintf(buf, sizeof buf, fmt, ap);
 	write(2, buf, strlen(buf));
 }
 
