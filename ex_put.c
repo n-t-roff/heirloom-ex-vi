@@ -298,7 +298,7 @@ normline(int unused, int max)
 
 	(void)unused;
 	if (max > 0)
-		vcntcol = 0;
+		vcntcol = value(NUMBER) << 3;
 	if (shudclob)
 		slobber(linebuf[0]);
 	/* pdp-11 doprnt is not reentrant so can't use "printf" here
