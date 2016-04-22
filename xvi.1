@@ -1,0 +1,21 @@
+.\" Carsten Kunze, 2016
+.Dd April 22, 2016
+.Dt XVI 1
+.Sh NAME
+.Nm xvi
+.Nd open vi in a separate xterm
+.Sh SYNOPSIS
+.Nm
+.Op Ar "vi options"
+.Sh DESCRIPTION
+There are use cases for
+.Nm vi
+where it is desirable to start it in a separate X window.
+.Nm
+just starts
+.Do Nm xterm Fl e Dc
+with
+.Nm vi
+and the
+.Ar "vi options"
+as argument.

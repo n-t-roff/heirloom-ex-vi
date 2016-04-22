@@ -79,6 +79,7 @@ static char sccsid[] = "@(#)ex_subr.c	1.41 (gritter) 12/25/06";
 
 /* from ex_subr.c	7.10.1 (2.11BSD) 1996/3/22 */
 
+#include <sys/ioctl.h>
 #include "ex.h"
 #include "ex_re.h"
 #include "ex_tty.h"
@@ -928,9 +929,10 @@ int _ovno;
 void
 onemt(int signum)
 {
-	int oovno;
+	/* int oovno; unused? */
 
-	oovno = _ovno;
+	(void)signum;
+	/* oovno = _ovno; unused? */
 	/* 2 and 3 are valid on 11/40 type vi, so */
 	if (_ovno < 0 || _ovno > 3)
 		_ovno = 0;

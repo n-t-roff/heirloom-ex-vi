@@ -344,7 +344,7 @@ p_dconv(long value, char *buffer)
 		value -= BIG;	/* will eventually underflow */
 		n++;
 	}
-	while (value >= BIG && (lval = value - BIG) >= 0) {
+	while (value >= (long)BIG && (lval = value - BIG) >= 0) {
 		value = lval;
 		n++;
 	}

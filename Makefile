@@ -94,7 +94,7 @@ DESTDIR		=
 #
 # A BSD-like install program. GNU install will fit well here, too.
 #
-INSTALL		= /usr/bin/install
+INSTALL		= install
 
 #
 # Compiler and linker flags.
@@ -233,10 +233,11 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-WARN	= -Wall -Wextra \
-	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
-	-fsanitize=undefined
-#	-fsanitize=integer -fsanitize=address
+WARN	= -Wall -Wextra
+#	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls
+#	-fsanitize=undefined
+#	-fsanitize=integer
+#	-fsanitize=address
 STRIP = -s
 
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
@@ -311,6 +312,7 @@ install-man:
 	ln -s ex.1 $(DESTDIR)$(MANDIR)/man1/edit.1
 	ln -s vi.1 $(DESTDIR)$(MANDIR)/man1/vedit.1
 	ln -s vi.1 $(DESTDIR)$(MANDIR)/man1/view.1
+	$(INSTALL) -m 644 xvi.1 $(DESTDIR)$(MANDIR)/man1/
 
 install: all install-man
 	rm -f $(DESTDIR)$(BINDIR)/ex $(DESTDIR)$(BINDIR)/edit \
@@ -333,6 +335,7 @@ install: all install-man
 	ln -s ex $(DESTDIR)$(BINDIR)/vedit
 	ln -s ex $(DESTDIR)$(BINDIR)/vi
 	ln -s ex $(DESTDIR)$(BINDIR)/view
+	$(INSTALL) xvi $(DESTDIR)$(BINDIR)/
 	test -d $(DESTDIR)$(PRESERVEDIR) || mkdir -p $(DESTDIR)$(PRESERVEDIR)
 	chmod 1777 $(DESTDIR)$(PRESERVEDIR)
 
