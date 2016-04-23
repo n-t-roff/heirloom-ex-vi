@@ -99,11 +99,7 @@ bool	wasalt;
 short	isalt;
 
 long	cntch;			/* Count of characters on unit io */
-#ifndef VMUNIX
-short	cntln;			/* Count of lines " */
-#else
-int	cntln;
-#endif
+long	cntln;			/* Count of lines " */
 long	cntnull;		/* Count of nulls " */
 #ifndef	BIT8
 long	cntodd;			/* Count of non-ascii characters " */
@@ -529,11 +525,11 @@ iostats(void)
 	if (hush == 0) {
 		if (value(TERSE))
 			printf(catgets(catd, 1, 103,
-						" %d/%d"), cntln, (int)cntch);
+						" %ld/%ld"), cntln, cntch);
 		else
 			printf(catgets(catd, 1, 104,
-		" %d line%s, %d character%s"), cntln, plural((long) cntln),
-			    (int)cntch, plural((int)cntch));
+		" %ld line%s, %ld character%s"), cntln, plural(cntln),
+			    cntch, plural(cntch));
 		if (cntnull
 #ifndef	BIT8
 				|| cntodd

@@ -1,4 +1,16 @@
-Release ...
+Release 4.1.0
+=============
+
+2016-04-22
+
+* In the last changes after release 3/25/05 until 2/25/07 a bug had been
+  introduced in the cursor positioning of the line numbering mode.  This
+  is fixed now.
+
+_____________________________________________________________________________
+
+Last changes from Gunnar Ritter (2/25/07):
+
 * The screen buffers for visual mode are now dynamically allocated, so
   vi usually does not return to ex mode with "screen too large" when the
   terminal is resized on a large monitor anymore.

@@ -41,21 +41,23 @@
 #
 #	Sccsid @(#)Makefile	1.2 (gritter) 2/4/02
 #
+
+LIB	= libtermlib.a
 DEFS	= -DCM_N -DCM_GT -DCM_B -DCM_D
-# COPT comes from ex.
-CFLAGS	= $(DEFS) $(COPT)
 SRCS	= termcap.c tgoto.c tputs.c
-OBJS	= termcap.o tgoto.o tputs.o
+OBJS	= $(SRCS:.c=.o)
 
-.c.o: ; $(CC) $(CFLAGS) -c $<
+.c.o:
+	# COPT comes from ex
+	$(CC) $(CFLAGS) $(DEFS) $(COPT) -c $<
 
-all: libtermlib.a
+all: $(LIB)
 
-libtermlib.a: $(OBJS)
-	ar cr libtermlib.a $(OBJS)
+$(LIB): $(OBJS)
+	$(AR) crs $@ $(OBJS)
 
 clean:
-	rm -f libtermlib.a $(OBJS) core
+	rm -f $(LIB) $(OBJS) core
 
 # DO NOT DELETE
 

@@ -10,11 +10,8 @@ changes were made to get closer to the POSIX.2 guidelines for ex and
 vi. Some issues that were clearly bugs and not features have also been
 resolved; see the Changes file for details.
 
-New releases are announced on Freshmeat. If you want to get
-notified by email on each release, use their subscription service at
-<http://freshmeat.net/projects/vi/>.
-
-The project homepage is currently at <http://ex-vi.sourceforge.net>.
+The project homepage is currently at
+<https://github.com/n-t-roff/heirloom-ex-vi>.
 
 
 How to build
@@ -25,16 +22,14 @@ build environment. Explanations are provided directly in this file.
 
 You can tune the sizes of some internal buffers by editing config.h.
 
-Then type 'make' and 'make install'.
+Then type
 
-It is possible to build a RPM file directly from the source distribution
-by executing
-
-        rpmbuild -tb ex-<version>.tar.bz2
-
-Note that the RPM spec installs the binary in /usr/5bin by default to
-avoid conflicts with vendor files in /usr/bin. The default locations
-match those of the Heirloom Toolchest <http://heirloom.sourceforge.net>.
+	$ ./configure
+	$ make
+	$ su
+	# make install
+	# exit
+	$ make mrproper
 
 The following systems have been reported to compile this code:
 
@@ -49,10 +44,11 @@ IBM AIX             5.1, 4.3
 NEC SUPER-UX        10.2
 NEC UX/4800         Release11.5 Rev.A
 Control Data EP/IX  2.2.1AA
-FreeBSD             3.1, 4.5, 5.x, 6.1
-NetBSD              1.6, 2.0
+FreeBSD             CURRENT (11.0+)
+NetBSD              CURRENT (7.0+)
 DragonFlyBSD        1.3.7-DEVELOPMENT
 Mac OS X            10.4.3
+OpenBSD             CURRENT (5.9+)
 
 Reports about other Unix systems are welcome, whether successful or not
 (in the latter case add a detailed description). This port of vi is only

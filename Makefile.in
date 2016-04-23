@@ -211,7 +211,7 @@ OSTYPE	= -DVMUNIX
 # provide a good termcap file, or when setting the TERMCAP environment
 # variable is deemed sufficient, is the included 2.11BSD termcap library.
 #
-TERMLIB	= termlib
+#TERMLIB	= termlib
 
 #
 # Since ex uses sbrk() internally, a conflict with the libc's version of
@@ -295,7 +295,7 @@ clean:
 	-rm -f ex exrecover expreserve *.o x*.[cs] core errs trace
 
 mrproper: clean
-	-rm -f log
+	-rm -f log Makefile
 
 # install in standard place
 

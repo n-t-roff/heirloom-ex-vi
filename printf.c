@@ -344,7 +344,7 @@ p_dconv(long value, char *buffer)
 		value -= BIG;	/* will eventually underflow */
 		n++;
 	}
-	while (value >= (long)BIG && (lval = value - BIG) >= 0) {
+	while (value >= BIG && (lval = value - BIG) >= 0) {
 		value = lval;
 		n++;
 	}
@@ -359,7 +359,7 @@ p_dconv(long value, char *buffer)
 	 */
 	bp += MAXDIGS + 1;
 	while (value > LRGINT) {
-		*--bp = (int)(value % 10) + '0';
+		*--bp = (value % 10) + '0';
 		value /= 10;
 	}
 	
