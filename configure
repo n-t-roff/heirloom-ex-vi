@@ -1,9 +1,10 @@
 OUTMK=Makefile
 INMK=${OUTMK}.in
 UNAME=`uname`
-if [ "$UNAME" = "NetBSD" -o "$UNAME" = "OpenBSD" ]; then
-	echo "TERMLIB = curses" > $OUTMK
-else
-	echo "TERMLIB = termlib" > $OUTMK
-fi
+case $UNAME in
+NetBSD | OpenBSD | SunOS)
+	echo "TERMLIB = curses" > $OUTMK ;;
+*)
+	echo "TERMLIB = termlib" > $OUTMK ;;
+esac
 cat $INMK >> $OUTMK

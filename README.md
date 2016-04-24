@@ -16,7 +16,7 @@ which is fixed now.
 A simple `./configure` had been added to set curses
 as the terminal capabilities access library
 on some systems.
-## How to build
+## How to install
 ```
 $ ./configure
 $ make
