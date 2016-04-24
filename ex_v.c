@@ -494,9 +494,7 @@ vok(register cell *atube)
 	holdupd = 0;
 	Peekkey = 0;
 	vcnt = vcline = 0;
-	if (vSCROLL == 0)
-		vSCROLL = value(SCROLL);
-		/*old vSCROLL = (value(WINDOW)+1)/2;*//* round up so dft=6,11 */
+	vSCROLL = value(SCROLL);
 }
 
 void 
