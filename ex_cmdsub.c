@@ -84,6 +84,7 @@ static char sccsid[] = "@(#)ex_cmdsub.c	1.32 (gritter) 8/6/05";
 #include "ex_temp.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 /*
  * Command mode subroutines implementing
@@ -474,7 +475,7 @@ pragged(int kill)
 	getline(*unddol);
 	if (kill)
 		*pkill[1] = 0;
-	strcat(linebuf, gp);
+	strlcat(linebuf, gp, LBSIZE);
 	putmark(unddol);
 	getline(dol[1]);
 	if (kill)
@@ -734,8 +735,8 @@ badtags:
 					}
 				}
 				oglobp = globp;
-				strcpy(cmdbuf2, "e! ");
-				strcat(cmdbuf2, filebuf);
+				strlcpy(cmdbuf2, "e! ", sizeof cmdbuf2);
+				strlcat(cmdbuf2, filebuf, sizeof cmdbuf2);
 				globp = cmdbuf2;
 				d = peekc; ungetchar(0);
 				commands(1, 1);
@@ -1287,7 +1288,7 @@ mapcmd(int un, int ab)
 		fnkey = fkey(lhs[1] - '0');
 		funkey[0] = 'f'; funkey[1] = lhs[1]; funkey[2] = 0;
 		if (fnkey)
-			strcpy(lhs, fnkey);
+			strlcpy(lhs, fnkey, sizeof lhs);
 		dname = funkey;
 	} else {
 		dname = lhs;

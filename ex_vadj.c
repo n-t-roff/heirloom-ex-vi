@@ -82,6 +82,7 @@ static char sccsid[] = "@(#)ex_vadj.c	1.16 (gritter) 8/6/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 /*
  * Routines to deal with management of logical versus physical
@@ -710,7 +711,7 @@ vredraw(register int p)
 	 * search for first logical line affected by the redraw.
 	 */
 	vscrap();
-	CP(temp, linebuf);
+	strlcpy(temp, linebuf, LBSIZE);
 	l = 0;
 	tp = dot - vcline;
 	if (vcnt == 0)
@@ -922,7 +923,7 @@ vsync1(register int p)
 		return;
 	temp = smalloc(LBSIZE);
 	vscrap();
-	CP(temp, linebuf);
+	strlcpy(temp, linebuf, LBSIZE);
 	if (vcnt == 0)
 		LINE(0) = WTOP;
 	l = 0;

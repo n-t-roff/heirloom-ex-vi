@@ -82,6 +82,7 @@ static char sccsid[] = "@(#)ex_vget.c	1.31 (gritter) 8/6/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 /*
  * Input routines for open/visual.
@@ -725,13 +726,13 @@ macpush(char *st, int canundo)
 		error(catgets(catd, 1, 224,
 				"Macro too long@ - maybe recursive?"));
 	if (vmacp) {
-		strcpy(tmpbuf, vmacp);
+		strlcpy(tmpbuf, vmacp, sizeof tmpbuf);
 		if (!FIXUNDO)
 			canundo = 0;	/* can't undo inside a macro anyway */
 	}
-	strcpy(vmacbuf, st);
+	strlcpy(vmacbuf, st, sizeof vmacbuf);
 	if (vmacp)
-		strcat(vmacbuf, tmpbuf);
+		strlcat(vmacbuf, tmpbuf, sizeof vmacbuf);
 	vmacp = vmacbuf;
 	/* arrange to be able to undo the whole macro */
 	if (canundo) {
@@ -777,7 +778,7 @@ vudump(char *s)
 	fprintf(trace, "  undadot=%d, dot=%d, dol=%d, unddol=%d, truedol=%d\n",
 		lineno(undadot), lineno(dot), lineno(dol), lineno(unddol), lineno(truedol));
 	fprintf(trace, "  [\n");
-	CP(savelb, linebuf);
+	strlcpy(savelb, linebuf, sizeof savelb);
 	fprintf(trace, "linebuf = '%s'\n", linebuf);
 	for (p=zero+1; p<=truedol; p++) {
 		fprintf(trace, "%o ", *p);
@@ -785,7 +786,7 @@ vudump(char *s)
 		fprintf(trace, "'%s'\n", linebuf);
 	}
 	fprintf(trace, "]\n");
-	CP(linebuf, savelb);
+	strlcpy(linebuf, savelb, LBSIZE);
 }
 #endif
 

@@ -82,6 +82,7 @@ static char sccsid[] = "@(#)ex_tty.c	1.30 (gritter) 8/4/05";
 #include <sys/ioctl.h>
 #include "ex.h"
 #include "ex_tty.h"
+#include "compat.h"
 
 int ATTN = DELETE;
 
@@ -158,7 +159,7 @@ setterm(char *type)
 	putpad(TE);
 	if (tgetent(ltcbuf, type) != 1) {
 		unknown++;
-		CP(ltcbuf, "xx|dumb:");
+		strlcpy(ltcbuf, "xx|dumb:", LBSIZE);
 	}
 	gettmode(); /* must call gettmode() before setsize(). GR */
 	setsize();

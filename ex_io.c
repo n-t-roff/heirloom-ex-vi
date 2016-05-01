@@ -84,6 +84,7 @@ static char sccsid[] = "@(#)ex_io.c	1.42 (gritter) 8/4/05";
 #include "ex_temp.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 /*
  * File input/output, source, preserve and recover
@@ -121,7 +122,7 @@ filename(int comm)
 		if (savedfile[0] == 0 && comm != 'f')
 			error(catgets(catd, 1, 72,
 					"No file|No current filename"));
-		CP(file, savedfile);
+		strlcpy(file, savedfile, sizeof file);
 		wasalt = (isalt > 0) ? isalt-1 : 0;
 		isalt = 0;
 		oldadot = altdot;
@@ -148,16 +149,16 @@ filename(int comm)
 		case 'e':
 			if (savedfile[0]) {
 				altdot = lineDOT();
-				CP(altfile, savedfile);
+				strlcpy(altfile, savedfile, sizeof altfile);
 			}
-			CP(savedfile, file);
+			strlcpy(savedfile, file, sizeof savedfile);
 			break;
 
 		default:
 			if (file[0]) {
 				if (c != 'E')
 					altdot = lineDOT();
-				CP(altfile, file);
+				strlcpy(altfile, file, sizeof altfile);
 			}
 			break;
 		}
@@ -380,7 +381,7 @@ missing:
 	if (strlen(str) > FNSIZE - 4)
 		error(catgets(catd, 1, 89, "Filename too long"));
 /* samef: */
-	CP(file, str);
+	strlcpy(file, str, sizeof file);
 }
 
 /*
@@ -650,7 +651,7 @@ wop(bool dofname)
 		saddr2=addr2;
 		addr1=one;
 		addr2=dol;
-		CP(file, savedfile);
+		strlcpy(file, savedfile, sizeof file);
 		if (inopen) {
 			vclrech(0);
 			splitw++;
@@ -880,7 +881,7 @@ source(char *fil, bool okfail)
 	saveglobp = globp;
 	saveinput = input;
 	if (input)
-		strcpy(saveinline, input);
+		strlcpy(saveinline, input, sizeof saveinline);
 	peekc = 0; lastc = 0; globp = 0; input = 0;
 	if (saveinp < 0)
 		error(catgets(catd, 1, 119, "Too many nested sources"));

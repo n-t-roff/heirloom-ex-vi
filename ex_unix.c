@@ -84,6 +84,7 @@ static char sccsid[] = "@(#)ex_unix.c	1.17 (gritter) 8/4/05";
 #include "ex_tty.h"
 #include "ex_vis.h"
 #include <sys/wait.h>
+#include "compat.h"
 
 /*
  * Unix escapes, filtering
@@ -101,7 +102,7 @@ unix0(int warn)
 	char printub, puxb[UXBSIZE + sizeof (int)];
 
 	printub = 0;
-	CP(puxb, uxb);
+	strlcpy(puxb, uxb, sizeof puxb);
 	c = getchar();
 	if (c == '\n' || c == EOF)
 		error(catgets(catd, 1, 192,

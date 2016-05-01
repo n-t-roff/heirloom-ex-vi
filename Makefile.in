@@ -212,6 +212,7 @@ OSTYPE	= -DVMUNIX
 # variable is deemed sufficient, is the included 2.11BSD termcap library.
 #
 #TERMLIB	= termlib
+TERMLIB	= tinfo
 
 #
 # Since ex uses sbrk() internally, a conflict with the libc's version of
@@ -251,7 +252,9 @@ OBJS	= ex.o ex_addr.o ex_cmds.o ex_cmds2.o ex_cmdsub.o \
 		ex_set.o ex_subr.o ex_tagio.o ex_temp.o ex_tty.o ex_unix.o \
 		ex_v.o ex_vadj.o ex_vget.o ex_vmain.o ex_voper.o \
 		ex_vops.o ex_vops2.o ex_vops3.o ex_vput.o ex_vwind.o \
-		printf.o ex_version.o $(MALLOC)
+		printf.o ex_version.o $(MALLOC) compat.o
+EXRECOBJS=exrecover.o $(MALLOC) compat.o
+EXPREOBJS=expreserve.o compat.o
 HDRS	= ex.h ex_argv.h ex_re.h ex_temp.h ex_tty.h ex_tune.h ex_vars.h \
 		ex_vis.h libterm/libterm.h
 SRC1	= ex.c ex_addr.c ex_cmds.c ex_cmds2.c ex_cmdsub.c
@@ -267,19 +270,19 @@ SRC7	= mapmalloc.c malloc.c
 
 all: $(RETGT) exrecover expreserve ex
 
-ex: $(TLIB) $(OBJS)
-	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) $(WARN) -Llibterm -l$(TERMLIB) $(RELIB)
+ex: $(OBJS)
+	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) $(WARN) -l$(TERMLIB) $(RELIB)
 	size ex
 
 $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h
 	cd libterm && $(MAKE) CC="$(CC)" \
 		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
 
-exrecover: exrecover.o $(MALLOC)
-	$(CC) -o exrecover $(LDFLAGS) $(WARN) exrecover.o $(MALLOC) $(LDADD)
+exrecover: $(EXRECOBJS)
+	$(CC) -o exrecover $(LDFLAGS) $(WARN) $(EXRECOBJS) $(LDADD)
 
-expreserve: expreserve.o
-	$(CC) -o expreserve $(LDFLAGS) $(WARN) expreserve.o $(LDADD)
+expreserve: $(EXPREOBJS)
+	$(CC) -o expreserve $(LDFLAGS) $(WARN) $(EXPREOBJS) $(LDADD)
 
 ex_vars.h: ex_data.c
 	sh makeoptions $(CCFLAGS)
@@ -295,7 +298,7 @@ clean:
 	-rm -f ex exrecover expreserve *.o x*.[cs] core errs trace
 
 mrproper: clean
-	-rm -f log Makefile
+	-rm -f log Makefile config.log compat.h
 
 # install in standard place
 

@@ -85,6 +85,7 @@ static char sccsid[] = "@(#)ex_temp.c	1.27 (gritter) 12/25/06";
 #include "ex_tty.h"
 #include <sys/wait.h>
 #include <time.h>
+#include "compat.h"
 
 /*
  * Editor temporary file routines.
@@ -679,20 +680,20 @@ YANKreg(register int c)
 		rblock = 0;
 		rnleft = 0;
 	}
-	CP(savelb,linebuf);
+	strlcpy(savelb,linebuf, LBSIZE);
 	for (addr = addr1; addr <= addr2; addr++) {
 		getline(*addr);
 		if (sp->rg_flags) {
 			if (addr == addr2)
 				*wcursor = 0;
 			if (addr == addr1)
-				strcpy(linebuf, cursor);
+				strlcpy(linebuf, cursor, LBSIZE);
 		}
 		YANKline();
 	}
 	rbflush();
 	killed();
-	CP(linebuf,savelb);
+	strlcpy(linebuf,savelb, LBSIZE);
 	free(savelb);
 }
 

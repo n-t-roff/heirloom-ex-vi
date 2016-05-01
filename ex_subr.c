@@ -84,6 +84,7 @@ static char sccsid[] = "@(#)ex_subr.c	1.41 (gritter) 12/25/06";
 #include "ex_re.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 short	lastsc;
 
@@ -438,11 +439,11 @@ merror1(intptr_t seekpt)
 {
 
 #ifdef VMUNIX
-	strcpy(linebuf, (char *)seekpt);
+	strlcpy(linebuf, (char *)seekpt, LBSIZE);
 #else
 	lseek(erfile, (off_t) seekpt, SEEK_SET);
 	if (read(erfile, linebuf, 128) < 2)
-		CP(linebuf, "ERROR");
+		strlcpy(linebuf, "ERROR", LBSIZE);
 #endif
 }
 
@@ -817,7 +818,7 @@ void
 strcLIN(char *dp)
 {
 
-	CP(linebuf, dp);
+	strlcpy(linebuf, dp, LBSIZE);
 }
 
 void

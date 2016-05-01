@@ -1,6 +1,13 @@
 Release 4.1.0
 =============
 
+2016-04-24
+
+* Half screen scrolling using ^D or ^U did not take terminal resizing
+  into account.  Instead the number of lines to scroll had been set up
+  at start time and not changed after that.  It is now updated after
+  each resize.
+
 2016-04-22
 
 * In the last changes after release 3/25/05 until 2/25/07 a bug had been

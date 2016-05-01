@@ -82,6 +82,7 @@ static char sccsid[] = "@(#)ex_vmain.c	1.34 (gritter) 8/6/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 /*
  * This is the main routine for visual.
@@ -1275,7 +1276,7 @@ vsave(void)
 {
 	char *temp = smalloc(LBSIZE);
 
-	CP(temp, linebuf);
+	strlcpy(temp, linebuf, LBSIZE);
 	if (FIXUNDO && vundkind == VCHNG || vundkind == VCAPU) {
 		/*
 		 * If the undo state is saved in the temporary buffer
@@ -1286,7 +1287,7 @@ vsave(void)
 		 * with line dot (e.g. in case ':') above, so beware.
 		 */
 		prepapp();
-		CP(linebuf, vutmp);
+		strlcpy(linebuf, vutmp, LBSIZE);
 		putmark(dot);
 		vremote(1, yank, 0);
 		vundkind = VMCHNG;

@@ -81,6 +81,7 @@ static char sccsid[] = "@(#)ex_get.c	1.18 (gritter) 8/4/05";
 
 #include "ex.h"
 #include "ex_tty.h"
+#include "compat.h"
 
 /*
  * Input routines for command mode.
@@ -339,7 +340,7 @@ gettty(void)
 		for (; c > 0; c--)
 			*cp++ = ' ';
 	}
-	CP(cp, genbuf);
+	strlcpy(cp, genbuf, LBSIZE - (cp - linebuf));
 	if (linebuf[0] == '.' && linebuf[1] == 0)
 		return (EOF);
 	return (0);

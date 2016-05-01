@@ -81,6 +81,7 @@ static char sccsid[] = "@(#)ex_re.c	1.60 (gritter) 8/6/05";
 
 #include "ex.h"
 #include "ex_re.h"
+#include "compat.h"
 
 #ifdef	UXRE
 
@@ -475,7 +476,7 @@ comprhs(int seof)
 #ifdef	BIT8
 	qp = rhsquo;
 #endif
-	CP(orhsbuf, rp);
+	strlcpy(orhsbuf, rp, sizeof orhsbuf);
 #ifdef	BIT8
 	copy(orhsquo, qp, (size_t) strlen(rp));
 #endif

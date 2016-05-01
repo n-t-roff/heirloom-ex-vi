@@ -82,6 +82,7 @@ static char sccsid[] = "@(#)ex_vops.c	1.28 (gritter) 8/4/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
+#include "compat.h"
 
 /*
  * This file defines the operation sequences which interface the
@@ -203,7 +204,7 @@ vundo (
 	case VCHNG:
 	case VCAPU:
 		vundkind = VCHNG;
-		CP(temp, vutmp);
+		strlcpy(temp, vutmp, LBSIZE);
 		CP(vutmp, linebuf);
 		doomed = column(vUA2 - 1) - column(vUA1 - 1);
 		strcLIN(temp);
@@ -291,7 +292,7 @@ vmacchng(int fromvis)
 		vudump("before vmacchng hairy case");
 #endif
 		savedot = dot; savedol = dol; savecursor = cursor;
-		CP(savelb, linebuf);
+		strlcpy(savelb, linebuf, LBSIZE);
 		nlines = dol - zero;
 		while ((line *) endcore - truedol < nlines)
 			morelines();
@@ -323,7 +324,7 @@ vmacchng(int fromvis)
 		truedol -= nlines;
 		copyw(zero+1, truedol+1, nlines);
 		dot = savedot; dol = savedol ; cursor = savecursor;
-		CP(linebuf, savelb);
+		strlcpy(linebuf, savelb, LBSIZE);
 		vch_mac = VC_MANYCHANGE;
 
 		/* Arrange that no further undo saving happens within macro */

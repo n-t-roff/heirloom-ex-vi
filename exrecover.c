@@ -109,6 +109,7 @@ extern int	vsnprintf(char *, size_t, const char *, va_list);
 #include "ex_tty.h"
 #include <dirent.h>
 #include <time.h>
+#include "compat.h"
 
 #ifndef	MAXNAMLEN
 #ifdef	FNSIZE
@@ -239,7 +240,7 @@ main(int argc, char *argv[])
 		error(catgets(catd, 2, 1,
 			" Wrong number of arguments to exrecover"), 0);
 
-	strcpy(file, argv[2]);
+	strlcpy(file, argv[2], sizeof file);
 
 	/*
 	 * Search for this file.
@@ -538,7 +539,7 @@ findtmp(char *dir)
 		 * name for later unlinking.
 		 */
 		tfile = bestfd;
-		strcpy(nb, bestnb);
+		strlcpy(nb, bestnb, sizeof nb);
 		ignorl(lseek(tfile, (off_t) 0, SEEK_SET));
 
 		/*
@@ -585,7 +586,9 @@ searchdir(char *dirname)
 		 * later, and check that this is really a file
 		 * we are looking for.
 		 */
-		ignore(strcat(strcat(strcpy(nb, dirname), "/"), dirent->d_name));
+		strlcpy(nb, dirname, sizeof nb);
+		strlcat(nb, "/", sizeof nb);
+		strlcat(nb, dirent->d_name, sizeof nb);
 		if (yeah(nb)) {
 			/*
 			 * Well, it is the file we are looking for.
@@ -598,7 +601,7 @@ searchdir(char *dirname)
 				ignore(close(bestfd));
 				bestfd = dup(tfile);
 				besttime = H.Time;
-				strcpy(bestnb, nb);
+				strlcpy(bestnb, nb, sizeof bestnb);
 			}
 			/*
 			 * Count versions so user can be told there are

@@ -102,6 +102,7 @@ static char sccsid[] UNUSED = "@(#)expreserve.c	1.23 (gritter) 11/27/04";
 #include <stdlib.h>
 #include <pwd.h>
 #include <time.h>
+#include "compat.h"
 
 #include "config.h"
 
@@ -427,7 +428,7 @@ format:
 	 * LOST, by putting this in the header.
 	 */
 	if (H.Savedfile[0] == 0) {
-		strcpy(H.Savedfile, "LOST");
+		strlcpy(H.Savedfile, "LOST", sizeof H.Savedfile);
 		ignore(write(0, (char *) &H, sizeof H));
 		H.Savedfile[0] = 0;
 		lseek(0, (off_t) 0, SEEK_SET);
