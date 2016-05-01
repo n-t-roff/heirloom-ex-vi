@@ -212,7 +212,6 @@ OSTYPE	= -DVMUNIX
 # variable is deemed sufficient, is the included 2.11BSD termcap library.
 #
 #TERMLIB	= termlib
-TERMLIB	= tinfo
 
 #
 # Since ex uses sbrk() internally, a conflict with the libc's version of
@@ -268,10 +267,10 @@ SRC7	= mapmalloc.c malloc.c
 .SUFFIXES: .o .c
 .c.o: ; $(CC) $(CCFLAGS) -c $<
 
-all: $(RETGT) exrecover expreserve ex
+all: exrecover expreserve ex
 
-ex: $(OBJS)
-	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) $(WARN) -l$(TERMLIB) $(RELIB)
+ex: $(OBJS) $(RETGT) $(TLIB)
+	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) $(WARN) $(TERMLIB) $(RELIB)
 	size ex
 
 $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h

@@ -173,5 +173,48 @@ check_make
 check_strlcpy
 check_strlcat
 
-gen_mk
+TermTest () {
+	check_for "$1"
+	Term="$1"
+	echo "TERMLIB=$1" > $OUTMK
+	gen_mk 1
+	cat <<EOT >>$OUTMK
+$TMPNAM: ${TMPNAM}.o \$(TLIB)
+	\$(CC) -o \$@ ${TMPNAM}.o \$(TERMLIB)
+EOT
+	cat <<EOT >>$TMPC
+#include <stdio.h>
+#include <term.h>
+int main() {
+	char tcbuf[1024];
+	char *terms[] = { "xterm", "tmux", "screen" };
+	int i;
+	for (i = 0; i < 3; i++)
+		if (tgetent(tcbuf, "xterm" ) != 1) {
+			fprintf(stderr, "Unknown TERM %s\n", terms[i]);
+			return 1;
+		}
+	return 0;
+}
+EOT
+	compile
+	test_result 2 && ./$TMPNAM 2>> $LOG && {
+		echo yes
+		return
+	}
+	echo no
+	false
+}
+
+TestLocalTermlib () {
+	TermTest "-Llibterm -ltermlib" && return
+	TermTest "-ltinfo"             && return
+	TermTest "-lcurses"            && return
+	TermTest "-lncurses"           && return
+}
+
+TestLocalTermlib
+
+echo "TERMLIB=$Term" > $OUTMK
+gen_mk 1
 rm -f $TMPNAM*
