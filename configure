@@ -184,13 +184,14 @@ $TMPNAM: ${TMPNAM}.o \$(TLIB)
 EOT
 	cat <<EOT >>$TMPC
 #include <stdio.h>
-#include <term.h>
+#include "ex.h"
+#include "ex_tty.h"
 int main() {
 	char tcbuf[1024];
-	char *terms[] = { "xterm", "tmux", "screen" };
-	int i;
-	for (i = 0; i < 3; i++)
-		if (tgetent(tcbuf, "xterm" ) != 1) {
+	char *terms[] = { "xterm", "screen" };
+	unsigned i;
+	for (i = 0; i < sizeof(terms)/sizeof(*terms); i++)
+		if (tgetent(tcbuf, terms[i]) != 1) {
 			fprintf(stderr, "Unknown TERM %s\n", terms[i]);
 			return 1;
 		}
