@@ -163,7 +163,7 @@ FEATURES	= -DLISPCODE -DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8
 #
 REINC	= -I./libuxre -DUXRE
 RELIB	= -L./libuxre -luxre
-RETGT	= uxre
+RETGT	= libuxre/libuxre.a
 
 #
 # VMUNIX should be correct for any modern Unix.
@@ -234,9 +234,8 @@ MALLOC=mapmalloc.o
 ###############################################################################
 
 WARN	= -Wall -Wextra
-#	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls
-#	-fsanitize=undefined
-#	-fsanitize=integer
+#	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
+#	-fsanitize=undefined -fsanitize=integer
 #	-fsanitize=address
 STRIP = -s
 
@@ -286,7 +285,7 @@ expreserve: $(EXPREOBJS)
 ex_vars.h: ex_data.c
 	sh makeoptions $(CCFLAGS)
 
-uxre:
+$(RETGT):
 	cd libuxre && $(MAKE) CC="$(CC)" \
 		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
 

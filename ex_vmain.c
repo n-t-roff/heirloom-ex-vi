@@ -1277,7 +1277,7 @@ vsave(void)
 	char *temp = smalloc(LBSIZE);
 
 	strlcpy(temp, linebuf, LBSIZE);
-	if (FIXUNDO && vundkind == VCHNG || vundkind == VCAPU) {
+	if ((FIXUNDO && vundkind == VCHNG) || vundkind == VCAPU) {
 		/*
 		 * If the undo state is saved in the temporary buffer
 		 * vutmp, then we sync this into the temp file so that

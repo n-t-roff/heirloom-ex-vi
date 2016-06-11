@@ -365,8 +365,10 @@ realloc(void *ap, size_t nbytes)
 	nw = (nbytes+WORD-1)/WORD;
 	if(nw<onw)
 		onw = nw;
-	while(onw--!=0)
+	while (onw) {
+		onw--;
 		*t++ = *s++;
+	}
 	if(q<p && q+nw>=p && p[-1].pool==q[-1].pool)
 		(q+(q+nw-p))->ptr = allocx;
 	return(q);

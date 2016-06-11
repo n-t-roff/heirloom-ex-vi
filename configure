@@ -180,7 +180,7 @@ TermTest () {
 	gen_mk 1
 	cat <<EOT >>$OUTMK
 $TMPNAM: ${TMPNAM}.o \$(TLIB)
-	\$(CC) -o \$@ ${TMPNAM}.o \$(TERMLIB)
+	\$(CC) \$(WARN) -o \$@ ${TMPNAM}.o \$(TERMLIB)
 EOT
 	cat <<EOT >>$TMPC
 #include <stdio.h>

@@ -159,7 +159,7 @@ setterm(char *type)
 	putpad(TE);
 	if (tgetent(ltcbuf, type) != 1) {
 		unknown++;
-		strlcpy(ltcbuf, "xx|dumb:", LBSIZE);
+		strlcpy(ltcbuf, "xx|dumb:", sizeof ltcbuf);
 	}
 	gettmode(); /* must call gettmode() before setsize(). GR */
 	setsize();
