@@ -99,7 +99,7 @@ char *p_dconv(long, char *);
 static int p_emit(char *, char *);
 
 int
-printf(const char *fmt, ...)
+ex_printf(char *fmt, ...)
 {
 	va_list ap;
 	int ret;

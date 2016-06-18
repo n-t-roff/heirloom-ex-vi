@@ -262,7 +262,7 @@ gettty(void)
 	if (intty && !inglobal) {
 		if (offset) {
 			holdcm = 1;
-			printf("  %4d  ", lineDOT() + 1);
+			ex_printf("  %4d  ", lineDOT() + 1);
 			flush();
 			holdcm = 0;
 		}
@@ -340,7 +340,7 @@ gettty(void)
 		for (; c > 0; c--)
 			*cp++ = ' ';
 	}
-	strlcpy(cp, genbuf, LBSIZE - (cp - linebuf));
+	lcpy(cp, genbuf, LBSIZE - (cp - linebuf));
 	if (linebuf[0] == '.' && linebuf[1] == 0)
 		return (EOF);
 	return (0);

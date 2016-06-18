@@ -167,10 +167,10 @@ pargs(void)
 		if (ac != 0)
 			putchar(' ' | QUOTE);
 		if (ac + argc == argc0 - 1)
-			printf("[");
+			ex_printf("[");
 		lprintf("%s", as);
 		if (ac + argc == argc0 - 1)
-			printf("]");
+			ex_printf("]");
 		as = av ? *++av : strend(as) + 1;
 	}
 	noonl();
@@ -475,7 +475,7 @@ pragged(int kill)
 	getline(*unddol);
 	if (kill)
 		*pkill[1] = 0;
-	strlcat(linebuf, gp, LBSIZE);
+	lcat(linebuf, gp, LBSIZE);
 	putmark(unddol);
 	getline(dol[1]);
 	if (kill)
@@ -659,7 +659,7 @@ badtag:
 			if(tgets(linebuf, LBSIZE, ft_iof)==0)
 				goto goleft;
 #ifdef TDEBUG
-			printf("tag: %o %o %o %s\n", bot, mid, top, linebuf);
+			ex_printf("tag: %o %o %o %s\n", bot, mid, top, linebuf);
 #endif
 #endif
 			while (*cp && *lp == *cp)
@@ -735,8 +735,8 @@ badtags:
 					}
 				}
 				oglobp = globp;
-				strlcpy(cmdbuf2, "e! ", sizeof cmdbuf2);
-				strlcat(cmdbuf2, filebuf, sizeof cmdbuf2);
+				lcpy(cmdbuf2, "e! ", sizeof cmdbuf2);
+				lcat(cmdbuf2, filebuf, sizeof cmdbuf2);
 				globp = cmdbuf2;
 				d = peekc; ungetchar(0);
 				commands(1, 1);
@@ -1288,7 +1288,7 @@ mapcmd(int un, int ab)
 		fnkey = fkey(lhs[1] - '0');
 		funkey[0] = 'f'; funkey[1] = lhs[1]; funkey[2] = 0;
 		if (fnkey)
-			strlcpy(lhs, fnkey, sizeof lhs);
+			lcpy(lhs, fnkey, sizeof lhs);
 		dname = funkey;
 	} else {
 		dname = lhs;

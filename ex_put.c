@@ -279,7 +279,7 @@ numbline(int i, int max)
 
 	if (shudclob)
 		slobber(' ');
-	max -= printf("%6d  ", i);
+	max -= ex_printf("%6d  ", i);
 	return normline(0, max);
 }
 

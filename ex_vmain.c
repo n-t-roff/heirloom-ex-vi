@@ -1276,7 +1276,7 @@ vsave(void)
 {
 	char *temp = smalloc(LBSIZE);
 
-	strlcpy(temp, linebuf, LBSIZE);
+	lcpy(temp, linebuf, LBSIZE);
 	if ((FIXUNDO && vundkind == VCHNG) || vundkind == VCAPU) {
 		/*
 		 * If the undo state is saved in the temporary buffer
@@ -1287,7 +1287,7 @@ vsave(void)
 		 * with line dot (e.g. in case ':') above, so beware.
 		 */
 		prepapp();
-		strlcpy(linebuf, vutmp, LBSIZE);
+		lcpy(linebuf, vutmp, LBSIZE);
 		putmark(dot);
 		vremote(1, yank, 0);
 		vundkind = VMCHNG;

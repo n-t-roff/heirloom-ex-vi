@@ -75,12 +75,12 @@
 
 #include "ex.h"
 
-static char *versionstring = "@(#)Version 4.1.0 (gritter) 6/11/16";
+static char *versionstring = "@(#)Version 4.1.0 (gritter) 6/18/16";
 
 void 
 printver(void)
 {
-	printf("%s%s%s", versionstring + 4,
+	ex_printf("%s%s%s", versionstring + 4,
 #ifdef	BIT8
 		"", ""
 #else

@@ -151,7 +151,7 @@ void dump(const char *msg, uintptr_t t)
 #ifdef	NULL
 #undef	NULL
 #endif
-#define NULL		 0
+#define NULL		0
 #define	testbusy(p)	((INT)(p)&BUSY)
 #define	setbusy(p)	(union store *)((INT)(p)|BUSY)
 #define	clearbusy(p)	(union store *)((INT)(p)&~BUSY)
@@ -203,10 +203,10 @@ map(void *addr, size_t len)
 static void *
 mallock(size_t nbytes, union store *start, union store *end)
 {
-	register union store *p, *q;
+	union store *p, *q;
 	struct pool *o;
-	register int nw;
-	static int temp;	/*coroutines assume no auto*/
+	size_t nw;
+	static size_t temp;	/*coroutines assume no auto*/
 	static size_t poolblock = 0100000;
 
 	if (nbytes == 0)
@@ -315,7 +315,7 @@ malloc(size_t nbytes)
 void 
 free(register void *ap)
 {
-	register union store *p = ap;
+	union store *p = ap;
 	struct pool *o;
 
 	dump("  free", (uintptr_t)ap);
@@ -340,11 +340,11 @@ free(register void *ap)
 void *
 realloc(void *ap, size_t nbytes)
 {
-	register union store *p = ap;
-	register union store *q;
+	union store *p = ap;
+	union store *q;
 	struct pool *o;
 	union store *s, *t;
-	register size_t nw;
+	size_t nw;
 	size_t onw;
 
 	if (p==NULL)
@@ -380,7 +380,7 @@ allock(void *ao)
 {
 #ifdef longdebug
 	struct pool *o = ao;
-	register union store *p;
+	union store *p;
 	int x;
 	x = 0;
 	for(p= &allocs[0]; clearbusy(p->ptr) > p; p=clearbusy(p->ptr)) {
@@ -401,9 +401,9 @@ allock(void *ao)
 void *
 calloc(size_t num, size_t size)
 {
-	register char *mp;
-	register INT *q;
-	register int m;
+	char *mp;
+	INT *q;
+	size_t m;
 
 	num *= size;
 	mp = malloc(num);
@@ -411,8 +411,10 @@ calloc(size_t num, size_t size)
 		return(NULL);
 	q = (INT *) mp;
 	m = (num+CHARPERINT-1)/CHARPERINT;
-	while(--m >= 0)
+	while(m) {
+		m--;
 		*q++ = 0;
+	}
 	return(mp);
 }
 

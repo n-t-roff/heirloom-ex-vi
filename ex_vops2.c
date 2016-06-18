@@ -211,7 +211,7 @@ showmode(int mode)
 	if (value(TERSE))
 		putchar(str[0]);
 	else
-		printf(&str[1]);
+		ex_printf(&str[1]);
 	vgoto(sdl, sdc);
 	cursor = ocurs;
 	splitw = 0;
@@ -426,7 +426,7 @@ vappend(int ch, int cnt, int indent)
 
 				Outchar = vinschar;
 				hold |= HOLDQIK;
-				printf("%s", genbuf);
+				ex_printf("%s", genbuf);
 				hold = oldhold;
 				Outchar = vputchar;
 			}

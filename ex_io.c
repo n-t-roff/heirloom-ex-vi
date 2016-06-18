@@ -122,7 +122,7 @@ filename(int comm)
 		if (savedfile[0] == 0 && comm != 'f')
 			error(catgets(catd, 1, 72,
 					"No file|No current filename"));
-		strlcpy(file, savedfile, sizeof file);
+		lcpy(file, savedfile, sizeof file);
 		wasalt = (isalt > 0) ? isalt-1 : 0;
 		isalt = 0;
 		oldadot = altdot;
@@ -149,16 +149,16 @@ filename(int comm)
 		case 'e':
 			if (savedfile[0]) {
 				altdot = lineDOT();
-				strlcpy(altfile, savedfile, sizeof altfile);
+				lcpy(altfile, savedfile, sizeof altfile);
 			}
-			strlcpy(savedfile, file, sizeof savedfile);
+			lcpy(savedfile, file, sizeof savedfile);
 			break;
 
 		default:
 			if (file[0]) {
 				if (c != 'E')
 					altdot = lineDOT();
-				strlcpy(altfile, file, sizeof altfile);
+				lcpy(altfile, file, sizeof altfile);
 			}
 			break;
 		}
@@ -169,19 +169,19 @@ filename(int comm)
 		lprintf("\"%s\"", file);
 		if (comm == 'f') {
 			if (value(READONLY))
-				printf(catgets(catd, 1, 73, " [Read only]"));
+				ex_printf(catgets(catd, 1, 73, " [Read only]"));
 			if (!edited)
-				printf(catgets(catd, 1, 74, " [Not edited]"));
+				ex_printf(catgets(catd, 1, 74, " [Not edited]"));
 			if (tchng)
-				printf(catgets(catd, 1, 75, " [Modified]"));
+				ex_printf(catgets(catd, 1, 75, " [Modified]"));
 		}
 		flush();
 	} else
-		printf(catgets(catd, 1, 76, "No file "));
+		ex_printf(catgets(catd, 1, 76, "No file "));
 	if (comm == 'f') {
 		if (!(i = lineDOL()))
 			i++;
-		printf(catgets(catd, 1, 77,
+		ex_printf(catgets(catd, 1, 77,
 			" line %d of %d --%ld%%--"), lineDOT(), lineDOL(),
 		    (long) 100 * lineDOT() / i);
 	}
@@ -381,7 +381,7 @@ missing:
 	if (strlen(str) > FNSIZE - 4)
 		error(catgets(catd, 1, 89, "Filename too long"));
 /* samef: */
-	strlcpy(file, str, sizeof file);
+	lcpy(file, str, sizeof file);
 }
 
 /*
@@ -421,7 +421,7 @@ rop(int c)
 			 * "edit" commands, not just for the first one.
 			 */
 			if (1 || !seenprompt) {
-				printf(catgets(catd, 1, 90, " [New file]"));
+				ex_printf(catgets(catd, 1, 90, " [New file]"));
 				noonl();
 				return;
 			}
@@ -467,7 +467,7 @@ rop(int c)
 		}
 	}
 	if (value(READONLY) && !hush) {
-		printf(catgets(catd, 1, 102, " [Read only]"));
+		ex_printf(catgets(catd, 1, 102, " [Read only]"));
 		flush();
 	}
 	if (c == 'r')
@@ -525,10 +525,10 @@ iostats(void)
 	io = -1;
 	if (hush == 0) {
 		if (value(TERSE))
-			printf(catgets(catd, 1, 103,
+			ex_printf(catgets(catd, 1, 103,
 						" %ld/%ld"), cntln, cntch);
 		else
-			printf(catgets(catd, 1, 104,
+			ex_printf(catgets(catd, 1, 104,
 		" %ld line%s, %ld character%s"), cntln, plural(cntln),
 			    cntch, plural(cntch));
 		if (cntnull
@@ -536,18 +536,18 @@ iostats(void)
 				|| cntodd
 #endif
 				) {
-			printf(catgets(catd, 1, 105, " ("));
+			ex_printf(catgets(catd, 1, 105, " ("));
 			if (cntnull) {
-				printf(catgets(catd, 1, 106,
+				ex_printf(catgets(catd, 1, 106,
 						"%d null"), (int)cntnull);
 #ifndef	BIT8
 				if (cntodd)
-					printf(catgets(catd, 1, 107, ", "));
+					ex_printf(catgets(catd, 1, 107, ", "));
 #endif
 			}
 #ifndef	BIT8
 			if (cntodd)
-				printf(catgets(catd, 1, 108,
+				ex_printf(catgets(catd, 1, 108,
 					"%d non-ASCII"), (int)cntodd);
 #endif
 			putchar(')');
@@ -651,7 +651,7 @@ wop(bool dofname)
 		saddr2=addr2;
 		addr1=one;
 		addr2=dol;
-		strlcpy(file, savedfile, sizeof file);
+		lcpy(file, savedfile, sizeof file);
 		if (inopen) {
 			vclrech(0);
 			splitw++;
@@ -706,9 +706,9 @@ cre:
 		writing = 1;
 		if (hush == 0) {
 			if (nonexist)
-				printf(catgets(catd, 1, 115, " [New file]"));
+				ex_printf(catgets(catd, 1, 115, " [New file]"));
 			else if (value(WRITEANY) && edfile() != EDF)
-				printf(catgets(catd, 1, 116,
+				ex_printf(catgets(catd, 1, 116,
 							" [Existing file]"));
 		}
 		break;
@@ -756,7 +756,7 @@ getfile(void)
 			if (ninbuf < 0) {
 				if (lp != linebuf) {
 					lp++;
-					printf(catgets(catd, 1, 117,
+					ex_printf(catgets(catd, 1, 117,
 						" [Incomplete last line]"));
 					break;
 				}
@@ -881,7 +881,7 @@ source(char *fil, bool okfail)
 	saveglobp = globp;
 	saveinput = input;
 	if (input)
-		strlcpy(saveinline, input, sizeof saveinline);
+		lcpy(saveinline, input, sizeof saveinline);
 	peekc = 0; lastc = 0; globp = 0; input = 0;
 	if (saveinp < 0)
 		error(catgets(catd, 1, 119, "Too many nested sources"));

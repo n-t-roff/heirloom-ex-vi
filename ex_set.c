@@ -296,18 +296,18 @@ propt(register struct option *op)
 	switch (op->otype) {
 
 	case ONOFF:
-		printf(catgets(catd, 1, 165, "%s%s"),
+		ex_printf(catgets(catd, 1, 165, "%s%s"),
 				op->ovalue ? catgets(catd, 1, 166, "")
 				: catgets(catd, 1, 167, "no"), name);
 		break;
 
 	case NUMERIC:
-		printf(catgets(catd, 1, 168, "%s=%d"), name, op->ovalue);
+		ex_printf(catgets(catd, 1, 168, "%s=%d"), name, op->ovalue);
 		break;
 
 	case STRING:
 	case OTERM:
-		printf(catgets(catd, 1, 169, "%s=%s"), name, op->osvalue);
+		ex_printf(catgets(catd, 1, 169, "%s=%s"), name, op->osvalue);
 		break;
 	}
 }

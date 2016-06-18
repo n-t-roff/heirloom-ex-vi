@@ -204,7 +204,7 @@ vundo (
 	case VCHNG:
 	case VCAPU:
 		vundkind = VCHNG;
-		strlcpy(temp, vutmp, LBSIZE);
+		lcpy(temp, vutmp, LBSIZE);
 		CP(vutmp, linebuf);
 		doomed = column(vUA2 - 1) - column(vUA1 - 1);
 		strcLIN(temp);
@@ -292,7 +292,7 @@ vmacchng(int fromvis)
 		vudump("before vmacchng hairy case");
 #endif
 		savedot = dot; savedol = dol; savecursor = cursor;
-		strlcpy(savelb, linebuf, LBSIZE);
+		lcpy(savelb, linebuf, LBSIZE);
 		nlines = dol - zero;
 		while ((line *) endcore - truedol < nlines)
 			morelines();
@@ -324,7 +324,7 @@ vmacchng(int fromvis)
 		truedol -= nlines;
 		copyw(zero+1, truedol+1, nlines);
 		dot = savedot; dol = savedol ; cursor = savecursor;
-		strlcpy(linebuf, savelb, LBSIZE);
+		lcpy(linebuf, savelb, LBSIZE);
 		vch_mac = VC_MANYCHANGE;
 
 		/* Arrange that no further undo saving happens within macro */

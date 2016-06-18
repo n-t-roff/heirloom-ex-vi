@@ -711,7 +711,7 @@ vredraw(register int p)
 	 * search for first logical line affected by the redraw.
 	 */
 	vscrap();
-	strlcpy(temp, linebuf, LBSIZE);
+	lcpy(temp, linebuf, LBSIZE);
 	l = 0;
 	tp = dot - vcline;
 	if (vcnt == 0)
@@ -923,7 +923,7 @@ vsync1(register int p)
 		return;
 	temp = smalloc(LBSIZE);
 	vscrap();
-	strlcpy(temp, linebuf, LBSIZE);
+	lcpy(temp, linebuf, LBSIZE);
 	if (vcnt == 0)
 		LINE(0) = WTOP;
 	l = 0;
@@ -1153,7 +1153,7 @@ sethard(void)
 	vup1();
 	LINE(0) = WBOT;
 	if (Pline == numbline)
-		vgoto(WBOT, 0), printf("%6d  ", lineDOT());
+		vgoto(WBOT, 0), ex_printf("%6d  ", lineDOT());
 }
 
 /*

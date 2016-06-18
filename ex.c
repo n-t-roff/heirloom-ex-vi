@@ -154,7 +154,7 @@ erropen(void)
 void 
 usage(void)
 {
-	printf(catgets(catd, 1, 1, "\
+	ex_printf(catgets(catd, 1, 1, "\
 Usage: %s [- | -s] [-l] [-L] [-R] [-r [file]] [-t tag]\n\
        [-v] [-V] [-w size] [+cmd | -c cmd] file...\n"),
 		progname);
@@ -166,7 +166,7 @@ void
 needarg(int c)
 {
 	erropen();
-	printf(catgets(catd, 1, 2,
+	ex_printf(catgets(catd, 1, 2,
 		"%s: option requires an argument -- %c\n"), progname, c);
 	usage();
 }
@@ -175,7 +175,7 @@ void
 invopt(int c)
 {
 	erropen();
-	printf(catgets(catd, 1, 3, "%s: illegal option -- %c\n"), progname, c);
+	ex_printf(catgets(catd, 1, 3, "%s: illegal option -- %c\n"), progname, c);
 	usage();
 }
 
@@ -437,7 +437,7 @@ arggroup:
 			trace = fopen(tracef, "w");
 #define tracbuf NULL
 			if (trace == NULL)
-				printf(catgets(catd, 1, 4,
+				ex_printf(catgets(catd, 1, 4,
 						"Trace create error\n"));
 			else
 				setbuf(trace, tracbuf);

@@ -102,7 +102,7 @@ unix0(int warn)
 	char printub, puxb[UXBSIZE + sizeof (int)];
 
 	printub = 0;
-	strlcpy(puxb, uxb, sizeof puxb);
+	lcpy(puxb, uxb, sizeof puxb);
 	c = getchar();
 	if (c == '\n' || c == EOF)
 		error(catgets(catd, 1, 192,
@@ -180,7 +180,7 @@ uexp:
 	if (warn && hush == 0 && chng && xchng != chng && value(WARN) && dol > zero) {
 		xchng = chng;
 		vnfl();
-		printf(mesg(catgets(catd, 1, 197,
+		ex_printf(mesg(catgets(catd, 1, 197,
 				"[No write]|[No write since last change]")));
 		noonl();
 		flush();
@@ -277,7 +277,7 @@ unixex(char *opt, char *up, int newstdin, int mode)
 		if (ruptible)
 			signal(SIGINT, SIG_DFL);
 		execl(svalue(SHELL), "sh", opt, up, (char *)0);
-		printf(catgets(catd, 1, 201, "No %s!\n"), svalue(SHELL));
+		ex_printf(catgets(catd, 1, 201, "No %s!\n"), svalue(SHELL));
 		error(NOSTR);
 	}
 	if (mode & 1) {
@@ -307,7 +307,7 @@ unixwt(int c, struct termios f)
 		setty(f);
 	setrupt();
 	if (!inopen && c && hush == 0) {
-		printf("!\n");
+		ex_printf("!\n");
 		flush();
 		termreset();
 		gettmode();

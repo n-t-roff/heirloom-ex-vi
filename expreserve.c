@@ -428,7 +428,7 @@ format:
 	 * LOST, by putting this in the header.
 	 */
 	if (H.Savedfile[0] == 0) {
-		strlcpy(H.Savedfile, "LOST", sizeof H.Savedfile);
+		memcpy(H.Savedfile, "LOST", 5);
 		ignore(write(0, (char *) &H, sizeof H));
 		H.Savedfile[0] = 0;
 		lseek(0, (off_t) 0, SEEK_SET);

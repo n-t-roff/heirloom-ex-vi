@@ -128,7 +128,7 @@ llfind(bool pastatom, int cnt, void (*f)(int), line *limit)
 	 */
 	wasend = 0;
 	lf = f;
-	strlcpy(save, linebuf, LBSIZE);
+	lcpy(save, linebuf, LBSIZE);
 	if (limit == 0)
 		limit = dir < 0 ? one : dol;
 	llimit = limit;
@@ -432,7 +432,7 @@ lsmatch(char *cp)
 	register char *scurs = cursor;
 
 	wcursor = cp;
-	strlcpy(sp, linebuf, LBSIZE);
+	lcpy(sp, linebuf, LBSIZE);
 	*wcursor = 0;
 	strcpy(cursor, genbuf);
 	cursor = strend(linebuf) - 1;

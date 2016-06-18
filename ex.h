@@ -254,9 +254,6 @@ typedef	short	bbloc;
 #ifdef	EOF
 #undef	EOF
 #endif
-#ifdef	printf
-#undef	printf
-#endif
 #ifdef	vprintf
 #undef	vprintf
 #endif
@@ -443,7 +440,8 @@ var	int	exitoneof;	/* exit command loop on EOF */
 /*
  * Macros
  */
-#define	CP(a, b)	(ignore(movestr(a, b)))
+#define	Copy(t, f, s)	memmove(t, f, s)
+#define	CP(a, b)	memmove(a, b, strlen(b) + 1)
 			/*
 			 * FIXUNDO: do we want to mung undo vars?
 			 * Usually yes unless in a macro or global.

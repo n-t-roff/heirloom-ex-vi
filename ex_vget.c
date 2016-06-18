@@ -536,11 +536,11 @@ noteit(int must)
 	if (WBOT == WECHO)
 		vmoveitup(1, 1);
 	vigoto(WECHO, 0);
-	printf(catgets(catd, 1, 223, "%d %sline"), notecnt, notesgn);
+	ex_printf(catgets(catd, 1, 223, "%d %sline"), notecnt, notesgn);
 	if (notecnt > 1)
 		putchar('s');
 	if (*notenam) {
-		printf(" %s", notenam);
+		ex_printf(" %s", notenam);
 		if (*(strend(notenam) - 1) != 'e')
 			putchar('e');
 		putchar('d');
@@ -726,13 +726,13 @@ macpush(char *st, int canundo)
 		error(catgets(catd, 1, 224,
 				"Macro too long@ - maybe recursive?"));
 	if (vmacp) {
-		strlcpy(tmpbuf, vmacp, sizeof tmpbuf);
+		lcpy(tmpbuf, vmacp, sizeof tmpbuf);
 		if (!FIXUNDO)
 			canundo = 0;	/* can't undo inside a macro anyway */
 	}
-	strlcpy(vmacbuf, st, sizeof vmacbuf);
+	lcpy(vmacbuf, st, sizeof vmacbuf);
 	if (vmacp)
-		strlcat(vmacbuf, tmpbuf, sizeof vmacbuf);
+		lcat(vmacbuf, tmpbuf, sizeof vmacbuf);
 	vmacp = vmacbuf;
 	/* arrange to be able to undo the whole macro */
 	if (canundo) {
@@ -778,7 +778,7 @@ vudump(char *s)
 	fprintf(trace, "  undadot=%d, dot=%d, dol=%d, unddol=%d, truedol=%d\n",
 		lineno(undadot), lineno(dot), lineno(dol), lineno(unddol), lineno(truedol));
 	fprintf(trace, "  [\n");
-	strlcpy(savelb, linebuf, sizeof savelb);
+	lcpy(savelb, linebuf, sizeof savelb);
 	fprintf(trace, "linebuf = '%s'\n", linebuf);
 	for (p=zero+1; p<=truedol; p++) {
 		fprintf(trace, "%o ", *p);
@@ -786,7 +786,7 @@ vudump(char *s)
 		fprintf(trace, "'%s'\n", linebuf);
 	}
 	fprintf(trace, "]\n");
-	strlcpy(linebuf, savelb, LBSIZE);
+	lcpy(linebuf, savelb, LBSIZE);
 }
 #endif
 

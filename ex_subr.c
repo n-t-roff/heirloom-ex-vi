@@ -163,14 +163,49 @@ comment(void)
 		ungetchar(c);
 }
 
-void 
-Copy(register char *to, register char *from, register int size)
-{
+/*
+ * strlcpy not used since buffers may overlap.
+ */
+size_t
+lcpy(char *dst, const char *src, size_t dstsize) {
+	size_t srclen;
+	/* avoids to access illegal memory in case
+	 * of unterminated strings */
+	for (srclen = 0; srclen < dstsize; srclen++)
+		if (!src[srclen])
+			break;
+	if (srclen < dstsize)
+		/* '<' means there is room for the final 0 byte */
+		dstsize = srclen;
+	else /* src string is too long. Set size to be copied to
+	      * buffer size - 1 to have room for the final 0 byte */
+		if (dstsize) /* avoid overflow */
+			dstsize--;
+	if (dstsize)
+		memcpy(dst, src, dstsize);
+	dst[dstsize] = 0;
+	return srclen;
+}
 
-	if (size > 0)
-		do
-			*to++ = *from++;
-		while (--size > 0);
+size_t
+lcat(char *dst, const char *src, size_t dstsize) {
+	size_t ld, ls;
+	for (ld = 0; ld < dstsize - 1; ld++)
+		if (!dst[ld])
+			break;
+	dst     += ld;
+	dstsize -= ld;
+	for (ls = 0; ls < dstsize; ls++)
+		if (!src[ls])
+			break;
+	if (ls < dstsize)
+		dstsize = ls;
+	else if (dstsize)
+		dstsize--;
+	if (dstsize)
+		memcpy(dst, src, dstsize);
+	dst[dstsize] = 0;
+	return ld + ls;
 }
 
 void 
@@ -342,9 +377,9 @@ killcnt(register int cnt)
 	}
 	if (!notable(cnt))
 		return;
-	printf(catgets(catd, 1, 170, "%d lines"), cnt);
+	ex_printf(catgets(catd, 1, 170, "%d lines"), cnt);
 	if (value(TERSE) == 0) {
-		printf(catgets(catd, 1, 171, " %c%s"),
+		ex_printf(catgets(catd, 1, 171, " %c%s"),
 				Command[0] | ' ', Command + 1);
 		if (Command[strlen(Command) - 1] != 'e')
 			putchar('e');
@@ -439,11 +474,11 @@ merror1(intptr_t seekpt)
 {
 
 #ifdef VMUNIX
-	strlcpy(linebuf, (char *)seekpt, LBSIZE);
+	lcpy(linebuf, (char *)seekpt, LBSIZE);
 #else
 	lseek(erfile, (off_t) seekpt, SEEK_SET);
 	if (read(erfile, linebuf, 128) < 2)
-		strlcpy(linebuf, "ERROR", LBSIZE);
+		lcpy(linebuf, "ERROR", LBSIZE);
 #endif
 }
 
@@ -555,7 +590,7 @@ netchange(register int i)
 	}
 	if (!notable(i))
 		return;
-	printf(mesg(catgets(catd, 1, 177, "%d %slines@in file after %s")),
+	ex_printf(mesg(catgets(catd, 1, 177, "%d %slines@in file after %s")),
 			i, cp, Command);
 	putNFL();
 }
@@ -818,7 +853,7 @@ void
 strcLIN(char *dp)
 {
 
-	strlcpy(linebuf, dp, LBSIZE);
+	lcpy(linebuf, dp, LBSIZE);
 }
 
 void
@@ -1101,18 +1136,6 @@ onsusp(int signum)
 #endif	/* TIOCGWINSZ */
 }
 #endif	/* SIGTSTP */
-
-/*
- * For regular strcpy(), source and destination may not overlap.
- */
-char *
-movestr(char *s1, const char *s2)
-{
-	char	*cp = s1;
-
-	while ((*s1++ = *s2++));
-	return cp;
-}
 
 /*
  * strcpy() checking the maximum size of s1, printing msg in case of overflow.

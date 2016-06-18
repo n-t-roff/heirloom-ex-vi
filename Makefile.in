@@ -233,10 +233,11 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-WARN	= -Wall -Wextra
-#	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
-#	-fsanitize=undefined -fsanitize=integer
-#	-fsanitize=address
+DEBUG=	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
+	-fsanitize=undefined -fsanitize=integer
+	-fsanitize=address
+WARN	= -Wall -Wextra \
+	#$(DEBUG)
 STRIP = -s
 
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
@@ -250,7 +251,7 @@ OBJS	= ex.o ex_addr.o ex_cmds.o ex_cmds2.o ex_cmdsub.o \
 		ex_set.o ex_subr.o ex_tagio.o ex_temp.o ex_tty.o ex_unix.o \
 		ex_v.o ex_vadj.o ex_vget.o ex_vmain.o ex_voper.o \
 		ex_vops.o ex_vops2.o ex_vops3.o ex_vput.o ex_vwind.o \
-		printf.o ex_version.o $(MALLOC) compat.o
+		printf.o ex_version.o $(MALLOC)
 EXRECOBJS=exrecover.o $(MALLOC) compat.o
 EXPREOBJS=expreserve.o compat.o
 HDRS	= ex.h ex_argv.h ex_re.h ex_temp.h ex_tty.h ex_tune.h ex_vars.h \

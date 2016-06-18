@@ -912,7 +912,7 @@ numberit:
 			setall();
 			if (inglobal == 2)
 				pofix();
-			printf("%d", lineno(addr2));
+			ex_printf("%d", lineno(addr2));
 			noonl();
 			continue;
 

@@ -476,7 +476,7 @@ comprhs(int seof)
 #ifdef	BIT8
 	qp = rhsquo;
 #endif
-	strlcpy(orhsbuf, rp, sizeof orhsbuf);
+	lcpy(orhsbuf, rp, sizeof orhsbuf);
 #ifdef	BIT8
 	copy(orhsquo, qp, (size_t) strlen(rp));
 #endif
@@ -858,9 +858,9 @@ snote(register int total, register int lines)
 
 	if (!notable(total))
 		return;
-	printf(mesg(catgets(catd, 1, 131, "%d subs|%d substitutions")), total);
+	ex_printf(mesg(catgets(catd, 1, 131, "%d subs|%d substitutions")), total);
 	if (lines != 1 && lines != total)
-		printf(catgets(catd, 1, 132, " on %d lines"), lines);
+		ex_printf(catgets(catd, 1, 132, " on %d lines"), lines);
 	noonl();
 	flush();
 }

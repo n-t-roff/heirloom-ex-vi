@@ -259,7 +259,8 @@ extern void change(void);
 extern int column(register char *);
 extern int lcolumn(register char *);
 extern void comment(void);
-extern void Copy(register char *, register char *, register int);
+size_t lcpy(char *, const char *, size_t);
+size_t lcat(char *, const char *, size_t);
 extern void copyw(register line *, register line *, register int);
 extern void copywR(register line *, register line *, register int);
 extern int ctlof(int);
@@ -322,7 +323,6 @@ extern int preserve(void);
 extern int exitex(int);
 extern void onsusp(int);
 extern void onemt(int);
-extern char *movestr(char *, const char *);
 extern char *safecp(char *, const char *, size_t, char *, ...);
 extern char *safecat(char *, const char *, size_t, char *, ...);
 extern void grow(char *, char **, char **, char **, char **);
@@ -566,6 +566,6 @@ extern void vnline(char *);
 /* mapmalloc.c */
 extern char *poolsbrk(intptr_t);
 /* printf.c */
-extern int printf(const char *, ...);
+extern int ex_printf(char *, ...);
 extern int vprintf(const char *, va_list);
 extern char *p_dconv(long, char *);

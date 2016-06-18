@@ -282,7 +282,7 @@ erewind(void)
 	argv = argv0;
 	args = args0;
 	if (argc > 1 && !hush) {
-		printf(mesg(catgets(catd, 1, 30, "%d files@to edit")), argc);
+		ex_printf(mesg(catgets(catd, 1, 30, "%d files@to edit")), argc);
 		if (inopen)
 			putchar(' ');
 		else
@@ -347,7 +347,7 @@ next(void)
 	morargc = argc;
 	isalt = (strcmp(altfile, args)==0) + 1;
 	if (savedfile[0])
-		strlcpy(altfile, savedfile, sizeof altfile);
+		lcpy(altfile, savedfile, sizeof altfile);
 	safecp(savedfile, args, sizeof savedfile, "File name too long");
 	argc--;
 	args = argv ? *++argv : strend(args) + 1;
