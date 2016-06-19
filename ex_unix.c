@@ -225,7 +225,7 @@ unixex(char *opt, char *up, int newstdin, int mode)
 	if (dosusp)
 		signal(SIGTSTP, SIG_DFL);
 #endif
-	if (inopen)
+	/*if (inopen)*/
 		f = setty(normf);
 	if ((mode & 1) && pipe(pvec) < 0) {
 		/* Newstdin should be io so it will be closed */
