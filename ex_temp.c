@@ -85,7 +85,6 @@ static char sccsid[] = "@(#)ex_temp.c	1.27 (gritter) 12/25/06";
 #include "ex_tty.h"
 #include <sys/wait.h>
 #include <time.h>
-#include "compat.h"
 
 /*
  * Editor temporary file routines.

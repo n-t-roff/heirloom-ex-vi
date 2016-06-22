@@ -82,7 +82,6 @@ static char sccsid[] = "@(#)ex_vops3.c	1.21 (gritter) 8/4/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 /*
  * Routines to handle structure.

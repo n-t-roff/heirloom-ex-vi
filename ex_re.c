@@ -81,7 +81,6 @@ static char sccsid[] = "@(#)ex_re.c	1.60 (gritter) 8/6/05";
 
 #include "ex.h"
 #include "ex_re.h"
-#include "compat.h"
 
 #ifdef	UXRE
 

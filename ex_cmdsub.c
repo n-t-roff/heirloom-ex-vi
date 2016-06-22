@@ -84,7 +84,6 @@ static char sccsid[] = "@(#)ex_cmdsub.c	1.32 (gritter) 8/6/05";
 #include "ex_temp.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 /*
  * Command mode subroutines implementing

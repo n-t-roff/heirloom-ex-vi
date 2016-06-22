@@ -82,7 +82,6 @@ static char sccsid[] = "@(#)ex_vget.c	1.31 (gritter) 8/6/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 /*
  * Input routines for open/visual.

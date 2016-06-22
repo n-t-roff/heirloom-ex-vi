@@ -82,7 +82,6 @@ static char sccsid[] = "@(#)ex_vmain.c	1.34 (gritter) 8/6/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 /*
  * This is the main routine for visual.

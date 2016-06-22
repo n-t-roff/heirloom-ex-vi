@@ -82,7 +82,6 @@ static char sccsid[] = "@(#)ex_tty.c	1.30 (gritter) 8/4/05";
 #include <sys/ioctl.h>
 #include "ex.h"
 #include "ex_tty.h"
-#include "compat.h"
 
 int ATTN = DELETE;
 

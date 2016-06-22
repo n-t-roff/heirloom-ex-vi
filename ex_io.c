@@ -84,7 +84,6 @@ static char sccsid[] = "@(#)ex_io.c	1.42 (gritter) 8/4/05";
 #include "ex_temp.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 /*
  * File input/output, source, preserve and recover

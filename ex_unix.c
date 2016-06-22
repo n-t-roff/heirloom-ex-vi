@@ -84,7 +84,6 @@ static char sccsid[] = "@(#)ex_unix.c	1.17 (gritter) 8/4/05";
 #include "ex_tty.h"
 #include "ex_vis.h"
 #include <sys/wait.h>
-#include "compat.h"
 
 /*
  * Unix escapes, filtering

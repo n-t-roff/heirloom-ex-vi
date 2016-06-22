@@ -82,7 +82,6 @@ static char sccsid[] = "@(#)ex_vadj.c	1.16 (gritter) 8/6/05";
 #include "ex.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 /*
  * Routines to deal with management of logical versus physical

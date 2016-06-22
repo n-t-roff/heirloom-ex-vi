@@ -84,7 +84,6 @@ static char sccsid[] = "@(#)ex_cmds2.c	1.18 (gritter) 2/17/05";
 #include "ex_temp.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 extern bool	pflag, nflag;		/* mjm: extern; also in ex_cmds.c */
 extern int	poffset;		/* mjm: extern; also in ex_cmds.c */

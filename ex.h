@@ -136,6 +136,7 @@
 #endif
 
 #ifdef	MB
+int wcwidth(wchar_t);
 #include <wchar.h>
 #include <wctype.h>
 #endif

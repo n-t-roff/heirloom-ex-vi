@@ -84,7 +84,6 @@ static char sccsid[] = "@(#)ex_subr.c	1.41 (gritter) 12/25/06";
 #include "ex_re.h"
 #include "ex_tty.h"
 #include "ex_vis.h"
-#include "compat.h"
 
 short	lastsc;
 
