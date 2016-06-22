@@ -339,7 +339,7 @@ install: all install-man
 	ln -s ex $(DESTDIR)$(BINDIR)/view
 	$(INSTALL) xvi $(DESTDIR)$(BINDIR)/
 	test -d $(DESTDIR)$(PRESERVEDIR) || mkdir -p $(DESTDIR)$(PRESERVEDIR)
-	chmod 1777 $(DESTDIR)$(PRESERVEDIR)
+	-chmod 1777 $(DESTDIR)$(PRESERVEDIR)
 
 PKGROOT = /var/tmp/heirloom-sh
 PKGTEMP = /var/tmp
