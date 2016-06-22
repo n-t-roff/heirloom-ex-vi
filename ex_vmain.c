@@ -1124,7 +1124,10 @@ fixup:
 			 * in open mode and . moved, then redraw.
 			 */
 			i = vcline + (dot - addr);
-			if (i < 0 || i >= vcnt || i >= -vcnt || (state != VISUAL && dot != addr)) {
+			if (i < 0
+			    || (vcnt >= 0 && i >= vcnt)
+			    || (vcnt < 0 && i >= -vcnt)
+			    || (state != VISUAL && dot != addr)) {
 				if (state == CRTOPEN)
 					vup1();
 				if (vcnt > 0)
