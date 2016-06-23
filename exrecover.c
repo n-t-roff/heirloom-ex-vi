@@ -169,7 +169,7 @@ struct svfile {
 #ifdef	notdef
 char	mydir[] =	"/usr/preserve";
 #else
-char	mydir[] =	"/var/preserve";
+char	mydir[] =	PRESERVEDIR;
 #endif
 
 /*

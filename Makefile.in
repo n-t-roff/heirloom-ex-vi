@@ -235,13 +235,14 @@ MALLOC=mapmalloc.o
 
 DEBUG=	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
 	-fsanitize=undefined -fsanitize=integer
-	-fsanitize=address
+#	-fsanitize=address
 WARN	= -Wall -Wextra \
 	#$(DEBUG)
 STRIP = -s
 
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
-			-DEXPRESERVE=\"$(LIBEXECDIR)/expreserve\"
+		-DEXPRESERVE=\"$(LIBEXECDIR)/expreserve\" \
+		-DPRESERVEDIR=\"$(PRESERVEDIR)\"
 CCFLAGS	= $(CFLAGS) $(WARN) $(CPPFLAGS) $(FEATURES) $(CHARSET) $(OSTYPE) \
 		$(LARGEF) $(RECOVER) $(LANGMSG) $(REINC) $(RPMCFLAGS)
 TLIB	= libterm/libtermlib.a

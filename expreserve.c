@@ -274,7 +274,7 @@ main(int argc, char **argv)
 #ifdef	notdef
 char	pattern[] =	"/usr/preserve/Exaa`XXXXX";
 #else
-char	pattern[] =	"/var/preserve/Exa`XXXXXXXXXX";
+char	pattern[] =	PRESERVEDIR "/Exa`XXXXXXXXXX";
 #endif
 
 /*
