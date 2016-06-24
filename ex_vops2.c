@@ -178,7 +178,7 @@ showmode(int mode)
 	char *ocurs, *str;
 
 	if (value(SHOWMODE) == 0 || TCOLUMNS <= 20 || state == ONEOPEN
-			|| state == HARDOPEN || vmacp != NULL)
+			|| state == HARDOPEN /*|| vmacp != NULL*/)
 		return;
 	ocurs = cursor;
 	fixech();
