@@ -450,7 +450,7 @@ var	int	exitoneof;	/* exit command loop on EOF */
 #define FIXUNDO		(inopen >= 0 && (inopen || !inglobal))
 #define ckaw()		{if (chng && value(AUTOWRITE)) wop(0);}
 #define	copy(a,b,c)	Copy((char *) (a), (char *) (b), (c))
-#define	eq(a, b)	((a) != NULL && (b) != NULL && strcmp(a, b) == 0)
+#define	eq(a, b)	((void *)(a) != NULL && (void *)(b) != NULL && strcmp(a, b) == 0)
 #define	getexit(a)	copy(a, resetlab, sizeof (JMP_BUF))
 #define	lastchar()	lastc
 #define	outchar(c)	(*Outchar)(c)

@@ -602,7 +602,8 @@ badtag:
 	 * Loop once for each file in tags "path".
 	 */
 	safecp(tagfbuf, svalue(TAGS), sizeof tagfbuf, "Tag too long");
-	fne = tagfbuf - 1;
+	fne = tagfbuf;
+	fne--;
 #ifdef	FASTTAG
 	ft_iofbuf = smalloc(MAXBSIZE);
 #endif
