@@ -104,7 +104,7 @@ var enum {
  */
 var	short	TUBELINES;
 var	short	TUBECOLS;
-var	short	TUBESIZE;
+var	int	TUBESIZE;
 
 /*
  * The screen in visual and crtopen is of varying size; the basic

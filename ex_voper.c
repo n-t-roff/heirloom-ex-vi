@@ -838,7 +838,7 @@ find(int c)
 int 
 word(register void (*op)(int), int cnt)
 {
-	register int which = 0, i;
+	register int which, i;
 	register char *iwc;
 	register line *iwdot = wdot;
 
@@ -881,6 +881,7 @@ word(register void (*op)(int), int cnt)
 			while (!margin() && wordof(which, wcursor))
 				wcursor--;
 		}
+		which = wordch(wcursor);
 		if (wcursor < linebuf || !wordof(which, wcursor))
 			wcursor += skipright(linebuf, wcursor);
 	}
