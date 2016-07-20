@@ -399,8 +399,6 @@ main(register int ac, register char *av[])
 	while (ac) {
 		if (av[0][0] == '+') {
 			firstpat = &av[0][1];
-			if (*firstpat == '\0')
-				needarg('+');
 		} else if (av[0][0] == '-') {
 arggroup:
 		c = av[0][1];

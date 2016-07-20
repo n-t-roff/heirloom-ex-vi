@@ -210,8 +210,8 @@ EOT
 TestLocalTermlib () {
 	TermTest "-Llibterm -ltermlib" && return
 	TermTest "-ltinfo"             && return
-	TermTest "-lcurses"            && return
 	TermTest "-lncurses"           && return
+	TermTest "-lcurses"            && return
 }
 
 TestLocalTermlib
