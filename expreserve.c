@@ -102,7 +102,9 @@ static char sccsid[] UNUSED = "@(#)expreserve.c	1.23 (gritter) 11/27/04";
 #include <stdlib.h>
 #include <pwd.h>
 #include <time.h>
-#include "compat.h"
+#if !defined(HAVE_STRLCPY) || !defined(HAVE_STRLCAT)
+# include "compat.h"
+#endif
 
 #include "config.h"
 

@@ -233,18 +233,18 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-DEBUG=	-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
-	-fsanitize=undefined -fsanitize=integer
-#	-fsanitize=address
 WARN	= -Wall -Wextra \
-	#$(DEBUG)
-STRIP = -s
+		#-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
+		-fsanitize=undefined -fsanitize=integer \
+		#-fsanitize=address
+STRIP	= -s
 
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
 		-DEXPRESERVE=\"$(LIBEXECDIR)/expreserve\" \
 		-DPRESERVEDIR=\"$(PRESERVEDIR)\"
 CCFLAGS	= $(CFLAGS) $(WARN) $(CPPFLAGS) $(FEATURES) $(CHARSET) $(OSTYPE) \
-		$(LARGEF) $(RECOVER) $(LANGMSG) $(REINC) $(RPMCFLAGS)
+		$(LARGEF) $(RECOVER) $(LANGMSG) $(REINC) $(RPMCFLAGS) \
+		$(DEFINES)
 TLIB	= libterm/libtermlib.a
 INCLUDE	= /usr/include
 OBJS	= ex.o ex_addr.o ex_cmds.o ex_cmds2.o ex_cmdsub.o \
@@ -271,7 +271,8 @@ SRC7	= mapmalloc.c malloc.c
 all: exrecover expreserve ex
 
 ex: $(OBJS) $(RETGT) $(TLIB)
-	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) $(WARN) $(TERMLIB) $(RELIB)
+	$(CC) -o ex $(LDFLAGS) $(DEFINES) $(OBJS) $(LDADD) $(WARN) $(TERMLIB) \
+	    $(RELIB)
 	size ex
 
 $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h

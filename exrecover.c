@@ -109,7 +109,9 @@ extern int	vsnprintf(char *, size_t, const char *, va_list);
 #include "ex_tty.h"
 #include <dirent.h>
 #include <time.h>
-#include "compat.h"
+#if !defined(HAVE_STRLCPY) || !defined(HAVE_STRLCAT)
+# include "compat.h"
+#endif
 
 #ifndef	MAXNAMLEN
 #ifdef	FNSIZE
