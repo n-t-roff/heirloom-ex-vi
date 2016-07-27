@@ -184,13 +184,16 @@ $TMPNAM: ${TMPNAM}.o \$(TLIB)
 	\$(CC) \$(WARN) \$(DEFINES) -o \$@ ${TMPNAM}.o \$(TERMLIB)
 EOT
 	cat <<EOT >>$TMPC
+#include <stdio.h>
 int tgetent(char *, const char *);
 int main() {
-	char tcbuf[1024];
+	char tcbuf[2048];
 	char *terms[] = { "xterm", "screen" };
 	unsigned i;
 	for (i = 0; i < sizeof(terms)/sizeof(*terms); i++)
 		if (tgetent(tcbuf, terms[i]) != 1) {
+			fprintf(stderr, "Unknown terminal type \"%s\"\n",
+			    terms[i]);
 			return i + 1;
 		}
 	return 0;
@@ -206,15 +209,16 @@ EOT
 }
 
 TestLocalTermlib () {
-	TermTest "-Llibterm -ltermlib" && return
-	TermTest "-ltinfo"             && return
-	TermTest "-lncurses"           && return
+	#TermTest "-Llibterm -ltermlib" && return
+	TermTest "-ltinfo" && return
+	TermTest "-lncurses" && return
 	ODEFS=$DEFS
 	D="-I/usr/pkg/include -L/usr/pkg/lib -Wl,-rpath,/usr/pkg/lib"
 	DEFS="$DEFS $D"
 	TermTest "-lncurses $D" && return
 	DEFS=$ODEFS
 	TermTest "-lcurses" && return
+	TermTest "-Llibterm -ltermlib" && return
 }
 
 TestLocalTermlib

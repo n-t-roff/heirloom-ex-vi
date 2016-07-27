@@ -11,12 +11,19 @@ Until 2007 he added new features, e.g.
 dynamically allocated screen buffers for resizing the terminal
 and support for files with arbitrary line length.
 
-These changes did introduce an issue to numbered lines mode
-which is fixed now.
+These changes did introduce an issue to numbered lines mode.
+This and other found bugs are fixed now.
 A simple `./configure` had been added to set curses
 as the terminal capabilities access library
 on some systems.
 ## How to install
+The embedded termcap library may cause problems on systems where
+there is no `/etc/termcap` and `$TERMCAP` of the user that runs
+`./configure` and other users (e.g. `root`) differs.
+Therefore using termcap has lowest priority during auto-configure.
+To prefere termcap put the corresponding line before the curses
+entries in
+[configure](https://github.com/n-t-roff/heirloom-ex-vi/blob/master/configure).
 ```
 $ ./configure
 $ make

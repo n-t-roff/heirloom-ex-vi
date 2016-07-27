@@ -277,9 +277,12 @@ int
 numbline(int i, int max)
 {
 
+	extern short	vcntcol;
 	if (shudclob)
 		slobber(' ');
 	max -= ex_printf("%6d  ", i);
+	if (max > 0)
+		vcntcol = value(NUMBER) << 3;
 	return normline(0, max);
 }
 
@@ -297,8 +300,6 @@ normline(int unused, int max)
 	int	ret = 0;
 
 	(void)unused;
-	if (max > 0)
-		vcntcol = value(NUMBER) << 3;
 	if (shudclob)
 		slobber(linebuf[0]);
 	/* pdp-11 doprnt is not reentrant so can't use "printf" here
