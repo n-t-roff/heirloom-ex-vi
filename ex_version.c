@@ -75,7 +75,7 @@
 
 #include "ex.h"
 
-static char *versionstring = "@(#)Version 4.1.1 (gritter) 7/27/16 18:24";
+static char *versionstring = "@(#)Version 4.1.2 (gritter) 7/27/16";
 
 void 
 printver(void)
