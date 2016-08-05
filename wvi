@@ -11,4 +11,4 @@ while [ $# -gt 0 ]; do
 	esac
 	shift
 done
-xterm $XFl -T "vi $*" -e vi $Fl "$*" &
+xterm $XFl -T "vi $*" -e "vi $Fl $*" &
