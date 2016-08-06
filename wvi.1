@@ -6,6 +6,7 @@
 .Nd open vi in a separate xterm
 .Sh SYNOPSIS
 .Nm
+.Op Ar "X options"
 .Op Ar "vi options"
 .Sh DESCRIPTION
 There are use cases for
@@ -13,12 +14,24 @@ There are use cases for
 where it is desirable to start it in a separate X window.
 .Nm
 just starts
-.Do Nm xterm Fl e Dc
+.Do Nm xterm Ar "X options" Fl e Dc
 with
 .Nm vi
 and the
 .Ar "vi options"
 as argument.
+Possible X options are:
+.Bl -tag
+.It Fl bg Ar color
+Set background color.
+.It Fl fg Ar color
+Set foreground color.
+.It Fl fn Ar font name
+Set font name.
+.It Fl geometry Ar geometry string
+Set xterm window geometry.
+.El
+.Pp
 File names with spaces need to be enclosed in single or double quotes
 .Po Sq Li \(aq
 or

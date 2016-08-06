@@ -1,7 +1,7 @@
 #!/bin/sh
 while [ $# -gt 0 ]; do
 	case "$1" in
-	-fg | -bg | -fn)
+	-fg | -bg | -fn | -geometry)
 		XFl="$XFl $1 $2"
 		shift ;;
 	-*)
@@ -11,4 +11,8 @@ while [ $# -gt 0 ]; do
 	esac
 	shift
 done
+RC=$HOME/.exrc
+echo $XFl | grep -q '\-geometry' || {
+	[ -e $RC ] && grep -q '^set*  *nu' $RC && XFl="$XFl -geometry 88"
+}
 xterm $XFl -T "vi $*" -e "vi $Fl $*" &
