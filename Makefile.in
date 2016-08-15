@@ -233,10 +233,7 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-WARN	= -Wall -Wextra \
-		#-O0 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls \
-		-fsanitize=undefined -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow
-#		-fsanitize=undefined -fsanitize=unsigned-integer-overflow
+WARN	= -Wall -Wextra $(__CDBG) $(__SAN)
 STRIP	= -s
 
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \
@@ -268,7 +265,7 @@ SRC7	= mapmalloc.c malloc.c
 .SUFFIXES: .o .c
 .c.o: ; $(CC) $(CCFLAGS) -c $<
 
-all: exrecover expreserve ex
+all: exrecover expreserve ex wvi.out
 
 ex: $(OBJS) $(RETGT) $(TLIB)
 	$(CC) -o ex $(LDFLAGS) $(DEFINES) $(OBJS) $(LDADD) $(WARN) $(TERMLIB) \
@@ -285,6 +282,9 @@ exrecover: $(EXRECOBJS)
 expreserve: $(EXPREOBJS)
 	$(CC) -o expreserve $(LDFLAGS) $(WARN) $(EXPREOBJS) $(LDADD)
 
+wvi.out: wvi
+	sed 's"BINDIR"$(BINDIR)"g' wvi >wvi.out
+
 ex_vars.h: ex_data.c
 	sh makeoptions $(CCFLAGS)
 
@@ -296,7 +296,7 @@ clean:
 	cd libterm && $(MAKE) clean
 	test ! -d libuxre || (cd libuxre && $(MAKE) clean)
 #	If we dont have ex we cant make it so don't rm ex_vars.h
-	-rm -f ex exrecover expreserve *.o x*.[cs] core errs trace
+	-rm -f ex exrecover expreserve *.o x*.[cs] core errs trace *.out
 
 mrproper: clean
 	-rm -f log Makefile config.log compat.h
@@ -339,7 +339,7 @@ install: all install-man
 	ln -s ex $(DESTDIR)$(BINDIR)/vedit
 	ln -s ex $(DESTDIR)$(BINDIR)/vi
 	ln -s ex $(DESTDIR)$(BINDIR)/view
-	$(INSTALL) wvi $(DESTDIR)$(BINDIR)/
+	$(INSTALL) wvi.out $(DESTDIR)$(BINDIR)/wvi
 	test -d $(DESTDIR)$(PRESERVEDIR) || mkdir -p $(DESTDIR)$(PRESERVEDIR)
 	-chmod 1777 $(DESTDIR)$(PRESERVEDIR)
 

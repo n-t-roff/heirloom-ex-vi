@@ -84,6 +84,8 @@ gen_mk () {
 	    >> $OUTMK
 	[ -n "$LIB_CURSES" ] && echo "LIB_CURSES=$LIB_CURSES" >> $OUTMK
 	[ -n "$LIB_LEX" ] && echo "LIB_LEX=$LIB_LEX" >> $OUTMK
+	[ -n "$__CDBG" ] && echo "__CDBG=$__CDBG" >> $OUTMK
+	[ -n "$__SAN" ] && echo "__SAN=$__SAN" >> $OUTMK
 	cat $INMK >> $OUTMK || exit 1
 }
 check_make () {
@@ -128,7 +130,11 @@ EOT
 	if test_result; then
 		DEFS="$DEFS -DHAVE_STRLCPY"
 	else
-		cat <<EOT >>compat.h
+		H=compat.h
+		grep -q '<sys/types\.h>' $H 2>/dev/null || cat <<EOT >>$H
+#include <sys/types.h>
+EOT
+		cat <<EOT >>$H
 size_t strlcpy(char *, const char *, size_t);
 EOT
 	fi
@@ -151,7 +157,11 @@ EOT
 	if test_result; then
 		DEFS="$DEFS -DHAVE_STRLCAT"
 	else
-		cat <<EOT >>compat.h
+		H=compat.h
+		grep -q '<sys/types\.h>' $H 2>/dev/null || cat <<EOT >>$H
+#include <sys/types.h>
+EOT
+		cat <<EOT >>$H
 size_t strlcat(char *, const char *, size_t);
 EOT
 	fi
@@ -173,6 +183,9 @@ gen_mk
 check_make
 check_strlcpy
 check_strlcat
+#check_Sanitizer
+
+__SAN=`echo $__SAN | sed 's/-fsanitize=address//'`
 
 TermTest () {
 	check_for "$1"
