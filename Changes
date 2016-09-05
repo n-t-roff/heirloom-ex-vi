@@ -1,3 +1,34 @@
+2016-09-05
+
+* Bugfix: Line 1 had been corrupted after window resize at startup
+  when the file path was longer than the window width and the user
+  did enlarge the window before pressing return.
+
+Release 4.1.2
+=============
+
+2016-07-27
+
+* Number mode command line bugfix:  Wrong cursor position when using
+  backspace in number mode fixed.
+
+2016-07-20
+
+* Command line option "+" did never work in heirloom vi.  This is
+  fixed now.
+
+2016-07-18
+
+* Data type overflow bug fixed, which did occur on large displays.
+
+Release 4.1.1
+=============
+
+2016-06-24
+
+* Showmode updated with input mode macros.  This avoids a wrong state
+  indication.
+
 Release 4.1.0
 =============
 
