@@ -13,6 +13,7 @@ while [ $# -gt 0 ]; do
 done
 RC=$HOME/.exrc
 echo $XFl | grep -q '\-geometry' || {
-	[ -e $RC ] && grep -q '^set\{0,1\}[[:space:]]\{1,\}nu' $RC && XFl="$XFl -geometry 88"
+	[ -e $RC ] && grep -q '^set\{0,1\}[[:space:]]\{1,\}nu' $RC &&
+	    XFl="$XFl -geometry 88"
 }
 xterm $XFl -T "vi $*" -e "BINDIR/vi $Fl $*" &

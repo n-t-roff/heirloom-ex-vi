@@ -618,6 +618,7 @@ vcontin(bool ask)
 		if (ask) {
 			merror(catgets(catd, 1, 38,
 					"[Hit return to continue] "));
+			getline(*dot);
 			flush();
 		}
 		if (ask) {
