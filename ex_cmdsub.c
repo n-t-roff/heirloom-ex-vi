@@ -692,11 +692,12 @@ goleft:
 			/* name of file */
 			while (*cp && is_white(*cp))
 				cp++;
-			if (!*cp)
+			if (!*cp) {
 badtags:
 				free(ft_iofbuf);
 				serror(catgets(catd, 1, 48,
 					"%s: Bad tags file entry"), lasttag);
+			}
 			lp = filebuf;
 			while (*cp && *cp != ' ' && *cp != '\t') {
 				if (lp < &filebuf[sizeof filebuf - 2])
