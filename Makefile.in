@@ -233,7 +233,7 @@ MALLOC=mapmalloc.o
 #                                                                             #
 ###############################################################################
 
-WARN	= -Wall -Wextra $(__CDBG) $(__SAN)
+WARN	= $(__CDBG) $(__CLDBG)
 STRIP	= -s
 
 RECOVER	= -DEXRECOVER=\"$(LIBEXECDIR)/exrecover\" \

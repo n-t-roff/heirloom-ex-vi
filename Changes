@@ -1,3 +1,11 @@
+Release 4.1.3
+=============
+
+2016-11-14
+
+* Bugfix: Tags did not work in heirloom CVS repository.
+  Bug #1 reported by @larryhynes (GitHub).
+
 2016-09-05
 
 * Bugfix: Line 1 had been corrupted after window resize at startup
