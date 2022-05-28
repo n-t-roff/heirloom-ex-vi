@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2016, Carsten Kunze <carsten.kunze@arcor.de>
+# Copyright (c) 2016-2018, Carsten Kunze <carsten.kunze@arcor.de>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -15,8 +15,10 @@
 # PERFORMANCE OF THIS SOFTWARE.
 
 usage () {
-	echo "Usage: $0 [-s]"
+	echo "Usage: $0 [-s] [-D<define> ...]"
 	echo "	-s	Silence output"
+	echo "	-D<define>"
+	echo "		Add define to CFLAGS"
 	exit $1
 }
 
@@ -29,10 +31,16 @@ cat /dev/null > compat.h
 
 while [ $# -gt 0 ]; do
 	case $1 in
-	-s) SFLAG=1;;
+	-s)
+		SFLAG=1
+		;;
+	-D*)
+		DEFS="$DEFS $1"
+		;;
 	*)
 		echo "$0: $1: Unknown option" >&2
-		usage 1;;
+		usage 1
+		;;
 	esac
 	shift
 done
@@ -89,8 +97,10 @@ gen_mk () {
 	[ -n "$LIB_CURSES" ] && echo "LIB_CURSES=$LIB_CURSES" >> $OUTMK
 	[ -n "$LIB_AVLBST" ] && echo "LIB_AVLBST=$LIB_AVLBST" >> $OUTMK
 	[ -n "$LIB_LEX" ] && echo "LIB_LEX=$LIB_LEX" >> $OUTMK
-	[ -n "$__CDBG" ] && echo "__CDBG=$__CDBG" >> $OUTMK
-	[ -n "$__CLDBG" ] && echo "__CLDBG=$__CLDBG" >> $OUTMK
+	[ -n "$__CDBG"    ] && echo "__CDBG=$__CDBG" >> $OUTMK
+	[ -n "$__CXXDBG"  ] && echo "__CXXDBG=$__CXXDBG" >> $OUTMK
+	[ -n "$__CLDBG"   ] && echo "__CLDBG=$__CLDBG" >> $OUTMK
+	[ -n "$__CLXXDBG" ] && echo "__CLXXDBG=$__CLXXDBG" >> $OUTMK
 	cat $INMK >> $OUTMK || exit 1
 }
 check_make () {
@@ -174,36 +184,62 @@ EOT
 check_Sanitizer () {
 	check_for "CC Sanitizer"
 
-	__CDBG="-g -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls"
-	__CDBG="$__CDBG -Wall"
-	__CDBG="$__CDBG -Wextra"
-	__CDBG="$__CDBG -Wsign-compare"
-	__CDBG="$__CDBG -Wcast-align"
-	__CDBG="$__CDBG -Wcast-qual"
+	# C only
+	__CDBG=
+	__CLDBG=
+	__CCXXDBG=
+	# C++ only
+	__CXXDBG=
+	__CLXXDBG=
 	__CDBG="$__CDBG -Wmissing-prototypes"
-	__CDBG="$__CDBG -Wunused-parameter"
-	__CDBG="$__CDBG -Wunused-function"
-	__CDBG="$__CDBG -Wshadow"
-	__CLDBG="-fno-common -fsanitize=address -fsanitize=undefined"
-	#__CLDBG="$__CLDBG -fsanitize-address-use-after-scope"
+	__CDBG="$__CDBG -Wstrict-prototypes"
+	__CCXXDBG="$__CCXXDBG -g -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls"
+	__CCXXDBG="$__CCXXDBG -Wall"
+	__CCXXDBG="$__CCXXDBG -Wextra"
+	__CCXXDBG="$__CCXXDBG -Wbad-function-cast"
+	__CCXXDBG="$__CCXXDBG -Wcast-align"
+	__CCXXDBG="$__CCXXDBG -Wcast-qual"
+	#__CCXXDBG="$__CCXXDBG -Wconversion"
+	__CCXXDBG="$__CCXXDBG -Wfloat-equal"
+	__CCXXDBG="$__CCXXDBG -Wlogical-not-parentheses"
+	__CCXXDBG="$__CCXXDBG -Wshadow"
+	__CCXXDBG="$__CCXXDBG -Wsign-compare"
+	__CCXXDBG="$__CCXXDBG -Wundef"
+	__CCXXDBG="$__CCXXDBG -Wuninitialized"
+	__CCXXDBG="$__CCXXDBG -Wunused-parameter"
+	__CCXXDBG="$__CCXXDBG -Wunused-function"
+	__CCXXDBG="$__CCXXDBG -Wwrite-strings"
+	__CLXXDBG="$__CLXXDBG -fno-common -fsanitize=address -fsanitize=undefined"
+	#__CLXXDBG="$__CLXXDBG -fsanitize-recover=all"
 
 	[ -n "$CC" ] || CC=cc
 	VER=`$CC --version`
-	if echo $VER | grep -iq gcc || echo $VER | grep -iq 'Free Software Foundation'; then
-		printf "(gcc) "
-		#__CLDBG="$__CDBG -fprofile-arcs -ftest-coverage"
-		__CLDBG="$__CLDBG -fsanitize=float-divide-by-zero"
-		__CLDBG="$__CLDBG -fsanitize=float-cast-overflow"
+
+	if echo $VER | grep -iq gcc || echo $VER | \
+	    grep -iq 'Free Software Foundation'; then
+		[ -z "$SFLAG" ] && printf "(gcc) "
+		#__CCXXDBG="$__CCXXDBG -Wduplicated-branches"
+		__CCXXDBG="$__CCXXDBG -Wduplicated-cond"
+		__CCXXDBG="$__CCXXDBG -Wjump-misses-init"
+		__CCXXDBG="$__CCXXDBG -Wlogical-op"
+		#__CLXXDBG="$__CLXXDBG -fprofile-arcs -ftest-coverage"
+		__CLXXDBG="$__CLXXDBG -fsanitize=float-divide-by-zero"
+		__CLXXDBG="$__CLXXDBG -fsanitize=float-cast-overflow"
 	elif echo $VER | grep -q clang; then
-		printf "(clang) "
-		__CDBG="$__CDBG -Wincompatible-pointer-types-discards-qualifiers"
-		__CDBG="$__CDBG -Wmissing-variable-declarations"
-		__CLDBG="$__CLDBG -fsanitize=unsigned-integer-overflow"
+		[ -z "$SFLAG" ] && printf "(clang) "
+		__CCXXDBG="$__CCXXDBG -Wincompatible-pointer-types-discards-qualifiers"
+		__CCXXDBG="$__CCXXDBG -Wmissing-variable-declarations"
+		__CXXDBG="$__CXXDBG -Wunused-private-field"
+		__CLXXDBG="$__CLXXDBG -fsanitize=unsigned-integer-overflow"
 	else
-		echo "Unknown compiler"
+		[ -z "$SFLAG" ] && echo "Unknown compiler"
 		return
 	fi
 
+	# Most C++ options can be used for C too
+	__CDBG="$__CDBG $__CCXXDBG"
+	__CLDBG="$__CLDBG $__CLXXDBG"
+	__CXXDBG="$__CXXDBG $__CCXXDBG"
 	cat <<EOT >$TMPC
 int
 main() {
@@ -216,7 +252,10 @@ $TMPNAM: ${TMPNAM}.o
 	\$(CC) \$(__CDBG) \$(__CLDBG) -o \$@ ${TMPNAM}.o
 EOT
 	compile
-	test_result || __CLDBG=
+	test_result || {
+		__CLDBG=
+		__CLXXDBG=
+	}
 }
 	[ ! -s compat.h ] && rm compat.h
 OUTMK=Makefile
@@ -237,7 +276,8 @@ check_strlcpy
 check_strlcat
 #check_Sanitizer
 
-__SAN=`echo $__SAN | sed 's/-fsanitize=address//'`
+__CLDBG=`echo $__CLDBG | sed 's/-fsanitize=address//'`
+__CLXXDBG=`echo $__CLXXDBG | sed 's/-fsanitize=address//'`
 
 TermTest () {
 	check_for "$1"
