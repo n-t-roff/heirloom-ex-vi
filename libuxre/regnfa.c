@@ -607,7 +607,7 @@ casecmp(const Uchar *s, Exec *xp, ssize_t i, ssize_t n, int mb_cur_max)
 	w_type wc1, wc2;
 	int k;
 
-	if (strncmp((char *)s, (char *)p, n) == 0) /* try for exact match */
+	if (strncmp((const char *)s, (const char *)p, n) == 0) /* try for exact match */
 		return 1;
 	if ((xp->flags & REG_ICASE) == 0)
 		return 0;
