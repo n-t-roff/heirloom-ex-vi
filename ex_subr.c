@@ -166,45 +166,56 @@ comment(void)
  * strlcpy not used since buffers may overlap.
  */
 size_t
-lcpy(char *dst, const char *src, size_t dstsize) {
-	size_t srclen;
+lcpy(char *dst, const char *src, const size_t dstsize) {
+	size_t srclen = 0;
+	size_t copylen = dstsize;
 	/* avoids to access illegal memory in case
 	 * of unterminated strings */
-	for (srclen = 0; srclen < dstsize; srclen++)
-		if (!src[srclen])
-			break;
-	if (srclen < dstsize)
+	while (srclen < copylen && src[srclen]) {
+		++srclen;
+	}
+	if (srclen < copylen) {
 		/* '<' means there is room for the final 0 byte */
-		dstsize = srclen;
-	else /* src string is too long. Set size to be copied to
-	      * buffer size - 1 to have room for the final 0 byte */
-		if (dstsize) /* avoid overflow */
-			dstsize--;
-	if (dstsize)
-		memcpy(dst, src, dstsize);
-	dst[dstsize] = 0;
-	return srclen;
+		copylen = srclen;
+	} else if (copylen) {
+		/* src string is too long. Set size to be copied to
+		 * buffer size - 1 to have room for the final 0 byte */
+		--copylen;
+	}
+	if (copylen) {
+		memcpy(dst, src, copylen);
+	}
+	if (dstsize) {
+		dst[copylen] = 0;
+	}
+	return srclen; /* [sic!] see strlcpy man page */
 }
 
 size_t
-lcat(char *dst, const char *src, size_t dstsize) {
-	size_t ld, ls;
-	for (ld = 0; ld < dstsize - 1; ld++)
-		if (!dst[ld])
-			break;
-	dst     += ld;
-	dstsize -= ld;
-	for (ls = 0; ls < dstsize; ls++)
-		if (!src[ls])
-			break;
-	if (ls < dstsize)
-		dstsize = ls;
-	else if (dstsize)
-		dstsize--;
-	if (dstsize)
-		memcpy(dst, src, dstsize);
-	dst[dstsize] = 0;
-	return ld + ls;
+lcat(char *dst, const char *src, const size_t dstsize) {
+	size_t srclen = 0;
+	size_t dstlen = 0;
+	size_t copylen = dstsize;
+	while (dstlen < copylen && dst[dstlen]) {
+		++dstlen;
+	}
+	dst     += dstlen;
+	copylen -= dstlen;
+	while (srclen < copylen && src[srclen]) {
+		++srclen;
+	}
+	if (srclen < copylen) {
+		copylen = srclen;
+	} else if (copylen) {
+		--copylen;
+	}
+	if (copylen) {
+		memcpy(dst, src, copylen);
+	}
+	if (dstsize) {
+		dst[dstlen + copylen] = 0;
+	}
+	return dstlen + srclen; /* [sic!] see strlcat man page */
 }
 
 void 
