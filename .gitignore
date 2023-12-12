@@ -1,0 +1,8 @@
+*.o
+*.a
+ex
+Makefile
+config.log
+expreserve
+exrecover
+wvi.out
