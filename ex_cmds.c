@@ -798,7 +798,23 @@ wq:
 				ignchar();
 				setall();
 				unix0(0);
+				/*
+				 * Drop out of cap mode before running the
+				 * filter so that ANSI escape sequences in the
+				 * command's output (from syntax highlighters
+				 * like hi-col.sh or source-highlight) are
+				 * rendered by the terminal instead of being
+				 * scrambled by vi's screen addressing.
+				 * Mirrors the dance done by bare :!cmd.
+				 */
+				if (inopen) {
+					putpad(TE);
+					flush();
+				}
 				filter(1);
+				if (inopen) {
+					vclrech(1);
+				}
 			} else {
 				setall();
 				wop(1);
